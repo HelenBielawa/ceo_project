@@ -1,47 +1,70 @@
 <script>
-  import svelteLogo from './assets/svelte.svg'
-  import viteLogo from '/vite.svg'
-  import Counter from './lib/Counter.svelte'
+import Scrolly from "./helpers/Scrolly.svelte";
+let currentStep;
+const steps = ["initial plot", "intro to quiz", "political quiz", "stats quiz", "end"];
 </script>
 
 <main>
-  <div>
-    <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-      <img src={viteLogo} class="logo" alt="Vite Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank" rel="noreferrer">
-      <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-    </a>
-  </div>
-  <h1>Vite + Svelte</h1>
+<section>
+  <div class="sticky">
 
-  <div class="card">
-    <Counter />
-  </div>
+  <!--put the main chart here-->
+    
+</div>
+<div class="steps">
 
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer">SvelteKit</a>, the official Svelte app framework powered by Vite!
-  </p>
+  <Scrolly bind:value={currentStep}> <!-- 3. This is what updates value -->
+    {#each steps as text, i}
+        <div class="step" class:active={currentStep === i}> <!-- 4. Dynamically applies the active class -->
+          <div class="step-content">
+            <p>{text}</p> 
+          </div>
+        </div>
+    {/each}
+</Scrolly>
+</div>
+<div class="current_step">
+  Current Scroll Step: {currentStep}
+</div>
+</section>
 
-  <p class="read-the-docs">
-    Click on the Vite and Svelte logos to learn more
-  </p>
 </main>
 
 <style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
-  }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
-  .read-the-docs {
-    color: #888;
-  }
+section{
+  position: relative;
+}
+.sticky{
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.steps{
+  position: relative;
+  z-index: 2;
+}
+.step{
+  height: 90vh;
+  opacity: 0.3;
+  transition: opacity 300ms ease;
+  display: flex;
+  justify-content: center;
+  place-content: center;
+}
+.step-content{
+  background: grey;
+  border: 1px solid;
+  padding: 0.75rem 1rem;
+  border-radius: 3px;
+  width: 60vw;
+}
+.step.active{
+  opacity: 1;
+}
+.current_step{
+  position:fixed;
+  bottom: 0;
+  right:0;
+  padding:2;
+}
 </style>
