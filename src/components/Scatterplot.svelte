@@ -2,13 +2,17 @@
     import AxisX from "./AxisX.svelte";
     import AxisY from "./AxisY.svelte";
     import Tooltip from "./Tooltip.svelte";
-    import data from "../data/dummy_data.json";
-  
+    import generalData from "../data/testData_mainPlot.json";
+    import { fly } from "svelte/transition";
+    import { onMount } from "svelte";
     import { scaleLinear } from "d3-scale";
     import { max } from "d3-array";
+
   
     $: width = 600;
     $: height = 800;
+
+    $: data = generalData;
   
     const margin = { top:0, right: 0, bottom: 0, left: 0 };
     const radius = 10;
@@ -25,8 +29,28 @@
       .range([innerHeight, 0]);
   
     let hoveredData;
-  
-    import { fly } from "svelte/transition";
+    let clickedGroup;
+    let currentStatus = "generalViz";
+
+    const loadGroupJSON = (groupID) => {
+    const url = "./src/data/testData_group"+ groupID + ".json";
+    return fetch(url)
+      .then(response => response.json())
+      .catch(error => console.error(error));
+    };
+
+    function handleCircleClick(groupID) {
+      if (currentStatus == "generalViz"){
+        loadGroupJSON(groupID).then(json => {data = json});
+        currentStatus = "groupViz";
+      }
+      else{
+        data = generalData;
+        currentStatus = "generalViz";
+      }
+
+    }
+
   </script>
 
   <div
@@ -68,13 +92,19 @@
               opacity={hoveredData ? (hoveredData == d ? 1 : 0.45) : d.diversity * 0.1}
               on:mouseover={() => hoveredData = d}
               on:focus={() => hoveredData = d}
+              on:click={() => handleCircleClick(d.groupID)}
+              on:keydown={(event) => {
+                if (event.key === 'Enter') {
+                  handleCircleClick(d.groupID);
+                }
+              }}
               tabindex="0"
             />
           {/each}
       </g>
     </svg>
     {#if hoveredData}
-      <Tooltip {xScale} {yScale} {width} data={hoveredData} />
+      <Tooltip {xScale} {yScale} {width} data={hoveredData} {currentStatus} />
     {/if}
   </div>
   

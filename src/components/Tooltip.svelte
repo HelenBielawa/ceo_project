@@ -1,11 +1,13 @@
 <script>
+    import groupData from "../data/testData_groupInfo.json";
     export let data;
     export let xScale;
     export let yScale;
     export let width;
+    export let currentStatus;
   
-    $: x = xScale(data.average_daynum);
-    $: y = yScale(data.count);
+    $: x = xScale(data.rightness);
+    $: y = yScale(data.independence);
   
     let tooltipWidth;
   
@@ -15,6 +17,8 @@
     $: xPosition =
       x + tooltipWidth > width ? x - tooltipWidth - xNudge : x + xNudge;
     $: yPosition = y + yNudge;
+
+    let groupInfo = groupData.filter(g => g.groupID == data.groupID)[0]
   
     import { fly } from "svelte/transition";
   </script>
@@ -25,8 +29,17 @@
     style="position: absolute; top: {yPosition}px; left: {xPosition}px"
     bind:clientWidth={tooltipWidth}
   >
-    <h1>gender: {data.gender}</h1>
-    <h2>education: {data.education}</h2>
+    {#if currentStatus == "groupViz"}
+      Click on the circle to get back to the main chart.
+    {/if}
+    {#if currentStatus == "generalViz"}
+      <h1>About this group:</h1>
+      <h2>area: {groupInfo.area}</h2>
+      <h2>age: {groupInfo.age_group}</h2>
+      <h2>language: {groupInfo.language}</h2>
+      <p>Click on the circle to see the positions of all the {groupInfo.count} individuals in this group.</p>
+    {/if}
+
   </div>
   
   <style>
