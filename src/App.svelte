@@ -1,15 +1,18 @@
 <script>
 import Scrolly from "./helpers/Scrolly.svelte";
+import Scatterplot from "./components/Scatterplot.svelte";
 let currentStep;
-const steps = ["initial plot", "intro to quiz", "political quiz", "stats quiz", "end"];
+const steps = ["Catalans are scattered!", "Explaining the groups...", "highlighting some results...",
+              "WHERE DO YOU STAND?", "political quiz", "see the results in the plot!",
+              "statistical questions quiz", "compare reality to statistical twin", "end"];
 </script>
 
 <main>
 <section>
   <div class="sticky">
 
-  <!--put the main chart here-->
-    
+  <Scatterplot/>
+
 </div>
 <div class="steps">
 
@@ -45,11 +48,12 @@ section{
 }
 .step{
   height: 90vh;
+  width: 30vw;
   opacity: 0.3;
   transition: opacity 300ms ease;
   display: flex;
   justify-content: center;
-  place-content: center;
+  place-items: center;
 }
 .step-content{
   background: grey;
@@ -57,9 +61,10 @@ section{
   padding: 0.75rem 1rem;
   border-radius: 3px;
   width: 60vw;
+  color: black;
 }
 .step.active{
-  opacity: 1;
+  opacity: 0.6;
 }
 .current_step{
   position:fixed;

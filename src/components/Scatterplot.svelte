@@ -1,0 +1,123 @@
+<script>
+    import AxisX from "./AxisX.svelte";
+    import AxisY from "./AxisY.svelte";
+    import Tooltip from "./Tooltip.svelte";
+    import data from "../data/dummy_data.json";
+  
+    import { scaleLinear } from "d3-scale";
+    import { max } from "d3-array";
+  
+    $: width = 600;
+    $: height = 800;
+  
+    const margin = { top:0, right: 0, bottom: 0, left: 0 };
+    const radius = 10;
+  
+    $: innerWidth = width - margin.left - margin.right;
+    $: innerHeight = height - margin.top - margin.bottom;
+  
+    $: xScale = scaleLinear()
+      .domain([0, 10])
+      .range([0, innerWidth]);
+  
+    $: yScale = scaleLinear()
+      .domain([0, 10])
+      .range([innerHeight, 0]);
+  
+    let hoveredData;
+  
+    import { fly } from "svelte/transition";
+  </script>
+
+  <div
+    class="chart-container"
+    bind:clientWidth={width}
+    bind:clientHeight={height}
+ 
+  >
+    <svg {width} {height}
+    on:mouseleave={() => hoveredData = null}>
+    <g class="background">
+      <rect x="0" y="0" {width} {height} fill="none" />
+      <defs>
+        <radialGradient id="background-gradient" x1="0%" y1="0%" x2="200%" y2="200%">
+          <stop offset="0%" stop-color="#FFFFFF" stop-opacity="1" />
+          <stop offset="35%" stop-color="#FFFFFF" stop-opacity="1" />
+          <stop offset="80%" stop-color="#FFFFFF" stop-opacity="0.6" />
+          <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.3" />
+        </radialGradient>
+        <mask id="chart-mask">
+          <rect x="0" y="0" {width} {height} fill="url(#background-gradient)" />
+        </mask>
+      </defs>
+      <rect x="0" y="0" {width} {height} fill="url(#background-gradient)" mask="url(#chart-mask)" />
+    </g>
+
+      <g class="inner-chart" transform="translate({margin.left}, {margin.top})">
+          <AxisY width={innerWidth} {yScale} {xScale} {height}/>
+          <AxisX height={innerHeight} width={innerWidth} {xScale} {yScale} />
+          {#each data.sort((a, b) => a.rightness - b.rightness) as d, index}
+            <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+            <circle 
+              in:fly={{ x: -10, opacity: 0, duration: 500 }}
+              cx={xScale(d.rightness)}
+              cy={yScale(d.independence)}
+              fill="black"
+              stroke="black"
+              r={hoveredData == d ? radius * 2 : radius}
+              opacity={hoveredData ? (hoveredData == d ? 1 : 0.45) : d.diversity * 0.1}
+              on:mouseover={() => hoveredData = d}
+              on:focus={() => hoveredData = d}
+              tabindex="0"
+            />
+          {/each}
+      </g>
+    </svg>
+    {#if hoveredData}
+      <Tooltip {xScale} {yScale} {width} data={hoveredData} />
+    {/if}
+  </div>
+  
+  <style>
+    :global(.tick text, .axis-title) {
+      font-weight: 400; /* How thick our text is */
+      font-size: 12px; /* How big our text is */
+      fill: hsla(212, 10%, 53%, 1); /* The color of our text */
+    }
+  
+    .chart-container {
+      width: 100vw;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background-image: conic-gradient(#2E5077 45deg,
+                                        #4DA1A9 135deg,
+                                        #D88C9A 225deg,
+                                        #92140C 315deg);
+      /*
+               background-image: conic-gradient(#035E7B 45deg,
+                                        #49DCB1  135deg,
+                                        #F29E4C 225deg,
+                                        #EF3054 315deg);   
+      background-image: conic-gradient(#2E5077 0deg, #2E5077 90deg,
+                                        #4DA1A9 90deg,#4DA1A9 180deg,
+                                        #D88C9A 180deg, #D88C9A 270deg,
+                                        #92140C 270deg, #92140C 0deg);*/
+   }
+
+
+    circle {
+      transition: r 300ms ease, opacity 500ms ease;
+      cursor: pointer;
+    }
+  
+    h1 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.35rem;
+      font-weight: 600;
+    }
+  </style>
+  
