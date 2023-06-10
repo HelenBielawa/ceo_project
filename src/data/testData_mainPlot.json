@@ -6,31 +6,31 @@
         "diversity": 3
     },
     {
-        "groupID": 1,
+        "groupID": 2,
         "independence": 4,
         "rightness": 3,
         "diversity": 6
     },
     {
-        "groupID": 1,
+        "groupID": 3,
         "independence": 5,
         "rightness": 6,
         "diversity": 9
     },
     {
-        "groupID": 1,
+        "groupID": 4,
         "independence": 2,
         "rightness": 7,
         "diversity":5
     },
     {
-        "groupID": 1,
+        "groupID": 5,
         "independence": 6,
         "rightness": 3,
         "diversity":2
     },
     {
-        "groupID": 1,
+        "groupID": 6,
         "independence": 4,
         "rightness": 4,
         "diversity": 10

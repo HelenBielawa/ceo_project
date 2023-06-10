@@ -12,5 +12,33 @@
         "age_group": "30-50",
         "language": "international",
         "count": 500000
+    },
+    {
+        "groupID": 3,
+        "area": "rural",
+        "age_group": "30-50",
+        "language": "international",
+        "count": 500000
+    },
+    {
+        "groupID": 4,
+        "area": "rural",
+        "age_group": "30-50",
+        "language": "international",
+        "count": 500000
+    },
+    {
+        "groupID": 5,
+        "area": "rural",
+        "age_group": "30-50",
+        "language": "international",
+        "count": 500000
+    },
+    {
+        "groupID": 6,
+        "area": "rural",
+        "age_group": "30-50",
+        "language": "international",
+        "count": 500000
     }
 ]
