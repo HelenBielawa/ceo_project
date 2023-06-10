@@ -34,6 +34,7 @@
     {#if currentStatus == "generalViz"}
       <h1>About this group:</h1>
       <p>
+        group ID: {groupInfo.groupID}<br>
       area: {groupInfo.area}<br>
       age: {groupInfo.age_group}<br>
       language: {groupInfo.language}<br>

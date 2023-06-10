@@ -51,12 +51,15 @@
     }
 
     function getTransitionParams(d){
+
       let destinationX = xScale(d.rightness);
       let destinationY = yScale(d.independence);
+
       let originX = xScale(generalData.filter(d => d.groupID == d.groupID)[0].rightness);
       let originY = yScale(generalData.filter(d => d.groupID == d.groupID)[0].independence);
-      const deltaX = destinationX > originX ? destinationX - originX : - (originX - destinationX);
-      const deltaY = destinationY > originY ? -(destinationY - originY) : destinationY - originY;
+
+      const deltaX = destinationX > originX ? -(destinationX - originX) :  (originX - destinationX);
+      const deltaY = destinationY > originY ? (destinationY - originY) : -(destinationY - originY);
 
       return {
         x: deltaX,
@@ -81,13 +84,13 @@
           {#each data.sort((a, b) => a.rightness - b.rightness) as d, index}
             <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
             <circle 
-              in:fly={currentStatus == "generalViz" ? { x: -100, opacity: 50, duration: 500 }
+              transition:fly={currentStatus == "generalViz" ? { x: -100, opacity: 50, duration: 500 }
                       : {...getTransitionParams(d)}}
               cx={xScale(d.rightness)}
               cy={yScale(d.independence)}
               fill="black"
               stroke="black"
-              r={hoveredData == d ? radius * 2 : radius}
+              r={hoveredData == d ? radius * 1.5 : radius}
               opacity={hoveredData ? (hoveredData == d ? 1 : 0.45) : d.diversity * 0.1}
               on:mouseover={() => hoveredData = d}
               on:focus={() => hoveredData = d}
