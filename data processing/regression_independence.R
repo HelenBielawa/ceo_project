@@ -3,7 +3,7 @@ library(tidyr)
 library(readr)
 library(forcats)
 #loading the data
-barometer = read_csv('barometer.csv')
+barometer = read_csv('data processing/barometer.csv')
 
 #translating and selecting relevant one, deleting some that have been asked only very very few times
 barometer = barometer %>%
@@ -21,7 +21,10 @@ barometer = barometer %>%
     EQUAL_INCOME = ACTITUD_INGRESSOS,
     TEACH_AUTH_OBEY = ACTITUD_AUTORITAT,
     OBEY_LAW = ACTITUD_OBEIR,
-    ECO_OVER_ENV = ACTITUD_MEDIAMBIENT) %>%
+    ECO_OVER_ENV = ACTITUD_MEDIAMBIENT,
+    TRUST_CAT_POL = CONFI_POL_CAT,
+    TRUST_ESP_POL = CONFI_POL_ESP,
+    SATIS_DEMOCRACY = SATIS_DEMOCRACIA) %>%
     mutate(RIGHTNESS = fct_recode(IDEOL_0_10,
                        "No answer" = 'No contesta',
                        "I don't know" = 'No ho sap',
@@ -74,18 +77,38 @@ m1 = lm(INDEP~SEX, data = barometer, na.action=na.exclude)
 
 
 #2. How relevant is nationality?
+m2 = lm(INDEP~NAT, data=barometer, na.action=na.exclude)
+
 
 #3. How relevant is age?
+m3 = lm(INDEP~AGE_GROUP, data=barometer, na.action=na.exclude)
 
 #4. How relevant is type of area?
+## 'Habitat' doesn't exist
+m4 = lm(INDEP~AREA_TYPE, data=barometer, na.action=na.exclude)
 
 #5. How relevant is place of birth?
-
+m4 = lm(INDEP~BIRTH_PLACE, data=barometer, na.action=na.exclude)
 ...
 
 #CONTINUING WITH THE POLITICAL QUESTIONS
 
-#1. How relevant is trust in government?
+#1. How relevant is trust in Catalan politicians?
+m5 = lm(INDEP~TRUST_CAT_POL, data=barometer, na.action=na.exclude)
+
+#2. How relevant is trust in Spanish politicians?
+m6 = lm(INDEP~TRUST_ESP_POL, data=barometer, na.action=na.exclude)
+
+#3. How relevant is the support for a referendum on independence?
+m7 = lm(INDEP~REFERENDUM, data=barometer, na.action=na.exclude)
+
+#4. How relevant is the level of satisfaction with democracy?
+m8 = lm(INDEP~SATIS_DEMOCRACY, data=barometer, na.action=na.exclude)
+
+#4. How relevant is the preferred form of state?
+m9 = lm(INDEP~STATE_FORM, data=barometer, na.action=na.exclude)
+
+
 ...
 
 
