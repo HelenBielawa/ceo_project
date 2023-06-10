@@ -1,5 +1,5 @@
 library(tidyverse)
-barometer = read_csv('src/data processing/barometer.csv')
+barometer = read_csv('data processing/barometer.csv')
 barometer = barometer %>%
   mutate(
     INDEP = fct_recode(RELACIONS_CAT_ESP,
