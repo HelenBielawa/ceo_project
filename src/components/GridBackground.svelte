@@ -15,20 +15,21 @@
   
   <style>
     .cell {
-      display: inline-block;
-      width: 20vw ;
-      height: 20vh;
-      padding: 0;
+        display: inline-block;
+        width: 20%;
+        height: 20vh;
     }
   
     .cellwrapper {
     position: fixed;
     top: 0;
     left: 0;
+    right: 0;
     display: flex;
     flex-wrap: wrap;
     margin: 0;
     white-space: nowrap;
+    width: 100%
   }
   </style>
   

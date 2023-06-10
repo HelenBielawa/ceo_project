@@ -6,7 +6,6 @@
     import { fly } from "svelte/transition";
     import { onMount } from "svelte";
     import { scaleLinear } from "d3-scale";
-    import { max } from "d3-array";
     
     $: width = 600;
     $: height = 800;
@@ -118,7 +117,7 @@
     }
   
     .chart-container {
-      width: 100vw;
+      width: 100%;
       height: 100vh;
       position: fixed;
       top: 0;
