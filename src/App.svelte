@@ -11,14 +11,9 @@ const steps = [ {type:"text",text:"Catalans are scattered!"},
 /*               "WHERE DO YOU STAND?", "political quiz", 
               "see the results in the plot!",
               "statistical questions quiz", "compare reality to statistical twin", "end"];
- */$: answer = [];
+ */
+$: answer = [];
 
-$: change = (obj) => {
-  console.log("change App")
-  console.log(obj);
-  console.log(currentStep);
-  answer[currentStep] = obj.detail.value;  
-}
 </script>
 
 <main>
@@ -37,7 +32,7 @@ $: change = (obj) => {
             {#if step.type === "text"}
               <p>{step.text}</p>
             {:else if  step.type === "question"}
-              <Question text = {step.text} type = "Multiple" options = {step.options} answer = {answer[currentStep]} on:change = {change} />
+              <Question text = {step.text} type = "Multiple" options = {step.options} bind:answer = {answer[currentStep]}/>
             {/if}
           </div>
         </div>
