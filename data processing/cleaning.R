@@ -42,11 +42,11 @@ data = barometer %>%
     BORN_CATALONIA = as.integer(LLOC_NAIX == 'Catalunya'),
     BORN_ABROAD = as.integer(LLOC_NAIX %in% c('Fora d\'Espanya', 'Resta del món', 'Unió Europea')),
     RIGHT = as.integer(as.character(IDEOL_0_10)),
-    SELF_RULE = as.integer(fct_recode(RELACIONS_CAT_ESP,
-                            "2" = 'Un estat dins una Espanya federal',
-                            "3" = 'Un estat independent',
-                            "1" = 'Una comunitat autònoma d\'Espanya',
-                            "0" = 'Una regió d\'Espanya')),
+    SELF_RULE = as.integer(as.character(fct_recode(RELACIONS_CAT_ESP,
+                                                 "2" = 'Un estat dins una Espanya federal',
+                                                 "3" = 'Un estat independent',
+                                                 "1" = 'Una comunitat autònoma d\'Espanya',
+                                                 "0" = 'Una regió d\'Espanya'))),
     SELF_DETERM = as.numeric(DRET_DECIDIR),
     INTEREST_POL = as.numeric(INTERES_POL),
     CONFI_POL_CAT = as.numeric(CONFI_POL_CAT),
@@ -65,6 +65,7 @@ data = barometer %>%
 library(mice)
 
 #Imputing missing data
+set.seed(1)
 imp = mice(data, maxit = 0)
 imp = mice(data, method = imp$method, maxit = 5, m = 1, seed = 1)
 data_imp = complete(imp, 1)
@@ -73,36 +74,4 @@ round(100*(p0<-prop.table(table(data$RIGHT))), 2)
 round(100*(p1<-prop.table(table(data_imp$RIGHT))), 2)
 round(p1-p0, 6)
 
-glimpse(data_imp)
-# VARIABLES CAN BE SELECTED
-frm_indep = INDEP ~ CATALAN_ONLY + SPANISH_ONLY + SPAIN_ONLY + BORN_CATALONIA + BORN_ABROAD + 
-  SELF_RULE + SELF_DETERM + I(CONFI_POL_CAT-CONFI_POL_ESP)
-
-
-frm_right = RIGHT ~ ACTITUD_ECONOMIA + ACTITUD_IMPOSTOS + ACTITUD_INGRESSOS + 
-  ACTITUD_AUTORITAT + ACTITUD_RELIGIO + ACTITUD_OBEIR + ACTITUD_IMMIGRACIO + 
-  ACTITUD_MEDIAMBIENT
-
-m_indep.all = glm(frm_indep, data=data_imp, family = 'binomial')
-m_right.all = lm(frm_right, data=data_imp)
-
-#anova(m_indep.all, update(m_indep.all, .~.-SELF_DETERM), test = 'LRT')
-
-data_imp_pred = data_imp %>%
-  mutate(
-    INDEP.PRED = predict(m_indep.all, type = 'response'),
-    RIGHT.PRED = predict(m_right.all)
-  ) %>%
-  select(INDEP, RIGHT, INDEP.PRED, RIGHT.PRED) 
-
-data_imp_pred
-library(ggplot2)
-ggplot(data= sample_n(data_imp_pred, 1000)) +
-  geom_violin(aes(x = factor(INDEP), y = INDEP.PRED))
-
-ggplot(data= sample_n(data_imp_pred, 1000)) +
-  geom_point(aes(x = RIGHT, y = RIGHT.PRED)) +
-  scale_y_continuous(breaks = 0:10, limits = c(0,10)) +
-  scale_x_continuous(breaks = 0:10, limits = c(0,10)) +
-  geom_smooth(aes(x = RIGHT, y = RIGHT.PRED))
-
+save(data_imp, file = 'data processing/data_for_analysis.RData')
