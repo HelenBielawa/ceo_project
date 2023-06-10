@@ -1,10 +1,23 @@
 <script>
 import Scrolly from "./helpers/Scrolly.svelte";
 import Scatterplot from "./components/Scatterplot.svelte";
+import Question from "./components/Question.svelte";
 let currentStep;
-const steps = ["Catalans are scattered!", "Explaining the groups...", "highlighting some results...",
-              "WHERE DO YOU STAND?", "political quiz", "see the results in the plot!",
+const steps = [ {type:"text",text:"Catalans are scattered!"}, 
+                {type:"question", text:"Explaining the groups...", options:["Yes","No"]},
+                {type:"question", text: "Highlighting some results...", options:["Low", "Medium", "High"]}
+              ];
+/*               "WHERE DO YOU STAND?", "political quiz", 
+              "see the results in the plot!",
               "statistical questions quiz", "compare reality to statistical twin", "end"];
+ */$: answer = [];
+
+$: change = (obj) => {
+  console.log("change App")
+  console.log(obj);
+  console.log(currentStep);
+  answer[currentStep] = obj.detail.value;  
+}
 </script>
 
 <main>
@@ -17,17 +30,22 @@ const steps = ["Catalans are scattered!", "Explaining the groups...", "highlight
 <div class="steps">
 
   <Scrolly bind:value={currentStep}> <!-- 3. This is what updates value -->
-    {#each steps as text, i}
+    {#each steps as step, i}
         <div class="step" class:active={currentStep === i}> <!-- 4. Dynamically applies the active class -->
           <div class="step-content">
-            <p>{text}</p> 
+            {#if step.type === "text"}
+              <p>{step.text}</p>
+            {:else if  step.type === "question"}
+              <Question text = {step.text} type = "Multiple" options = {step.options} answer = {answer[currentStep]} on:change = {change} />
+            {/if}
           </div>
         </div>
     {/each}
 </Scrolly>
 </div>
 <div class="current_step">
-  Current Scroll Step: {currentStep}
+  <p>Current Scroll Step: {currentStep}</p>
+  <p>Current answer: {JSON.stringify(answer)}</p>
 </div>
 </section>
 
