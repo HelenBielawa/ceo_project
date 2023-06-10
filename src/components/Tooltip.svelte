@@ -19,7 +19,7 @@
       x + tooltipWidth > width ? x - tooltipWidth - xNudge : x + xNudge;
     $: yPosition = y + yNudge;
 
-    let groupInfo = groupData.filter(g => g.groupID == data.groupID)[0]
+    $:groupInfo = groupData.find(g => g.groupID == data.groupID)
     </script>
   
   <div

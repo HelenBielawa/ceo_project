@@ -114,9 +114,9 @@
               cx={xScale(d.rightness)}
               cy={yScale(d.independence)}
               fill="red"
-              stroke="black"
-              r={hoveredData == d ? radius * 1.5 : radius}
-              opacity = 1
+              stroke="none"
+              r = 5
+              opacity = 0.5
             />
           {/each}
         {/if}
