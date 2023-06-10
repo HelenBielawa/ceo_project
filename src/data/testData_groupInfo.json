@@ -1,0 +1,16 @@
+[
+    {
+        "groupID": 1,
+        "area": "urban",
+        "age_group": "20-40",
+        "language": "Spanish",
+        "count": 200000
+    },
+    {
+        "groupID": 2,
+        "area": "rural",
+        "age_group": "30-50",
+        "language": "international",
+        "count": 500000
+    }
+]
