@@ -1,6 +1,6 @@
 #Install CEO package
 
-install.packages("CEOdata")
+# install.packages("CEOdata")
 library(CEOdata)
 
 #Load barometer raw data
