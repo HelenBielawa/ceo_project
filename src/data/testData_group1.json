@@ -12,7 +12,7 @@
         "diversity": 0
     },
     {
-        "groupIDID": 1,
+        "groupID": 1,
         "rightness" : 6,
         "independence": 3,
         "diversity": 0
@@ -78,19 +78,19 @@
         "diversity": 0
     },
     {
-        "groupID": 1,
+        "groupID": 2,
         "rightness" : 4,
         "independence":8,
         "diversity": 0
     },
     {
-        "groupID": 1,
+        "groupID": 2,
         "rightness" : 0,
         "independence": 3,
         "diversity": 0
     },
     {
-        "groupID": 1,
+        "groupID": 2,
         "rightness" : 2,
         "independence": 2,
         "diversity": 0

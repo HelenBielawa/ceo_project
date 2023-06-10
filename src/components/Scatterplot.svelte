@@ -3,6 +3,7 @@
     import AxisY from "./AxisY.svelte";
     import Tooltip from "./Tooltip.svelte";
     import generalData from "../data/testData_mainPlot.json";
+    import groupData from "../data/testData_group1.json";
     import { fly } from "svelte/transition";
     import { onMount } from "svelte";
     import { scaleLinear } from "d3-scale";
@@ -11,6 +12,7 @@
     $: height = 800;
 
     $: data = generalData;
+    $: grdata  = [];
   
     const margin = { top:0, right: 0, bottom: 0, left: 0 };
     const radius = 10;
@@ -40,7 +42,9 @@
     function handleCircleClick(groupID) {
       if (currentStatus == "generalViz"){
         currentStatus = "groupViz";
-        loadGroupJSON(groupID).then(json => {data = json});
+        console.log("click "+groupID)
+        grdata = groupData.filter(d => d.groupID === groupID);
+        console.log(grdata);
       }
       else{
         currentStatus = "generalViz";
@@ -54,11 +58,11 @@
       let destinationX = xScale(d.rightness);
       let destinationY = yScale(d.independence);
 
-      let originX = xScale(generalData.filter(d => d.groupID == d.groupID)[0].rightness);
-      let originY = yScale(generalData.filter(d => d.groupID == d.groupID)[0].independence);
+      let originX = xScale(generalData.filter(item => item.groupID == d.groupID)[0].rightness);
+      let originY = yScale(generalData.filter(item => item.groupID == d.groupID)[0].independence);
 
-      const deltaX = destinationX > originX ? -(destinationX - originX) :  (originX - destinationX);
-      const deltaY = destinationY > originY ? (destinationY - originY) : -(destinationY - originY);
+      const deltaX = -destinationX + originX;
+      const deltaY = -destinationY + originY;
 
       return {
         x: deltaX,
@@ -83,7 +87,7 @@
           {#each data.sort((a, b) => a.rightness - b.rightness) as d, index}
             <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
             <circle 
-              transition:fly={currentStatus == "generalViz" ? { x: -100, opacity: 50, duration: 500 }
+              transition:fly={currentStatus == "groupViz" ? { x: -100, opacity: 50, duration: 500 }
                       : {...getTransitionParams(d)}}
               cx={xScale(d.rightness)}
               cy={yScale(d.independence)}
@@ -102,6 +106,20 @@
               tabindex="0"
             />
           {/each}
+        {#if currentStatus === "groupViz"}
+          {#each grdata as d, index}
+            <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+            <circle 
+              in:fly={{...getTransitionParams(d)}}
+              cx={xScale(d.rightness)}
+              cy={yScale(d.independence)}
+              fill="red"
+              stroke="black"
+              r={hoveredData == d ? radius * 1.5 : radius}
+              opacity = 1
+            />
+          {/each}
+        {/if}
       </g>
     </svg>
     {#if hoveredData}
