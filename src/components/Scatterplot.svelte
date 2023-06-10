@@ -74,21 +74,6 @@
   >
     <svg {width} {height}
     on:mouseleave={() => hoveredData = null}>
-    <g class="background">
-      <rect x="0" y="0" {width} {height} fill="none" />
-      <defs>
-        <radialGradient id="background-gradient" x1="0%" y1="0%" x2="200%" y2="200%">
-          <stop offset="0%" stop-color="#FFFFFF" stop-opacity="1" />
-          <stop offset="35%" stop-color="#FFFFFF" stop-opacity="1" />
-          <stop offset="80%" stop-color="#FFFFFF" stop-opacity="0.6" />
-          <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.3" />
-        </radialGradient>
-        <mask id="chart-mask">
-          <rect x="0" y="0" {width} {height} fill="url(#background-gradient)" />
-        </mask>
-      </defs>
-      <rect x="0" y="0" {width} {height} fill="url(#background-gradient)" mask="url(#chart-mask)" />
-    </g>
 
       <g class="inner-chart" transform="translate({margin.left}, {margin.top})">
           <AxisY width={innerWidth} {yScale} {xScale} {height}/>
@@ -137,10 +122,6 @@
       left: 0;
       bottom: 0;
       right: 0;
-      background-image: conic-gradient(#2E5077 45deg,
-                                        #4DA1A9 135deg,
-                                        #D88C9A 225deg,
-                                        #92140C 315deg);
    }
 
 

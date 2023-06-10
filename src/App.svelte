@@ -1,5 +1,6 @@
 <script>
 import Scrolly from "./helpers/Scrolly.svelte";
+import GridBackground from "./components/GridBackground.svelte";
 import Scatterplot from "./components/Scatterplot.svelte";
 import Question from "./components/Question.svelte";
 let currentStep;
@@ -23,7 +24,7 @@ $: change = (obj) => {
 <main>
 <section>
   <div class="sticky">
-
+  <GridBackground/>
   <Scatterplot/>
 
 </div>
