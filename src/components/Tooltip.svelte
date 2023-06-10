@@ -34,10 +34,11 @@
     {/if}
     {#if currentStatus == "generalViz"}
       <h1>About this group:</h1>
-      <h2>area: {groupInfo.area}</h2>
-      <h2>age: {groupInfo.age_group}</h2>
-      <h2>language: {groupInfo.language}</h2>
-      <p>Click on the circle to see the positions of all the {groupInfo.count} individuals in this group.</p>
+      <p>
+      area: {groupInfo.area}<br>
+      age: {groupInfo.age_group}<br>
+      language: {groupInfo.language}<br>
+      Click on the circle to see the positions of all the {groupInfo.count} individuals in this group.</p>
     {/if}
 
   </div>
@@ -51,14 +52,7 @@
       pointer-events: none;
       transition: top 300ms ease, left 300ms ease;
     }
-  
-    h1,
-    h2 {
-      margin: 0;
-      padding: 0;
-      font-weight: 300;
-    }
-  
+   
     h1 {
       font-size: 1rem;
       font-weight: 400;
@@ -70,16 +64,9 @@
       font-size: 0.8rem;
       text-transform: uppercase;
     }
-  
-    span {
-      background: #dda0dd50;
-      font-size: 80%;
-      margin-left: 2px;
-      padding: 2px 4px;
-      display: inline-block;
-      vertical-align: bottom;
-      border-radius: 3px;
-      color: rgba(0, 0, 0, 0.7);
+
+    p{
+      text-align: left;
     }
   </style>
   
