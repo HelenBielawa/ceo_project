@@ -5,6 +5,7 @@
     export let yScale;
     export let width;
     export let currentStatus;
+    import { fly } from "svelte/transition";
   
     $: x = xScale(data.rightness);
     $: y = yScale(data.independence);
@@ -19,9 +20,7 @@
     $: yPosition = y + yNudge;
 
     let groupInfo = groupData.filter(g => g.groupID == data.groupID)[0]
-  
-    import { fly } from "svelte/transition";
-  </script>
+    </script>
   
   <div
     class="tooltip"

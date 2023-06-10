@@ -7,8 +7,7 @@
     import { onMount } from "svelte";
     import { scaleLinear } from "d3-scale";
     import { max } from "d3-array";
-
-  
+    
     $: width = 600;
     $: height = 800;
 
@@ -41,14 +40,29 @@
 
     function handleCircleClick(groupID) {
       if (currentStatus == "generalViz"){
-        loadGroupJSON(groupID).then(json => {data = json});
         currentStatus = "groupViz";
+        loadGroupJSON(groupID).then(json => {data = json});
       }
       else{
-        data = generalData;
         currentStatus = "generalViz";
+        data = generalData;
       }
 
+    }
+
+    function getTransitionParams(d){
+      let destinationX = xScale(d.rightness);
+      let destinationY = yScale(d.independence);
+      let originX = xScale(generalData.filter(d => d.groupID == d.groupID)[0].rightness);
+      let originY = yScale(generalData.filter(d => d.groupID == d.groupID)[0].independence);
+      const deltaX = destinationX > originX ? destinationX - originX : - (originX - destinationX);
+      const deltaY = destinationY > originY ? -(destinationY - originY) : destinationY - originY;
+
+      return {
+        x: deltaX,
+        y: deltaY,
+        duration: 1000
+      };
     }
 
   </script>
@@ -57,7 +71,6 @@
     class="chart-container"
     bind:clientWidth={width}
     bind:clientHeight={height}
- 
   >
     <svg {width} {height}
     on:mouseleave={() => hoveredData = null}>
@@ -83,7 +96,8 @@
           {#each data.sort((a, b) => a.rightness - b.rightness) as d, index}
             <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
             <circle 
-              in:fly={{ x: -10, opacity: 0, duration: 500 }}
+              in:fly={currentStatus == "generalViz" ? { x: -100, opacity: 50, duration: 500 }
+                      : {...getTransitionParams(d)}}
               cx={xScale(d.rightness)}
               cy={yScale(d.independence)}
               fill="black"
@@ -127,20 +141,11 @@
                                         #4DA1A9 135deg,
                                         #D88C9A 225deg,
                                         #92140C 315deg);
-      /*
-               background-image: conic-gradient(#035E7B 45deg,
-                                        #49DCB1  135deg,
-                                        #F29E4C 225deg,
-                                        #EF3054 315deg);   
-      background-image: conic-gradient(#2E5077 0deg, #2E5077 90deg,
-                                        #4DA1A9 90deg,#4DA1A9 180deg,
-                                        #D88C9A 180deg, #D88C9A 270deg,
-                                        #92140C 270deg, #92140C 0deg);*/
    }
 
 
     circle {
-      transition: r 300ms ease, opacity 500ms ease;
+      /*transition: r 300ms ease, opacity 500ms ease;*/
       cursor: pointer;
     }
   
