@@ -7,7 +7,7 @@ barometer0 = read_csv('data processing/barometer.csv')
 names(barometer0)
 select = dplyr::select
 barometer = barometer0 %>%
-  select(- `...1`, -BOP_NUM, -MES, -DIA, -PROVINCIA, -HABITAT, 
+  select(-BOP_NUM, -MES, -DIA, -PROVINCIA, -HABITAT, 
          -MUNICIPI, -COMARCA, -GENERE, -EDAT_CEO, -EDAT_GR) %>%
   mutate_if(is.character, function(x) fct_recode(x, 
                                               NULL = 'No contesta',
@@ -34,6 +34,8 @@ glimpse(barometer)
 count(barometer, LLOC_NAIX)
 data = barometer %>%
   transmute(
+    CATALAN_ONLY = as.integer(LLENGUA_IDENTIFICACIO == 'Català (valencià / balear)'),
+    SPANISH_ONLY = as.integer(LLENGUA_IDENTIFICACIO == 'Castellà'),
     SPAIN_ONLY = as.integer(CIUTADANIA == 'Sí, tinc la ciutadania (espanyola)'),
     FEMALE = as.integer(SEXE == 'Femení'),
     AGE = EDAT,
@@ -59,8 +61,10 @@ data = barometer %>%
     ACTITUD_MEDIAMBIENT = as.numeric(as.character(ACTITUD_MEDIAMBIENT)),
     INDEP = as.numeric(ACTITUD_INDEPENDENCIA == 'Sí')
   )
-
+#install.packages("mice")
 library(mice)
+
+#Imputing missing data
 imp = mice(data, maxit = 0)
 imp = mice(data, method = imp$method, maxit = 5, m = 1, seed = 1)
 data_imp = complete(imp, 1)
@@ -71,23 +75,18 @@ round(p1-p0, 6)
 
 glimpse(data_imp)
 # VARIABLES CAN BE SELECTED
-frm_indep = INDEP ~ SPAIN_ONLY + FEMALE + AGE + BORN_CATALONIA + BORN_ABROAD + 
-  RIGHT + SELF_RULE + SELF_DETERM + INTEREST_POL + CONFI_POL_CAT + 
-  CONFI_POL_ESP + ACTITUD_ECONOMIA + ACTITUD_IMPOSTOS + ACTITUD_INGRESSOS + 
-  ACTITUD_AUTORITAT + ACTITUD_RELIGIO + ACTITUD_OBEIR + ACTITUD_IMMIGRACIO + 
-  ACTITUD_MEDIAMBIENT
+frm_indep = INDEP ~ CATALAN_ONLY + SPANISH_ONLY + SPAIN_ONLY + BORN_CATALONIA + BORN_ABROAD + 
+  SELF_RULE + SELF_DETERM + I(CONFI_POL_CAT-CONFI_POL_ESP)
 
-frm_right = INDEP ~ SPAIN_ONLY + FEMALE + AGE + BORN_CATALONIA + BORN_ABROAD + 
-  RIGHT + SELF_RULE + SELF_DETERM + INTEREST_POL + CONFI_POL_CAT + 
-  CONFI_POL_ESP + ACTITUD_ECONOMIA + ACTITUD_IMPOSTOS + ACTITUD_INGRESSOS + 
+
+frm_right = RIGHT ~ ACTITUD_ECONOMIA + ACTITUD_IMPOSTOS + ACTITUD_INGRESSOS + 
   ACTITUD_AUTORITAT + ACTITUD_RELIGIO + ACTITUD_OBEIR + ACTITUD_IMMIGRACIO + 
   ACTITUD_MEDIAMBIENT
 
 m_indep.all = glm(frm_indep, data=data_imp, family = 'binomial')
 m_right.all = lm(frm_right, data=data_imp)
 
-anova(m_indep.all, update(m_indep.all, .~.-SELF_DETERM), test = 'LRT')
-anova(m_right.all, update(m_right.all, .~.-SELF_DETERM), test = 'LRT')
+#anova(m_indep.all, update(m_indep.all, .~.-SELF_DETERM), test = 'LRT')
 
 data_imp_pred = data_imp %>%
   mutate(
@@ -106,3 +105,4 @@ ggplot(data= sample_n(data_imp_pred, 1000)) +
   scale_y_continuous(breaks = 0:10, limits = c(0,10)) +
   scale_x_continuous(breaks = 0:10, limits = c(0,10)) +
   geom_smooth(aes(x = RIGHT, y = RIGHT.PRED))
+
