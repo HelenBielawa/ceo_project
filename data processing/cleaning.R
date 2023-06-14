@@ -7,9 +7,10 @@ barometer0 = read_csv('data processing/barometer.csv')
 names(barometer0)
 select = dplyr::select
 barometer = barometer0 %>%
-  select(-BOP_NUM, -MES, -DIA, -PROVINCIA, -HABITAT, 
+  select(-BOP_NUM, -MES, -DIA, 
          -MUNICIPI, -COMARCA, -GENERE, -EDAT_CEO, -EDAT_GR) %>%
-  mutate_if(is.character, function(x) fct_recode(x, 
+  mutate_if(is.character, function(x) fct_recode(x,
+                                          
                                               NULL = 'No contesta',
                                               NULL = 'No ho sap',
                                               "3" = "Molt",
@@ -47,6 +48,24 @@ data = barometer %>%
                                                  "3" = 'Un estat independent',
                                                  "1" = 'Una comunitat autònoma d\'Espanya',
                                                  "0" = 'Una regió d\'Espanya'))),
+    PROVINCE = as.integer(as.character(fct_recode(PROVINCIA,
+                                                   "0" = 'Barcelona',
+                                                   "1" = 'Girona',
+                                                   "2" = 'Lleida',
+                                                   "3" = 'Tarragona'))),
+    MUNICIPALITY = as.integer(as.character(fct_recode(HABITAT,
+                                                   "0" = '<2.000 habitants',
+                                                   "0" = '2.001-10.000 habitants',
+                                                   "1" = '10.001-50.000 habitants',
+                                                   "2" = '50.001-150.000 habitants',
+                                                   "3" = '150.001-1.000.000 habitants',
+                                                   "4" = '>1.000.000 habitants'))),
+    LANGUAGE = as.integer(as.character(fct_recode(LLENGUA_IDENTIFICACIO,
+                                                      "0" = 'Altres llengües o altres combinacions',
+                                                      "0" = 'Aranès',
+                                                      "0" = 'Totes dues igual: català (valencià / balear) i castellà',
+                                                      "1" = 'Català (valencià / balear)',
+                                                      "2" = 'Castellà'))),
     SELF_DETERM = as.numeric(DRET_DECIDIR),
     INTEREST_POL = as.numeric(INTERES_POL),
     CONFI_POL_CAT = as.numeric(CONFI_POL_CAT),
@@ -67,7 +86,7 @@ library(mice)
 #Imputing missing data
 set.seed(1)
 imp = mice(data, maxit = 0)
-imp = mice(data, method = imp$method, maxit = 5, m = 1, seed = 1)
+imp = mice(data, method = imp$method, maxit = 50, m = 1, seed = 1)
 data_imp = complete(imp, 1)
 
 round(100*(p0<-prop.table(table(data$RIGHT))), 2)

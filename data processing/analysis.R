@@ -25,7 +25,7 @@ data_imp_pred = data_imp %>%
     INDEP.PRED = predict(m_indep.all, type = 'response'),
     RIGHT.PRED = predict(m_right.all)
   ) %>%
-  select(FEMALE, AGE, INDEP, RIGHT, INDEP.PRED, RIGHT.PRED)
+  select(AGE, INDEP, RIGHT, INDEP.PRED, RIGHT.PRED, PROVINCE, MUNICIPALITY, LANGUAGE)
 
 # Define age range groups
 data_imp_pred <- data_imp_pred %>%
@@ -38,9 +38,12 @@ data_imp_pred <- data_imp_pred %>%
 
 # Group by gender and age range and calculate cluster means
 clustered_data <- data_imp_pred %>%
-  group_by(FEMALE, AGE_RANGE) %>%
+  group_by(AGE_RANGE, PROVINCE, MUNICIPALITY, LANGUAGE) %>%
   summarise(INDEP_Pred_Mean = mean(INDEP.PRED),
-            RIGHT_Pred_Mean = mean(RIGHT.PRED))
+            RIGHT_Pred_Mean = mean(RIGHT.PRED),
+            Num_Users = n()) %>%
+  ungroup()
+
 
 data_imp_pred
 library(ggplot2)
@@ -143,11 +146,9 @@ USER %>%
   ggplot() +
   geom_point(aes(x = INDEP.PRED, y = RIGHT.PRED))
 
-
-data_imp %>%
-  select(AGE, FEMALE) %>%
-  left_join(PREDICTED) %>%
-  ggplot() +
-  geom_point(aes(x = INDEP.PRED, y = RIGHT.PRED))
-
   # geom_density_2d_filled(aes(x = INDEP.PRED, y = RIGHT.PRED))
+
+
+library(jsonlite)
+json_data = toJSON(clustered_data)
+write(json_data, file = "output.json")
