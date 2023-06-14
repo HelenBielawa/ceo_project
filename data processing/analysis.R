@@ -1,4 +1,6 @@
 library(tidyverse)
+library(dplyr)
+library(ggplot2)
 load('data processing/data_for_analysis.RData')
 
 glimpse(data_imp)
@@ -16,12 +18,29 @@ m_right.all = lm(frm_right, data=data_imp)
 
 #anova(m_indep.all, update(m_indep.all, .~.-SELF_DETERM), test = 'LRT')
 
+#Create the dataset with the predictions per interviewee, also adding age and gender
+
 data_imp_pred = data_imp %>%
   mutate(
     INDEP.PRED = predict(m_indep.all, type = 'response'),
     RIGHT.PRED = predict(m_right.all)
   ) %>%
-  dplyr::select(INDEP, RIGHT, INDEP.PRED, RIGHT.PRED) 
+  select(FEMALE, AGE, INDEP, RIGHT, INDEP.PRED, RIGHT.PRED)
+
+# Define age range groups
+data_imp_pred <- data_imp_pred %>%
+  mutate(AGE_RANGE = case_when(
+    AGE >= 18 & AGE <= 34 ~ "18-34",
+    AGE >= 35 & AGE <= 49 ~ "35-49",
+    AGE >= 50 & AGE <= 64 ~ "50-64",
+    AGE >= 65 ~ "65+"
+  ))
+
+# Group by gender and age range and calculate cluster means
+clustered_data <- data_imp_pred %>%
+  group_by(FEMALE, AGE_RANGE) %>%
+  summarise(INDEP_Pred_Mean = mean(INDEP.PRED),
+            RIGHT_Pred_Mean = mean(RIGHT.PRED))
 
 data_imp_pred
 library(ggplot2)
@@ -68,21 +87,26 @@ cat("var PROB = 1/(1+exp(-LP))")
 USER = slice(data_imp, 1) 
 USER
 
+# Example of response in indy axis
+
 CATALAN_ONLY  = 1
 SPANISH_ONLY = 0
 SPAIN_ONLY = 1
 BORN_CATALONIA = 1
 BORN_ABROAD  = 0
-SELF_RULE = 4
 SELF_DETERM = 3
 CONFI_POL_CAT = 7
 CONFI_POL_ESP = 1
+
+# Calculation to get the score in the indy axis
 
 LP =-2.003 * 1 + 1.727 * CATALAN_ONLY -0.915 * SPANISH_ONLY + 
   0.241 * SPAIN_ONLY + 0.715 * BORN_CATALONIA + 0.847 * BORN_ABROAD + 
   0.286 * SELF_DETERM -0.011 * (CONFI_POL_CAT - CONFI_POL_ESP)
 
 1/(1+exp(-LP))
+
+# Example of response in left-right axis
 
 vs = names(coef(m_right.all))
 vs[1] = '1'
@@ -95,6 +119,9 @@ ACTITUD_RELIGIO = 1
 ACTITUD_OBEIR = 1
 ACTITUD_IMMIGRACIO = 1
 ACTITUD_MEDIAMBIENT = 1
+
+# Calculation to get the score in the left-right axis
+
 LP = 4.552 * 1 + 0.032 * ACTITUD_ECONOMIA + 0.102 * ACTITUD_IMPOSTOS +
   -0.219 * ACTITUD_INGRESSOS + 0.203 * ACTITUD_AUTORITAT +
   -0.235 * ACTITUD_RELIGIO + 0.185 * ACTITUD_OBEIR + 
@@ -111,6 +138,13 @@ ggplot(data = PREDICTED) +
   geom_point(aes(x = INDEP.PRED, y = RIGHT.PRED), alpha = 0.02)
 
 USER %>%
+  select(AGE, FEMALE) %>%
+  left_join(PREDICTED) %>%
+  ggplot() +
+  geom_point(aes(x = INDEP.PRED, y = RIGHT.PRED))
+
+
+data_imp %>%
   select(AGE, FEMALE) %>%
   left_join(PREDICTED) %>%
   ggplot() +
