@@ -2,7 +2,7 @@
     import AxisX from "./AxisX.svelte";
     import AxisY from "./AxisY.svelte";
     import Tooltip from "./Tooltip.svelte";
-    import generalData from "../data/testData_mainPlot.json";
+    import generalData from "../data/scatterPlotData.json";
     import groupData from "../data/testData_group1.json";
     import { fly } from "svelte/transition";
     import { scaleLinear } from "d3-scale";
@@ -14,7 +14,7 @@
     $: grdata  = [];
   
     const margin = { top:0, right: 0, bottom: 0, left: 0 };
-    const radius = 10;
+    const radius = 0.02;
   
     $: innerWidth = width - margin.left - margin.right;
     $: innerHeight = height - margin.top - margin.bottom;
@@ -54,11 +54,11 @@
 
     function getTransitionParams(d){
 
-      let destinationX = xScale(d.rightness);
-      let destinationY = yScale(d.independence);
+      let destinationX = xScale(d.RIGHT_Pred_Mean);
+      let destinationY = yScale(d.INDEP_Pred_Mean);
 
-      let originX = xScale(generalData.filter(item => item.groupID == d.groupID)[0].rightness);
-      let originY = yScale(generalData.filter(item => item.groupID == d.groupID)[0].independence);
+      let originX = xScale(generalData.filter(item => generalData.indexOf(item) == d.groupID)[0].RIGHT_Pred_Mean);
+      let originY = yScale(generalData.filter(item => generalData.indexOf(item) == d.groupID)[0].INDEP_Pred_Mean * 10);
 
       const deltaX = -destinationX + originX;
       const deltaY = -destinationY + originY;
@@ -83,23 +83,23 @@
       <g class="inner-chart" transform="translate({margin.left}, {margin.top})">
           <AxisY width={innerWidth} {yScale} {xScale} {height}/>
           <AxisX height={innerHeight} width={innerWidth} {xScale} {yScale} />
-          {#each data.sort((a, b) => a.rightness - b.rightness) as d, index}
+          {#each data.sort((a, b) => a.RIGHT_Pred_Mean - b.RIGHT_Pred_Mean) as d, index}
             <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
             <circle 
               transition:fly={currentStatus == "groupViz" ? { x: -100, opacity: 50, duration: 500 }
                       : {...getTransitionParams(d)}}
-              cx={xScale(d.rightness)}
-              cy={yScale(d.independence)}
+              cx={xScale(d.RIGHT_Pred_Mean)}
+              cy={yScale(d.INDEP_Pred_Mean * 10)}
               fill="black"
               stroke="black"
-              r={hoveredData == d ? radius * 1.5 : radius}
+              r={hoveredData == d ? radius * d.Num_Users * 1.5 : radius * d.Num_Users}
               opacity={hoveredData ? (hoveredData == d ? 1 : 0.45) : currentStatus == "groupViz" ? 0.2 : 1}
               on:mouseover={() => hoveredData = d}
               on:focus={() => hoveredData = d}
-              on:click={() => handleCircleClick(d.groupID)}
+              on:click={() => handleCircleClick(generalData.indexOf(d))}
               on:keydown={(event) => {
                 if (event.key === 'Enter') {
-                  handleCircleClick(d.groupID);
+                  handleCircleClick(generalData.indexOf(d));
                 }
               }}
               tabindex="0"
