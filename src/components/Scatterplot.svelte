@@ -5,7 +5,6 @@
     import generalData from "../data/testData_mainPlot.json";
     import groupData from "../data/testData_group1.json";
     import { fly } from "svelte/transition";
-    import { onMount } from "svelte";
     import { scaleLinear } from "d3-scale";
     
     $: width = 600;
@@ -94,7 +93,7 @@
               fill="black"
               stroke="black"
               r={hoveredData == d ? radius * 1.5 : radius}
-              opacity={hoveredData ? (hoveredData == d ? 1 : 0.45) : d.diversity * 0.1}
+              opacity={hoveredData ? (hoveredData == d ? 1 : 0.45) : currentStatus == "groupViz" ? 0.2 : 1}
               on:mouseover={() => hoveredData = d}
               on:focus={() => hoveredData = d}
               on:click={() => handleCircleClick(d.groupID)}
@@ -113,10 +112,10 @@
               in:fly={{...getTransitionParams(d)}}
               cx={xScale(d.rightness)}
               cy={yScale(d.independence)}
-              fill="red"
+              fill="black"
               stroke="none"
               r = 5
-              opacity = 0.5
+              opacity = 1
             />
           {/each}
         {/if}
@@ -128,32 +127,21 @@
   </div>
   
   <style>
-    :global(.tick text, .axis-title) {
-      font-weight: 400; /* How thick our text is */
-      font-size: 12px; /* How big our text is */
-      fill: hsla(212, 10%, 53%, 1); /* The color of our text */
-    }
   
-    .chart-container {
-      width: 100%;
-      height: 100vh;
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
+
+   .chart-container{
+   position: inherit;
+    display: flex;
+    flex-wrap: wrap;
+    white-space: nowrap;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    background: none;
    }
-
-
     circle {
       /*transition: r 300ms ease, opacity 500ms ease;*/
       cursor: pointer;
-    }
-  
-    h1 {
-      margin: 0 0 0.5rem 0;
-      font-size: 1.35rem;
-      font-weight: 600;
     }
   </style>
   

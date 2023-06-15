@@ -16,62 +16,89 @@ $: answer = [];
 
 </script>
 
-<main>
-<section>
-  <div class="sticky">
+<body>
+
+<div class="flex">
+  <div class="chart">
   <GridBackground/>
   <Scatterplot/>
+  </div>
 
-</div>
-<div class="steps">
-
-  <Scrolly bind:value={currentStep}> <!-- 3. This is what updates value -->
-    {#each steps as step, i}
-        <div class="step" class:active={currentStep === i}> <!-- 4. Dynamically applies the active class -->
-          <div class="step-content">
-            {#if step.type === "text"}
-              <p>{step.text}</p>
-            {:else if  step.type === "question"}
-              <Question text = {step.text} type = "Multiple" options = {step.options} bind:answer = {answer[currentStep]}/>
-            {/if}
+  <div class="aside">
+    <Scrolly bind:value={currentStep}> <!-- 3. This is what updates value -->
+      {#each steps as step, i}
+          <div class="step" class:active={currentStep === i}> <!-- 4. Dynamically applies the active class -->
+            <div class="step-content">
+              {#if step.type === "text"}
+                <p>{step.text}</p>
+              {:else if  step.type === "question"}
+                <Question text = {step.text} type = "Multiple" options = {step.options} bind:answer = {answer[currentStep]}/>
+              {/if}
+            </div>
           </div>
-        </div>
-    {/each}
-</Scrolly>
+      {/each}
+  </Scrolly>
 </div>
-<div class="current_step">
-  <p>Current Scroll Step: {currentStep}</p>
-  <p>Current answer: {JSON.stringify(answer)}</p>
 </div>
-</section>
 
-</main>
-
+</body>
 <style>
-section{
-  position: relative;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-.sticky{
-  position: sticky;
+html, body {
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.flex {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  align-content: stretch;
+  overflow: hidden;
   top: 0;
-  z-index: 1;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: fixed;
 }
-.steps{
+.chart {
+  position: absolute;
+  width: 100vh; /* Adjust width as needed */
+  height: 100vh;
+  overflow: visible;
+}
+.aside {
+  position: absolute;
+  right: 0;
+  left: 100vh; /* Adjust positioning based on the width of the left element */
+  height: 100vh;
+  background-color: white; /* Adjust background color as needed */
+  flex: 1;
+  overflow-y: scroll;
+}
+
+.step {
   position: relative;
-  z-index: 2;
-}
-.step{
   height: 90vh;
-  width: 30vw;
+  margin: 5%;
   opacity: 0.3;
   transition: opacity 300ms ease;
   display: flex;
   justify-content: center;
-  place-items: center;
+  align-items: center;
+  z-index: 2;
 }
-.step-content{
-  background: grey;
-  border: 1px solid;
+
+.step-content {
+  background: #ccc; /* Adjust background color as needed */
   padding: 0.75rem 1rem;
   border-radius: 3px;
   width: 60vw;

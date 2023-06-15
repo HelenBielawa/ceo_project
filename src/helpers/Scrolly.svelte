@@ -76,7 +76,7 @@
     });
   </script>
   
-  <div bind:this={container}>
+  <div bind:this={container} style="z-index:-1000">
     <slot />
   </div>
   

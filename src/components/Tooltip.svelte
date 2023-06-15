@@ -60,11 +60,6 @@
       width: 100%;
     }
   
-    h2 {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-    }
-
     p{
       text-align: left;
     }
