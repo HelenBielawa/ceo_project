@@ -1,14 +1,13 @@
 <script>
-    import groupData from "../data/testData_groupInfo.json";
     export let data;
     export let xScale;
     export let yScale;
     export let width;
     export let currentStatus;
     import { fly } from "svelte/transition";
-  
-    $: x = xScale(data.rightness);
-    $: y = yScale(data.independence);
+ 
+    $: x = xScale(data.RIGHT_Pred_Mean);
+    $: y = yScale(data.INDEP_Pred_Mean * 10);
   
     let tooltipWidth;
   
@@ -19,7 +18,6 @@
       x + tooltipWidth > width ? x - tooltipWidth - xNudge : x + xNudge;
     $: yPosition = y + yNudge;
 
-    $:groupInfo = groupData.find(g => g.groupID == data.groupID)
     </script>
   
   <div
@@ -34,11 +32,11 @@
     {#if currentStatus == "generalViz"}
       <h1>About this group:</h1>
       <p>
-        group ID: {groupInfo.groupID}<br>
-      area: {groupInfo.area}<br>
-      age: {groupInfo.age_group}<br>
-      language: {groupInfo.language}<br>
-      Click on the circle to see the positions of all the {groupInfo.count} individuals in this group.</p>
+      province: {data.PROVINCE}<br>
+      municipality: {data.MUNICIPALITY}<br>
+      language: {data.LANGUAGE}<br>
+      age range: {data.AGE_RANGE}<br>
+      Click on the circle to see the positions of all the {data.Num_Users} individuals in this group.</p>
     {/if}
 
   </div>
