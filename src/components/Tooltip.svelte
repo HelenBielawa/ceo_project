@@ -36,7 +36,7 @@
       municipality: {data.MUNICIPALITY}<br>
       language: {data.LANGUAGE}<br>
       age range: {data.AGE_RANGE}<br>
-      Click on the circle to see the positions of all the {data.Num_Users} individuals in this group.</p>
+      Click to see all {data.Num_Users} members</p>
     {/if}
 
   </div>
@@ -49,6 +49,13 @@
       border-radius: 3px;
       pointer-events: none;
       transition: top 300ms ease, left 300ms ease;
+      max-width: 60%;
+      max-height: 30%;
+      overflow: auto;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+      background-image: linear-gradient(to bottom right, #ffffff, #eaeaea);
+      border-radius: 8px;
     }
    
     h1 {

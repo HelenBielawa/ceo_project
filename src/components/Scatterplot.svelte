@@ -93,7 +93,7 @@
               fill="black"
               stroke="black"
               r={hoveredData == d ? radius * d.Num_Users * 1.5 : radius * d.Num_Users}
-              opacity={hoveredData ? (hoveredData == d ? 1 : 0.45) : currentStatus == "groupViz" ? 0.2 : 1}
+              opacity={hoveredData ? (hoveredData == d ? 1 : 0.45) : currentStatus == "groupViz" ? 0.2 : 0.6}
               on:mouseover={() => hoveredData = d}
               on:focus={() => hoveredData = d}
               on:click={() => handleCircleClick(generalData.indexOf(d))}
@@ -138,10 +138,12 @@
     height: 100%;
     z-index: 100;
     background: none;
+    pointer-events: none;
    }
     circle {
       /*transition: r 300ms ease, opacity 500ms ease;*/
       cursor: pointer;
+      pointer-events: all;
     }
   </style>
   

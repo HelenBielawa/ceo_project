@@ -4,14 +4,18 @@ import GridBackground from "./components/GridBackground.svelte";
 import Scatterplot from "./components/Scatterplot.svelte";
 import Question from "./components/Question.svelte";
 let currentStep;
-const steps = [ {type:"text",text:"Catalans are scattered!"}, 
-                {type:"question", text:"Explaining the groups...", options:["Yes","No"]},
-                {type:"question", text: "Highlighting some results...", options:["Low", "Medium", "High"]}
+const steps = [ {type:"header", h1: "The Catalan Political Compass", h3: "Understanding Left-Right and Independence Stances through Data and Self-Assessment" },
+                {type:"text",text:"Introduction...Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."}, 
+                {type:"text",text:"Highlighting interesting results, e.g. specific group...Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."}, 
+                {type:"question", id: 1, text:"Is Catalan your mother tongue?", options:["Yes","No"]},
+                {type:"question", id: 2, text: "How much should religion control politics?", options:["Low", "Medium", "High"]},
+                {type:"text", text: "Result...this is where you would be positioned in the quiz"},
+                {type: "text", text: "Answer more questions and compare yourself to your peers!"},
+                {type: "question", text: "How old are you?", options:["10-30","31-50", "51-70", "71-90"]},
+                {type:"text", text: "Ok, you are pretty different to your statistical peers. Press here to download and share your result!"}
               ];
-/*               "WHERE DO YOU STAND?", "political quiz", 
-              "see the results in the plot!",
-              "statistical questions quiz", "compare reality to statistical twin", "end"];
- */
+
+
 $: answer = [];
 
 </script>
@@ -25,14 +29,18 @@ $: answer = [];
   </div>
 
   <div class="aside">
+
     <Scrolly bind:value={currentStep}> <!-- 3. This is what updates value -->
       {#each steps as step, i}
           <div class="step" class:active={currentStep === i}> <!-- 4. Dynamically applies the active class -->
             <div class="step-content">
               {#if step.type === "text"}
                 <p>{step.text}</p>
+              {:else if step.type == "header"}
+                <h1>{step.h1}</h1>
+                <h3>{step.h3}</h3>
               {:else if  step.type === "question"}
-                <Question text = {step.text} type = "Multiple" options = {step.options} bind:answer = {answer[currentStep]}/>
+                <Question text = {step.text} id= {step.id} type = "Multiple" options = {step.options} bind:answer = {answer[currentStep]}/>
               {/if}
             </div>
           </div>
@@ -112,5 +120,14 @@ html, body {
   bottom: 0;
   right:0;
   padding:2;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Rubik', sans-serif;
+  font-weight: 600;
+  margin: 5%;
+}
+body {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
 }
 </style>

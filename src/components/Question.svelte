@@ -3,12 +3,13 @@
     export let type;
     export let options;
     export let answer;
+    export let id;
 </script>
   
   <div
     class="question-{type}"
   >
-    <p><b>Question: </b>{text}</p>
+    <p><b>Question {id}/10: </b>{text}</p>
     {#if type === "Multiple"}
         <fieldset>
             {#each options as option, i}

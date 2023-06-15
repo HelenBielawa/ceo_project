@@ -18,14 +18,15 @@
              opacity: {hoveredCluster == index? 0.5 : 1}"
       on:mouseover={() => hoveredCluster = index}
       on:focus={() => hoveredCluster = index}
-      on:click={() => clickedCluster = index}
+      on:click={() => (clickedCluster = index, hoveredCluster = null)}
       on:keydown={(event) => {
         if (event.key === 'Enter') {
-          clickedCluster = index;
-        }
-      }}>
+          (clickedCluster = index, hoveredCluster = null);
+        }}}
+        on:mouseout={() => (clickedCluster = null, hoveredCluster = null)}
+        on:blur={() => (clickedCluster = null, hoveredCluster = null)}>
     {#if clickedCluster == index} 
-      {gridData.find(g => g.groupID == index).cluster}
+      <span class="cluster-text">{gridData.find(g => g.groupID == index).cluster}</span> 
     {/if}
     </div>
     {/each}
@@ -43,7 +44,6 @@
     position: inherit;
     display: flex;
     flex-wrap: wrap;
-    white-space: nowrap;
     width: 100%;
     z-index: 90;
   }
