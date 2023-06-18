@@ -25,7 +25,7 @@ $: answer = [];
 <div class="flex">
   <div class="chart">
   <GridBackground/>
-  <Scatterplot/>
+  <Scatterplot {currentStep}/>
   </div>
 
   <div class="aside">

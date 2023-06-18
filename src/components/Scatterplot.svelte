@@ -6,6 +6,8 @@
     import groupData from "../data/testData_group1.json";
     import { fly } from "svelte/transition";
     import { scaleLinear } from "d3-scale";
+
+    export let currentStep;
     
     $: width = 600;
     $: height = 800;
@@ -92,7 +94,10 @@
               cy={yScale(d.INDEP_Pred_Mean * 10)}
               fill="black"
               stroke="black"
-              r={hoveredData == d ? radius * d.Num_Users * 1.5 : radius * d.Num_Users}
+              r={hoveredData == d ? radius * d.Num_Users * 1.5 :
+                currentStep == 3 ?
+                d.PROVINCE === 0 ? radius * d.Num_Users * 1.5: radius * d.Num_Users:
+                radius * d.Num_Users * 1.5}
               opacity={hoveredData ? (hoveredData == d ? 1 : 0.45) : currentStatus == "groupViz" ? 0.2 : 0.6}
               on:mouseover={() => hoveredData = d}
               on:focus={() => hoveredData = d}
