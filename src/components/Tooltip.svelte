@@ -5,6 +5,10 @@
     export let width;
     export let currentStatus;
     import { fly } from "svelte/transition";
+  import App from "../App.svelte";
+  import AxisX from "./AxisX.svelte";
+  import AxisY from "./AxisY.svelte";
+  import {Cursor} from "svelte-bootstrap-icons";
  
     $: x = xScale(data.RIGHT_Pred_Mean);
     $: y = yScale(data.INDEP_Pred_Mean * 10);
@@ -30,13 +34,22 @@
       Click on the circle to get back to the main chart.
     {/if}
     {#if currentStatus == "generalViz"}
-      <h1>About this group:</h1>
       <p>
-      province: {data.PROVINCE}<br>
-      municipality: {data.MUNICIPALITY}<br>
-      language: {data.LANGUAGE}<br>
-      age range: {data.AGE_RANGE}<br>
-      Click to see all {data.Num_Users} members</p>
+      <b>province:</b> {data.PROVINCE === 0 ? "Barcelona":
+                  data.PROVINCE === 1 ? "Girona" :
+                  data.PROVINCE === 2 ? "Lleida":
+                  "Tarragona"}<br>
+      <b>municipality size:</b> {data.MUNICIPALITY === 0? "< 10.000":
+                      data.MUNICIPALITY === 1 ? "10 - 50.000":
+                      data.MUNICIPALITY === 2 ? "50 - 150.000":
+                      data.MUNICIPALITY === 3 ? "150 - 1.000.000":
+                      ">1.000.000"}<br>
+      <b>language:</b> {data.LANGUAGE === 1? "Catalan":
+                  data.LANGUAGE === 2? "Spanish":
+                 "Catalan and Spanish, or other"}<br>
+      <b>age:</b> {data.AGE_RANGE}<br>
+      <br>
+      <Cursor/> See all {data.Num_Users} members</p>
     {/if}
 
   </div>
