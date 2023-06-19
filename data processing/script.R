@@ -4,7 +4,7 @@
 library(CEOdata)
 
 #Load barometer raw data
-barometer = CEOdata()
+barometer_original = CEOdata()
 
 
 #Search indicators related to language 
@@ -12,16 +12,15 @@ barometer = CEOdata()
 #select(barometer, matches("llengua", ignore.case=TRUE)) %>% 
 #  View
 
-column_names
 getwd()
 
 #Select relevant columns 
 
 library(dplyr)
 
-barometer = select(barometer, 
+barometer = select(barometer_original, 
                           REO,BOP_NUM,ANY,MES,DIA,PROVINCIA,HABITAT,MUNICIPI,COMARCA,CIUTADANIA,GENERE,SEXE,EDAT, EDAT_GR, EDAT_CEO,LLOC_NAIX,IDEOL_0_10, RELACIONS_CAT_ESP, DRET_DECIDIR,INTERES_POL,SATIS_DEMOCRACIA,CONFI_POL_CAT,CONFI_POL_ESP,ACTITUD_ECONOMIA,ACTITUD_IMPOSTOS,ACTITUD_INGRESSOS, ACTITUD_AUTORITAT,ACTITUD_RELIGIO,ACTITUD_OBEIR,ACTITUD_IMMIGRACIO,ACTITUD_MEDIAMBIENT,
-                          ACTITUD_INDEPENDENCIA, LLENGUA_IDENTIFICACIO)
+                          ACTITUD_INDEPENDENCIA, LLENGUA_IDENTIFICACIO, ESTUDIS, SENTIMENT_PERTINENCA)
 
 #Export CSV
 # write.csv(barometer, "baròmetre.csv")
