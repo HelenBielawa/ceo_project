@@ -23,6 +23,8 @@
                 </div>
             {/each}
         </fieldset>
+    {:else if type === "Range"}
+        <br>
     {/if}
 <!--     <p><b>Answer: </b>{answer}</p> -->
   </div>

@@ -3,6 +3,8 @@ import Scrolly from "./helpers/Scrolly.svelte";
 import GridBackground from "./components/GridBackground.svelte";
 import Scatterplot from "./components/Scatterplot.svelte";
 import Question from "./components/Question.svelte";
+import StepContent from "./data/stepContent.json";
+import QuizUserData from "./data/quizUserData.json";
 import {Compass, WindowDash} from "svelte-bootstrap-icons";
 let currentStep;
 const steps = [ {type:"header", h1: "The Catalan Political Compass", h3: "Understanding Left-Right and Independence Stances through Data and Self-Assessment" },
@@ -31,7 +33,7 @@ $: answer = [];
   <div class="aside">
 
     <Scrolly bind:value={currentStep}> <!-- 3. This is what updates value -->
-      {#each steps as step, i}
+      {#each StepContent as step, i}
           <div class="step" class:active={currentStep === i}> <!-- 4. Dynamically applies the active class -->
             <div class="step-content">
               {#if step.type === "text"}
@@ -40,7 +42,9 @@ $: answer = [];
                 <h1>{step.h1}</h1>
                 <h3>{step.h3}</h3>
               {:else if  step.type === "question"}
-                <Question text = {step.text} id= {step.id} type = "Multiple" options = {step.options} bind:answer = {answer[currentStep]}/>
+                <Question text = {step.text} id= {step.id} type = {step.question_type}
+                options = {step.options.map(o => o.opt)} bind:answer = {answer[currentStep]}/>
+                {answer}
               {/if}
             </div>
 
