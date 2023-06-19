@@ -6,7 +6,7 @@ load('data processing/data_for_analysis.RData')
 glimpse(data_imp)
 # VARIABLES CAN BE SELECTED
 frm_indep = INDEP ~ CATALAN_ONLY + SPANISH_ONLY + SPAIN_ONLY + BORN_CATALONIA + BORN_ABROAD + 
-  SELF_DETERM + I(CONFI_POL_CAT-CONFI_POL_ESP)
+  SELF_DETERM + I(CONFI_POL_CAT-CONFI_POL_ESP) + BELONGING
 
 
 frm_right = RIGHT ~ ACTITUD_ECONOMIA + ACTITUD_IMPOSTOS + ACTITUD_INGRESSOS + 
@@ -25,7 +25,7 @@ data_imp_pred = data_imp %>%
     INDEP.PRED = predict(m_indep.all, type = 'response'),
     RIGHT.PRED = predict(m_right.all)
   ) %>%
-  select(AGE, INDEP, RIGHT, INDEP.PRED, RIGHT.PRED, PROVINCE, MUNICIPALITY, LANGUAGE)
+  select(AGE, INDEP, RIGHT, INDEP.PRED, RIGHT.PRED, PROVINCE, MUNICIPALITY, LANGUAGE, EDUCATION)
 
 # Define age range groups
 data_imp_pred <- data_imp_pred %>%
@@ -38,7 +38,7 @@ data_imp_pred <- data_imp_pred %>%
 
 # Group by gender and age range and calculate cluster means
 clustered_data <- data_imp_pred %>%
-  group_by(AGE_RANGE, PROVINCE, MUNICIPALITY, LANGUAGE) %>%
+  group_by(AGE_RANGE, PROVINCE, MUNICIPALITY, LANGUAGE, EDUCATION) %>%
   summarise(INDEP_Pred_Mean = mean(INDEP.PRED),
             RIGHT_Pred_Mean = mean(RIGHT.PRED),
             Num_Users = n()) %>%
@@ -152,3 +152,5 @@ USER %>%
 library(jsonlite)
 json_data = toJSON(clustered_data)
 write(json_data, file = "output.json")
+
+
