@@ -3,6 +3,7 @@ import Scrolly from "./helpers/Scrolly.svelte";
 import GridBackground from "./components/GridBackground.svelte";
 import Scatterplot from "./components/Scatterplot.svelte";
 import Question from "./components/Question.svelte";
+import {Compass, WindowDash} from "svelte-bootstrap-icons";
 let currentStep;
 const steps = [ {type:"header", h1: "The Catalan Political Compass", h3: "Understanding Left-Right and Independence Stances through Data and Self-Assessment" },
                 {type:"text",text:"Introduction...Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."}, 
@@ -15,7 +16,6 @@ const steps = [ {type:"header", h1: "The Catalan Political Compass", h3: "Unders
                 {type:"text", text: "Ok, you are pretty different to your statistical peers. Press here to download and share your result!"}
               ];
 
-
 $: answer = [];
 
 </script>
@@ -25,7 +25,7 @@ $: answer = [];
 <div class="flex">
   <div class="chart">
   <GridBackground/>
-  <Scatterplot/>
+  <Scatterplot {currentStep}/>
   </div>
 
   <div class="aside">
@@ -43,9 +43,18 @@ $: answer = [];
                 <Question text = {step.text} id= {step.id} type = "Multiple" options = {step.options} bind:answer = {answer[currentStep]}/>
               {/if}
             </div>
+
+            <div class="scroll-indicator-container">
+              <div class="compass">
+              <Compass class="compass"/>
+              </div>
+        </div>
           </div>
-      {/each}
-  </Scrolly>
+       {/each}  
+
+
+ </Scrolly>
+
 </div>
 </div>
 
@@ -130,4 +139,32 @@ body {
   font-family: 'Montserrat', sans-serif;
   font-weight: 400;
 }
+  .scroll-indicator-container {
+    position:absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+  }
+  
+  .compass {
+    animation: spin 3s linear infinite;
+    fill: #000;
+    width: 24px;
+    height: 24px;
+    transform-style: preserve-3d;
+    left: 50%;
+    bottom: 20px;
+    position: relative;
+    transform-origin: center center;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: translateX(-50%) rotateX(0deg);
+    }
+    100% {
+      transform: translateX(-50%) rotateX(360deg);
+    }
+  }
 </style>
