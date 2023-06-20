@@ -55,21 +55,28 @@ clustered_data = data_with_clusters %>%
             Num_Users = n()) %>%
   ungroup()
 
+library(dplyr)
 
 indicator_distribution_ages <- data_with_clusters %>%
   count(Cluster, AGE_RANGE) %>%
   group_by(Cluster) %>%
-  mutate(Percentage = (n / sum(n)) * 100)
+  mutate(Percentage = (n / sum(n)) * 100) %>%
+  top_n(1, n)
 
 indicator_distribution_language <- data_with_clusters %>%
   count(Cluster, LANGUAGE) %>%
   group_by(Cluster) %>%
-  mutate(Percentage = (n / sum(n)) * 100)
+  mutate(Percentage = (n / sum(n)) * 100) %>%
+  top_n(1, n)
 
 indicator_distribution_education <- data_with_clusters %>%
   count(Cluster, EDUCATION) %>%
   group_by(Cluster) %>%
-  mutate(Percentage = (n / sum(n)) * 100)
+  mutate(Percentage = (n / sum(n)) * 100) %>%
+  top_n(1, n)
+
+
+indicator_distribution <- bind_rows(indicator_distribution_ages, indicator_distribution_language, indicator_distribution_education)
 
 
 data_imp_pred
