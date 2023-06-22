@@ -4,21 +4,13 @@ import GridBackground from "./components/GridBackground.svelte";
 import Scatterplot from "./components/Scatterplot.svelte";
 import Question from "./components/Question.svelte";
 import StepContent from "./data/stepContent.json";
-import QuizUserData from "./data/quizUserData.json";
 import {Compass, WindowDash} from "svelte-bootstrap-icons";
-let currentStep;
-const steps = [ {type:"header", h1: "The Catalan Political Compass", h3: "Understanding Left-Right and Independence Stances through Data and Self-Assessment" },
-                {type:"text",text:"Introduction...Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."}, 
-                {type:"text",text:"Highlighting interesting results, e.g. specific group...Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."}, 
-                {type:"question", id: 1, text:"Is Catalan your mother tongue?", options:["Yes","No"]},
-                {type:"question", id: 2, text: "How much should religion control politics?", options:["Low", "Medium", "High"]},
-                {type:"text", text: "Result...this is where you would be positioned in the quiz"},
-                {type: "text", text: "Answer more questions and compare yourself to your peers!"},
-                {type: "question", text: "How old are you?", options:["10-30","31-50", "51-70", "71-90"]},
-                {type:"text", text: "Ok, you are pretty different to your statistical peers. Press here to download and share your result!"}
-              ];
+
+$: currentStep = 0;
+$: console.log("in the main app, curr Step: ", currentStep);
 
 $: answer = [];
+let currentAnswer;
 
 </script>
 
@@ -32,7 +24,7 @@ $: answer = [];
 
   <div class="aside">
 
-    <Scrolly bind:value={currentStep}> <!-- 3. This is what updates value -->
+    <Scrolly bind:value={currentStep}> <!-- This is what updates value -->
       {#each StepContent as step, i}
           <div class="step" class:active={currentStep === i}> <!-- 4. Dynamically applies the active class -->
             <div class="step-content">
@@ -43,8 +35,8 @@ $: answer = [];
                 <h3>{step.h3}</h3>
               {:else if  step.type === "question"}
                 <Question text = {step.text} id= {step.id} type = {step.question_type}
-                options = {step.options.map(o => o.opt)} bind:answer = {answer[currentStep]}/>
-                {answer}
+                options = {step.options.map(o => o.opt)}
+                {step}/>
               {/if}
             </div>
 

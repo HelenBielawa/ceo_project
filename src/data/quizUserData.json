@@ -13,7 +13,7 @@
 {"question_id": 6,
     "data": [{"code":"TRUST_SPAN", "value": 0}]},
 {"question_id": 7,
-    "data": [{"code":"", "value": 0}]},
+    "data": [{"code":"EMPTY", "value": 0}]},
 {"question_id": 8,
     "data": [{"code":"ACTITUD_ECONOMIA", "value": 0}]},
 {"question_id": 9,
@@ -35,9 +35,9 @@
 {"question_id": 17,
     "data": [{"code":"ACTITUD_MUNICIPALITY", "value": 0}]},
 {"question_id": 18,
-    "data": [{"code":"", "value": 0}]},
+    "data": [{"code":"EMPTY", "value": 0}]},
 {"question_id": 19,
-    "data": [{"code":"AGE_RANGE", "value": "0"}]},
+    "data": [{"code":"AGE_RANGE", "value": 0}]},
 {"question_id": 20,
-    "data": [{"code":"FEMALE", "value": "0"}]}
+    "data": [{"code":"FEMALE", "value": 0}]}
 ]

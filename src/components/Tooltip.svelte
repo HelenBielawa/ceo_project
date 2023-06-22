@@ -10,6 +10,7 @@
   import AxisY from "./AxisY.svelte";
   import {Cursor} from "svelte-bootstrap-icons";
  
+    console.log("entering tooltip, this is its data: ", data)
     $: x = xScale(data.RIGHT_Pred_Mean);
     $: y = yScale(data.INDEP_Pred_Mean * 10);
   
@@ -32,8 +33,7 @@
   >
     {#if currentStatus == "groupViz"}
       Click on the circle to get back to the main chart.
-    {/if}
-    {#if currentStatus == "generalViz"}
+    {:else if currentStatus == "sociodemViz"}
       <p>
       <b>province:</b> {data.PROVINCE === 0 ? "Barcelona":
                   data.PROVINCE === 1 ? "Girona" :
@@ -50,8 +50,14 @@
       <b>age:</b> {data.AGE_RANGE}<br>
       <br>
       <Cursor/> See all {data.Num_Users} members</p>
+    {:else if currentStatus == "politicalViz"}
+    <p>
+      {data.NUM} people belong to this group.
+      <b>age:</b> {Math.round(data.AGE_prop * 100)}% are {data.AGE} years old.<br>
+      <b>education:</b> {Math.round(data.EDUCATION_prop * 100)}% are {data.EDUCATION_cat} educated<br>
+      <b>language:</b>{Math.round(data.EDUCATION_prop * 100)}% speak {data.LANGUAGE_cat} language<br>
+      <br>
     {/if}
-
   </div>
   
   <style>
