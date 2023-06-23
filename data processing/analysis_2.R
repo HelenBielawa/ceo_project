@@ -62,8 +62,8 @@ ggplot(data=dplot, aes(x = right, y = indep)) +
 
 data_imp_pred = data_imp %>%
   mutate(
-    INDEP.PRED = predict_indep(.), #predict(m_indep.all, type = 'response'),
-    RIGHT.PRED = predict_right(.)  #predict(m_right.all)
+    INDEP.PRED = predict_indep(.)*100, #predict(m_indep.all, type = 'response'),
+    RIGHT.PRED = predict_right(.)*100  #predict(m_right.all)
   ) %>%
   select(AGE, INDEP, RIGHT, INDEP.PRED, RIGHT.PRED, PROVINCE, MUNICIPALITY, LANGUAGE, EDUCATION, SELF_RULE)
 
@@ -81,7 +81,7 @@ data_imp_pred <- data_imp_pred %>%
 
 clustering_data = data_imp_pred %>% select(INDEP.PRED, RIGHT.PRED)
 
-k = 25  # Number of clusters you want to create
+k = 15  # Number of clusters you want to create
 set.seed(123) 
 clusters = kmeans(clustering_data, centers = k, nstart = 20, iter.max = 300, algorithm = "Lloyd")
 
@@ -105,11 +105,11 @@ clustered_data = data_with_clusters %>%
             RIGHT_Pred_Mean = mean(RIGHT.PRED),
             Num_Users = n(),
             AGE_cat = mode_category(AGE_RANGE),
-            AGE_prop = mode_category_prop(AGE_RANGE),
+            AGE_prop = mode_category_prop(AGE_RANGE)*100,
             EDUCATION_cat = mode_category(EDUCATION),
-            EDUCATION_prop = mode_category_prop(EDUCATION),
+            EDUCATION_prop = mode_category_prop(EDUCATION)*100,
             LANGUAGE_cat = mode_category(LANGUAGE),
-            LANGUAGE_prop = mode_category_prop(LANGUAGE)) %>%
+            LANGUAGE_prop = mode_category_prop(LANGUAGE)*100) %>%
   ungroup()
 
 ggplot(data=clustered_data) +
@@ -256,14 +256,32 @@ USER %>%
 
 
 
+#Keep only some variables and remove decimals, only keep 2
 
-  # geom_density_2d_filled(aes(x = INDEP.PRED, y = RIGHT.PRED))
+clustered_data_reduced
+
+data_with_clusters_reduced <- data_with_clusters %>%
+  select(INDEP.PRED, RIGHT.PRED, Cluster) %>%
+  mutate(INDEP.PRED = round(INDEP.PRED, 2)) %>%
+  mutate(RIGHT.PRED = round(RIGHT.PRED, 2))
+  
+
+#Remove decimals, only keep 2
+clustered_data_reduced <- clustered_data
+
+
+for (col in names(clustered_data_reduced)) {
+  if (is.numeric(clustered_data_reduced[[col]])) {
+    clustered_data_reduced[[col]] <- round(clustered_data_reduced[[col]], 2)
+  }
+}
+
 
 
 library(jsonlite)
-json_data = toJSON(clustered_data)
+json_data = toJSON(clustered_data_reduced)
 write(json_data, file = "clusters.json")
 
 
-json_data_2 = toJSON(data_with_clusters)
+json_data_2 = toJSON(data_with_clusters_reduced)
 write(json_data_2, file = "pred_individuals.json")
