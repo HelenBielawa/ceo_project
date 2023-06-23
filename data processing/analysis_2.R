@@ -62,8 +62,8 @@ ggplot(data=dplot, aes(x = right, y = indep)) +
 
 data_imp_pred = data_imp %>%
   mutate(
-    INDEP.PRED = predict_indep(.), #predict(m_indep.all, type = 'response'),
-    RIGHT.PRED = predict_right(.)  #predict(m_right.all)
+    INDEP.PRED = predict_indep(.)*100, #predict(m_indep.all, type = 'response'),
+    RIGHT.PRED = predict_right(.)*100  #predict(m_right.all)
   ) %>%
   select(AGE, INDEP, RIGHT, INDEP.PRED, RIGHT.PRED, PROVINCE, MUNICIPALITY, LANGUAGE, EDUCATION, SELF_RULE)
 
@@ -105,11 +105,11 @@ clustered_data = data_with_clusters %>%
             RIGHT_Pred_Mean = mean(RIGHT.PRED),
             Num_Users = n(),
             AGE_cat = mode_category(AGE_RANGE),
-            AGE_prop = mode_category_prop(AGE_RANGE),
+            AGE_prop = mode_category_prop(AGE_RANGE)*100,
             EDUCATION_cat = mode_category(EDUCATION),
-            EDUCATION_prop = mode_category_prop(EDUCATION),
+            EDUCATION_prop = mode_category_prop(EDUCATION)*100,
             LANGUAGE_cat = mode_category(LANGUAGE),
-            LANGUAGE_prop = mode_category_prop(LANGUAGE)) %>%
+            LANGUAGE_prop = mode_category_prop(LANGUAGE)*100) %>%
   ungroup()
 
 ggplot(data=clustered_data) +
@@ -145,11 +145,12 @@ ggplot(data = sample_n(data_imp_pred, 1000)) +
   geom_violin(aes(x = INDEP.PRED, y = factor(SELF_RULE)))
 
 
-ggplot(data= sample_n(data_imp_pred, 1000)) +
+ggplot(data = sample_n(data_imp_pred, 1000)) +
   geom_point(aes(x = RIGHT, y = RIGHT.PRED)) +
-  scale_y_continuous(breaks = 0:10, limits = c(0,10)) +
-  scale_x_continuous(breaks = 0:10, limits = c(0,10)) +
+  scale_y_continuous(breaks = seq(0, 1, 0.1), limits = c(0, 1)) +
+  scale_x_continuous(breaks = 0:10, limits = c(0, 10)) +
   geom_smooth(aes(x = RIGHT, y = RIGHT.PRED))
+
 
 
 library(ggplot2)
@@ -204,6 +205,7 @@ BORN_ABROAD  = 0
 SELF_DETERM = 3
 CONFI_POL_CAT = 7
 CONFI_POL_ESP = 1
+BELONGING = 2
 
 # Calculation to get the score in the indy axis
 
@@ -254,12 +256,32 @@ USER %>%
 
 
 
+#Keep only some variables and remove decimals, only keep 2
 
-  # geom_density_2d_filled(aes(x = INDEP.PRED, y = RIGHT.PRED))
+clustered_data_reduced
+
+data_with_clusters_reduced <- data_with_clusters %>%
+  select(INDEP.PRED, RIGHT.PRED, Cluster) %>%
+  mutate(INDEP.PRED = round(INDEP.PRED, 2)) %>%
+  mutate(RIGHT.PRED = round(RIGHT.PRED, 2))
+  
+
+#Remove decimals, only keep 2
+clustered_data_reduced <- clustered_data
+
+
+for (col in names(clustered_data_reduced)) {
+  if (is.numeric(clustered_data_reduced[[col]])) {
+    clustered_data_reduced[[col]] <- round(clustered_data_reduced[[col]], 2)
+  }
+}
+
 
 
 library(jsonlite)
-json_data = toJSON(clustered_data)
-write(json_data, file = "output.json")
+json_data = toJSON(clustered_data_reduced)
+write(json_data, file = "clusters.json")
 
 
+json_data_2 = toJSON(data_with_clusters_reduced)
+write(json_data_2, file = "pred_individuals.json")
