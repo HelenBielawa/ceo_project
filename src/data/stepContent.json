@@ -1,6 +1,6 @@
-[ {"type":"header", "h1": "The Catalan Political Compass", "h3": "Understanding Left-Right and Independence Stances through Data and Self-Assessment" },
-  {"type":"text","text":"Introduction...Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."}, 
-  {"type":"text","text":"Highlighting interesting results, e.g. specific group...Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."}, 
+[ {"type":"header", "tag": "header", "h1": "The Catalan Political Compass", "h3": "Understanding Left-Right and Independence Stances through Data and Self-Assessment" },
+  {"type":"text","tag": "introduction", "text":"Introduction...Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."}, 
+  {"type":"text", "tag": "explanation", "text":"Highlighting interesting results, e.g. specific group...Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."}, 
   {"type":"question", "question_type": "Multiple", "id": 1,
   "text":"What's the language you feel most comfortable with?",
   "options":[{"opt": "Catalan", "code": "CATALAN_ONLY", "value": 1},
@@ -113,6 +113,11 @@
             {"opt": "Neither nor", "code": "ACTITUD_MEDIAMBIENT","value": 0},
             {"opt": "Disagree", "code": "ACTITUD_MEDIAMBIENT","value": -1},
             {"opt": "Fully disagree", "code": "ACTITUD_MEDIAMBIENT","value": -2}]},
+
+{"type":"text", "text": "Result: You are part of the xy of the population. We can also view this differently..."},
+{"type": "text", "tag": "sociodemData","text": "Now you see how different sociodemographic groups think about independence and right/left positions. Do you want to compare yourself to your statistical peers? Then answer some more questions!"},
+
+
 {"type": "question", "question_type": "Multiple", "id": 16,
 "text": "What province do you live in?",
 "options": [{"opt": "Barcelona", "code": "PROVINCE", "value": 0},
@@ -142,8 +147,8 @@
 "options": [{"opt": "Woman", "code": "FEMALE", "value": 1},
             {"opt": "Man", "code": "FEMALE", "value": 0},
             {"opt": "Other", "code": "FEMALE", "value": 0}]},
-  {"type":"text", "text": "Result...this is where you would be positioned in the quiz"},
-  {"type": "text", "text": "Answer more questions and compare yourself to your peers!"},
+
+{"type":"text", "tag": "sociodemographicPos", "text": "We found your statistical peer group! You are pretty different to them!"},
   {"type": "question"," text": "How old are you?", "options":["10-30","31-50", "51-70", "71-90"]},
   {"type":"text", "text": "Ok, you are pretty different to your statistical peers. Press here to download and share your result!"}
  ]
