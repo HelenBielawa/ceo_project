@@ -2,10 +2,11 @@
     import AxisX from "./AxisX.svelte";
     import AxisY from "./AxisY.svelte";
     import Tooltip from "./Tooltip.svelte";
-    import sociodemData from "../data/testIndividuals.json";
+    import sociodemData from "../data/pred_individuals.json";
     import stepContent from "../data/stepContent.json";
     import politicalData from "../data/politicalClusters.json";
     import groupData from "../data/testData_group1.json";
+    import {extent} from "d3-array";
     import { fly } from "svelte/transition";
     import { scaleLinear } from "d3-scale";
 
@@ -14,37 +15,40 @@
     let individualsData = sociodemData.map(d => ({"RIGHT_PRED": d["RIGHT.PRED"],
                                 "INDEP_PRED": d["INDEP.PRED"],
                                 "NUM": 1
-                                      }));
+                                }));
 
     $: currentStepContent = stepContent[currentStep];
 
     $: console.log("in the Plot, currStep: ", currentStep);
     $: console.log("content: ", currentStepContent)
     
-    $: width = 600;
+    $: width = 100;
     $: height = 800;
 
-    $: data = politicalData.map(d => ({"RIGHT_PRED": d.RIGHT_Pred_Mean,
+    let data = politicalData.map(d => ({"RIGHT_PRED": d.RIGHT_Pred_Mean,
                                 "INDEP_PRED": d.INDEP_Pred_Mean,
                                 "NUM": d.Num_Users}));
+    console.log("0, data: ", data[0]);
+    console.log("0, politics: ", politicalData[0]);
     $: grdata  = [];
 
-
-
-
     const margin = { top:0, right: 0, bottom: 0, left: 0 };
-    const radius = 0.02;
+    const radius = 0.002;
   
     $: innerWidth = width - margin.left - margin.right;
     $: innerHeight = height - margin.top - margin.bottom;
   
     $: xScale = scaleLinear()
-      .domain([0, 10])
+      .domain([0, 100])
       .range([0, innerWidth]);
   
     $: yScale = scaleLinear()
-      .domain([0, 10])
+      .domain([0, 100])
       .range([innerHeight, 0]);
+
+    $: radiusScale = scaleLinear()
+        .domain(extent(data, d => +d.NUM))
+        .range([0, innerWidth/20])
   
     let hoveredData;
     let clickedGroup;
@@ -79,8 +83,8 @@
       let destinationX = xScale(d.RIGHT_Pred_Mean);
       let destinationY = yScale(d.INDEP_Pred_Mean);
 
-      let originX = xScale(individualsData.filter(item => individualsData.indexOf(item) == d.Cluster)[0].RIGHT_PRED * 10);
-      let originY = yScale(individualsData.filter(item => individualsData.indexOf(item) == d.Cluster)[0].INDEP_PRED * 10);
+      let originX = xScale(individualsData.filter(item => individualsData.indexOf(item) == d.Cluster)[0].RIGHT_PRED);
+      let originY = yScale(individualsData.filter(item => individualsData.indexOf(item) == d.Cluster)[0].INDEP_PRED);
 
       const deltaX = -destinationX + originX;
       const deltaY = -destinationY + originY;
@@ -103,22 +107,23 @@
     on:mouseleave={() => hoveredData = null}>
 
       <g class="inner-chart" transform="translate({margin.left}, {margin.top})">
-          <AxisY width={innerWidth} {yScale} {xScale} {height}/>
+          <AxisY width={innerWidth} {yScale} {xScale}/>
           <AxisX height={innerHeight} width={innerWidth} {xScale} {yScale} />
           {#each data.sort((a, b) => a.RIGHT_PRED - b.RIGHT_PRED) as d, index}
             <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
             <circle 
               transition:fly={currentStatus == "groupViz" ? { x: -100, opacity: 50, duration: 500 }
                       : {...getTransitionParams(d)}}
-              cx={xScale(d.RIGHT_PRED * 10)}
-              cy={yScale(d.INDEP_PRED * 10)}
+              cx={xScale(d.RIGHT_PRED)}
+              cy={yScale(d.INDEP_PRED)}
               fill="black"
               stroke="black"
-              r={hoveredData == d ? radius * d.NUM * 1.5 : radius * d.NUM * 1.5}
-              opacity={hoveredData ? (hoveredData == d ? 1 : 0.45) : currentStatus == "groupViz" ? 0.2 : 0.6}
-              on:mouseover={() => currentStatus === "sociodemViz"? hoveredData = sociodemData[index]
+              r={hoveredData == d ? radiusScale(d.NUM) : radiusScale(d.NUM) * 1.5}
+              opacity={hoveredData ? (hoveredData === d ? 1 : 0.45) : 0.6}
+              on:mouseover={() => currentStatus === "sociodemViz"? hoveredData = sociodemData.find(sd => sd["INDEP.PRED"] === d.INDEP_PRED)
+                            : hoveredData = politicalData.find(pd => pd.INDEP_Pred_Mean === d.INDEP_PRED)}
+              on:focus={() => currentStatus === "sociodemViz"? hoveredData = sociodemData[index]
                             : hoveredData = politicalData[index]}
-              on:focus={() => hoveredData = d}
               on:click={() => handleCircleClick(individualsData.indexOf(d))}
               on:keydown={(event) => {
                 if (event.key === 'Enter') {
@@ -145,7 +150,7 @@
       </g>
     </svg>
     {#if hoveredData}
-      <Tooltip {xScale} {yScale} {width} data={hoveredData} {currentStatus} />
+      <Tooltip {xScale} {yScale} {width} {height} data={hoveredData} {currentStatus} />
     {/if}
   </div>
   

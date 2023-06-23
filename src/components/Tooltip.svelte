@@ -3,33 +3,38 @@
     export let xScale;
     export let yScale;
     export let width;
+    export let height;
     export let currentStatus;
     import { fly } from "svelte/transition";
   import App from "../App.svelte";
   import AxisX from "./AxisX.svelte";
   import AxisY from "./AxisY.svelte";
   import {Cursor} from "svelte-bootstrap-icons";
- 
-    console.log("entering tooltip, this is its data: ", data)
-    $: x = xScale(data.RIGHT_Pred_Mean);
-    $: y = yScale(data.INDEP_Pred_Mean * 10);
-  
+
+
     let tooltipWidth;
+    let tooltipHeight;
+
+    $: x = xScale(data.RIGHT_Pred_Mean);
+    $: y = yScale(data.INDEP_Pred_Mean);
   
-    const xNudge = 15;
-    const yNudge = 30;
-  
-    $: xPosition =
-      x + tooltipWidth > width ? x - tooltipWidth - xNudge : x + xNudge;
-    $: yPosition = y + yNudge;
+    const xNudge = 20; // shift it a bit to the right
+    const yNudge = 20; // shift it a bit down
+
+    $: xPos = data.RIGHT_Pred_Mean > 50? x - tooltipWidth - xNudge :
+              x + xNudge
+
+    $: yPos = data.INDEP_Pred_Mean > 50? y + yNudge :
+              y - tooltipHeight - yNudge
 
     </script>
   
   <div
     class="tooltip"
     transition:fly={{ y: 10 }}
-    style="position: absolute; top: {yPosition}px; left: {xPosition}px"
+    style="position: absolute; top: {yPos}px; left: {xPos}px"
     bind:clientWidth={tooltipWidth}
+    bind:clientHeight={tooltipHeight}
   >
     {#if currentStatus == "groupViz"}
       Click on the circle to get back to the main chart.
@@ -52,10 +57,11 @@
       <Cursor/> See all {data.Num_Users} members</p>
     {:else if currentStatus == "politicalViz"}
     <p>
-      {data.NUM} people belong to this group.
-      <b>age:</b> {Math.round(data.AGE_prop * 100)}% are {data.AGE} years old.<br>
-      <b>education:</b> {Math.round(data.EDUCATION_prop * 100)}% are {data.EDUCATION_cat} educated<br>
-      <b>language:</b>{Math.round(data.EDUCATION_prop * 100)}% speak {data.LANGUAGE_cat} language<br>
+      {data.Num_Users} people belong to this group.<br>
+      <b>age:</b> {Math.round(data.AGE_prop)}% are {data.AGE_cat} years old.<br>
+      <b>education:</b> {Math.round(data.EDUCATION_prop)}% finished
+      {data.EDUCATION_cat === 0 ? "none or primary" : data.EDUCATION_cat === 1 ? "secondary" : "superior"} studies<br>
+      <b>language:</b>{Math.round(data.LANGUAGE_prop)}% {data.LANGUAGE_cat === 0? "don't " : ""}prefer to speak Catalan<br>
       <br>
     {/if}
   </div>
