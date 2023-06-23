@@ -81,7 +81,7 @@ data_imp_pred <- data_imp_pred %>%
 
 clustering_data = data_imp_pred %>% select(INDEP.PRED, RIGHT.PRED)
 
-k = 15  # Number of clusters you want to create
+k = 25  # Number of clusters you want to create
 set.seed(123) 
 clusters = kmeans(clustering_data, centers = k, nstart = 20, iter.max = 300, algorithm = "Lloyd")
 
@@ -145,11 +145,12 @@ ggplot(data = sample_n(data_imp_pred, 1000)) +
   geom_violin(aes(x = INDEP.PRED, y = factor(SELF_RULE)))
 
 
-ggplot(data= sample_n(data_imp_pred, 1000)) +
+ggplot(data = sample_n(data_imp_pred, 1000)) +
   geom_point(aes(x = RIGHT, y = RIGHT.PRED)) +
-  scale_y_continuous(breaks = 0:10, limits = c(0,10)) +
-  scale_x_continuous(breaks = 0:10, limits = c(0,10)) +
+  scale_y_continuous(breaks = seq(0, 1, 0.1), limits = c(0, 1)) +
+  scale_x_continuous(breaks = 0:10, limits = c(0, 10)) +
   geom_smooth(aes(x = RIGHT, y = RIGHT.PRED))
+
 
 
 library(ggplot2)
@@ -204,6 +205,7 @@ BORN_ABROAD  = 0
 SELF_DETERM = 3
 CONFI_POL_CAT = 7
 CONFI_POL_ESP = 1
+BELONGING = 2
 
 # Calculation to get the score in the indy axis
 
@@ -260,6 +262,8 @@ USER %>%
 
 library(jsonlite)
 json_data = toJSON(clustered_data)
-write(json_data, file = "output.json")
+write(json_data, file = "clusters.json")
 
 
+json_data_2 = toJSON(data_with_clusters)
+write(json_data_2, file = "pred_individuals.json")
