@@ -7,8 +7,9 @@
     export let id;
     export let step;
 
+    export let thisUserData = QuizUserData;
+
    $: answer = "";
-    let thisUserData = QuizUserData;
 
     function handleAnswer(answer){
         //adding the corresponding code to the user data table
@@ -25,13 +26,12 @@
         return slot;
       })
     }
-    
 </script>
   
   <div
     class="question-{type}"
   >
-    <p><b>Question {id}/10: </b>{text}</p>
+    <p><b>Question {id}/15: </b>{text}</p>
     {#if step.question_type === "Multiple"}
         <fieldset>
             {#each options as option, i}
@@ -47,7 +47,7 @@
             {/each}
         </fieldset>
     {:else if step.question_type === "Range"}
-        <input type="range" id="rangeInput" min="0" max="10" value="5" >        
+        <input type="range" id="rangeInput" min="0" max="10" value="5">        
     {/if}
 <!--     <p><b>Answer: </b>{answer}</p> -->
   </div>

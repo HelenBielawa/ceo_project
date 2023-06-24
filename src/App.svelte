@@ -3,23 +3,97 @@ import Scrolly from "./helpers/Scrolly.svelte";
 import GridBackground from "./components/GridBackground.svelte";
 import Scatterplot from "./components/Scatterplot.svelte";
 import Question from "./components/Question.svelte";
-import StepContent from "./data/stepContent.json";
-import {Compass, WindowDash} from "svelte-bootstrap-icons";
+import StepContentEnglish from "./data/stepContent.json";
+import StepContentCatalan from "./data/stepContentCatalan.json";
+import socioClusterData from "./data/pred_individuals.json";
+import politicalClusterData from "./data/politicalClusters.json";
+import groupData from "./data/testData_group1.json";
+import {Compass, FileEarmarkFont} from "svelte-bootstrap-icons";
+
+let isEnglish = true; // Default language is English
+let StepContent = StepContentEnglish;
+
+function toggleLanguage() {
+  isEnglish = !isEnglish;
+  if (isEnglish){
+    StepContent = StepContentEnglish;
+  }
+  else{
+    StepContent = StepContentCatalan;
+  }
+}
 
 $: currentStep = 0;
+let currentStepContent;
+let thisUserData;
+$: console.log("main app this userdata: ", thisUserData)
 $: console.log("in the main app, curr Step: ", currentStep);
+$: currentStatus = "politicalViz";
+
+let individualsData = socioClusterData.map(d => ({"RIGHT_PRED": d["RIGHT.PRED"],
+                                "INDEP_PRED": d["INDEP.PRED"],
+                                "NUM": 1
+                                }));
+
+let politicalData = politicalClusterData.map(d => ({"RIGHT_PRED": d.RIGHT_Pred_Mean,
+                                  "INDEP_PRED": d.INDEP_Pred_Mean,
+                                  "NUM": d.Num_Users}));
+
+let sociodemData = socioClusterData.map(d => ({"RIGHT_PRED": d["RIGHT.PRED"],
+                                                        "INDEP_PRED": d["INDEP.PRED"],
+                                                        "NUM": 1}));
+
+let data = politicalData;
 
 $: answer = [];
 let currentAnswer;
 
+
+$: {
+      currentStepContent = StepContent[currentStep];
+      console.log("we are checking the stepContent!")
+        if(currentStepContent){
+          if ("tag" in currentStepContent){
+          console.log("This step has a tag")
+          if (currentStepContent.tag === "sociodemData"){
+            console.log("Status has changed")
+            data = sociodemData;
+          }
+          if(currentStepContent.tag === "userPolData"){
+            data.push(thisUserPos(thisUserData));
+          }
+          else{
+            console.log("Data stays political")
+            data = politicalData;
+          }
+        }
+        else{
+          console.log("Data stays political")
+          data = politicalData;
+        }
+        }
+      }
+
+  function thisUserPos(thisUserData){
+    let INDEP_PRED = 70;
+    let RIGHT_PRED = 70;
+    return {"INDEP_PRED": INDEP_PRED,
+            "RIGHT_PRED": RIGHT_PRED,
+          "NUM": 0}
+  }
 </script>
 
 <body>
 
+  <button class="language-switcher" on:click={toggleLanguage}>
+    <FileEarmarkFont/>
+    {isEnglish ? 'Catalan' : 'English'}
+  </button>
+
 <div class="flex">
   <div class="chart">
   <GridBackground/>
-  <Scatterplot {currentStep}/>
+  <Scatterplot {currentStep} {data} {currentStatus}/>
   </div>
 
   <div class="aside">
@@ -36,7 +110,8 @@ let currentAnswer;
               {:else if  step.type === "question"}
                 <Question text = {step.text} id= {step.id} type = {step.question_type}
                 options = {step.options.map(o => o.opt)}
-                {step}/>
+                {step}
+                bind:thisUserData/>
               {/if}
             </div>
 
@@ -153,6 +228,16 @@ body {
     bottom: 20px;
     position: relative;
     transform-origin: center center;
+  }
+  .language-switcher {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    background: #ccc; /* Adjust background color as needed */
+    padding: 0.5rem;
+    border-radius: 3px;
+    color: black;
   }
   
   @keyframes spin {
