@@ -5,15 +5,16 @@ load('data processing/data_for_analysis.RData')
 
 glimpse(data_imp)
 # VARIABLES CAN BE SELECTED
-frm_indep = INDEP ~ CATALAN_ONLY + SPANISH_ONLY + SPAIN_ONLY + BORN_CATALONIA + BORN_ABROAD + 
-  SELF_DETERM + I(CONFI_POL_CAT-CONFI_POL_ESP) + BELONGING
+count(data_imp, SELF_RULE)
+frm_indep = SELF_RULE/3 ~ CATALAN_ONLY + SPANISH_ONLY + SPAIN_ONLY + BORN_CATALONIA + BORN_ABROAD + 
+  SELF_DETERM + BELONGING
 
-
-frm_right = RIGHT ~ ACTITUD_ECONOMIA + ACTITUD_IMPOSTOS + ACTITUD_INGRESSOS + 
+count(data_imp, RIGHT)
+frm_right = RIGHT/10 ~ ACTITUD_ECONOMIA + ACTITUD_IMPOSTOS + ACTITUD_INGRESSOS + 
   ACTITUD_AUTORITAT + ACTITUD_RELIGIO + ACTITUD_OBEIR + ACTITUD_IMMIGRACIO + 
   ACTITUD_MEDIAMBIENT
 
-m_indep.all = glm(frm_indep, data=data_imp, family = 'binomial')
+m_indep.all = lm(frm_indep, data=data_imp)
 m_right.all = lm(frm_right, data=data_imp)
 
 #anova(m_indep.all, update(m_indep.all, .~.-SELF_DETERM), test = 'LRT')
@@ -25,7 +26,7 @@ data_imp_pred = data_imp %>%
     INDEP.PRED = predict(m_indep.all, type = 'response'),
     RIGHT.PRED = predict(m_right.all)
   ) %>%
-  select(AGE, INDEP, RIGHT, INDEP.PRED, RIGHT.PRED, PROVINCE, MUNICIPALITY, LANGUAGE, EDUCATION)
+  select(AGE, INDEP, RIGHT, INDEP.PRED, RIGHT.PRED, PROVINCE, MUNICIPALITY, LANGUAGE, EDUCATION, SELF_RULE)
 
 # Define age range groups
 data_imp_pred <- data_imp_pred %>%
@@ -38,22 +39,28 @@ data_imp_pred <- data_imp_pred %>%
 
 # Group by gender and age range and calculate cluster means
 clustered_data <- data_imp_pred %>%
-  group_by(AGE_RANGE, PROVINCE, MUNICIPALITY, LANGUAGE, EDUCATION) %>%
+  group_by(AGE_RANGE, LANGUAGE, EDUCATION) %>%
   summarise(INDEP_Pred_Mean = mean(INDEP.PRED),
             RIGHT_Pred_Mean = mean(RIGHT.PRED),
             Num_Users = n()) %>%
   ungroup()
 
+clustered_data <- clustered_data %>%
+  mutate(Cluster = row_number())
+
+data_with_clusters <- data_imp_pred %>%
+  mutate(Cluster = clustered_data$Cluster[match(paste(AGE_RANGE, LANGUAGE, EDUCATION), paste(clustered_data$AGE_RANGE, clustered_data$LANGUAGE, clustered_data$EDUCATION))])
+
 
 data_imp_pred
 library(ggplot2)
-ggplot(data= sample_n(data_imp_pred, 1000)) +
-  geom_violin(aes(x = factor(INDEP), y = INDEP.PRED))
+ggplot(data = sample_n(data_imp_pred, 1000)) +
+  geom_violin(aes(x = INDEP.PRED, y = factor(SELF_RULE)))
 
-ggplot(data= sample_n(data_imp_pred, 1000)) +
+ggplot(data = sample_n(data_imp_pred, 1000)) +
   geom_point(aes(x = RIGHT, y = RIGHT.PRED)) +
-  scale_y_continuous(breaks = 0:10, limits = c(0,10)) +
-  scale_x_continuous(breaks = 0:10, limits = c(0,10)) +
+  scale_y_continuous(breaks = seq(0, 1, 0.1), limits = c(0, 1)) +
+  scale_x_continuous(breaks = 0:10, limits = c(0, 10)) +
   geom_smooth(aes(x = RIGHT, y = RIGHT.PRED))
 
 cat(paste(sprintf("'%s'", union(attr(m_indep.all$terms ,"term.labels"), attr(m_right.all$terms ,"term.labels"))), collapse = ', '))
@@ -100,12 +107,13 @@ BORN_ABROAD  = 0
 SELF_DETERM = 3
 CONFI_POL_CAT = 7
 CONFI_POL_ESP = 1
+BELONGING = 2
 
 # Calculation to get the score in the indy axis
 
-LP =-2.003 * 1 + 1.727 * CATALAN_ONLY -0.915 * SPANISH_ONLY + 
-  0.241 * SPAIN_ONLY + 0.715 * BORN_CATALONIA + 0.847 * BORN_ABROAD + 
-  0.286 * SELF_DETERM -0.011 * (CONFI_POL_CAT - CONFI_POL_ESP)
+LP = 0.156 * 1 + 0.075 * CATALAN_ONLY -0.048 * SPANISH_ONLY + 
+  0.023 * SPAIN_ONLY + 0.016 * BORN_CATALONIA + 0.049 * BORN_ABROAD + 
+  0.011 * SELF_DETERM + 0.166 * BELONGING
 
 1/(1+exp(-LP))
 
@@ -125,11 +133,10 @@ ACTITUD_MEDIAMBIENT = 1
 
 # Calculation to get the score in the left-right axis
 
-LP = 4.552 * 1 + 0.032 * ACTITUD_ECONOMIA + 0.102 * ACTITUD_IMPOSTOS +
-  -0.219 * ACTITUD_INGRESSOS + 0.203 * ACTITUD_AUTORITAT +
-  -0.235 * ACTITUD_RELIGIO + 0.185 * ACTITUD_OBEIR + 
-  0.150 * ACTITUD_IMMIGRACIO + 0.062 * ACTITUD_MEDIAMBIENT
-(LP - 2) / (8-2)
+LP = 0.457 * 1 + 0.000 * ACTITUD_ECONOMIA + 0.009 * ACTITUD_IMPOSTOS 
+-0.023 * ACTITUD_INGRESSOS + 0.021 * ACTITUD_AUTORITAT -0.024 * 
+  ACTITUD_RELIGIO + 0.019 * ACTITUD_OBEIR + 0.018 * ACTITUD_IMMIGRACIO
++ 0.008 * ACTITUD_MEDIAMBIENT
 
 PREDICTED = data_imp %>%
   mutate(
@@ -149,8 +156,36 @@ USER %>%
   # geom_density_2d_filled(aes(x = INDEP.PRED, y = RIGHT.PRED))
 
 
-library(jsonlite)
-json_data = toJSON(clustered_data)
-write(json_data, file = "output.json")
+#Keep only some variables and remove decimals, only keep 2
 
+
+
+data_with_clusters_reduced <- data_with_clusters %>%
+  select(INDEP.PRED, RIGHT.PRED, Cluster) %>%
+  mutate(INDEP.PRED = round(INDEP.PRED*100, 2)) %>%
+  mutate(RIGHT.PRED = round(RIGHT.PRED*100, 2))
+
+
+#Remove decimals, only keep 2, multiply by 100
+
+clustered_data_reduced <- clustered_data %>%
+  mutate(
+    INDEP_Pred_Mean = INDEP_Pred_Mean * 100,
+    RIGHT_Pred_Mean = RIGHT_Pred_Mean * 100
+  ) %>%
+  mutate(
+    INDEP_Pred_Mean = round(INDEP_Pred_Mean, 2),
+    RIGHT_Pred_Mean = round(RIGHT_Pred_Mean, 2)
+  )
+
+
+
+
+library(jsonlite)
+json_data = toJSON(clustered_data_reduced)
+write(json_data, file = "clusters_socioeconomic.json")
+
+
+json_data_2 = toJSON(data_with_clusters_reduced)
+write(json_data_2, file = "pred_individuals_socioeconomic.json")
 
