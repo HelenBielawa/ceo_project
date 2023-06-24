@@ -5,36 +5,29 @@
     import sociodemData from "../data/pred_individuals.json";
     import stepContent from "../data/stepContent.json";
     import politicalData from "../data/politicalClusters.json";
+    import individualsData from "../data/pred_individuals.json";
     import groupData from "../data/testData_group1.json";
     import {extent} from "d3-array";
     import { fly } from "svelte/transition";
     import { scaleLinear } from "d3-scale";
+    import {onMount} from "svelte";
 
     export let currentStep;
+    export let data;
+    export let currentStatus;
 
-    let individualsData = sociodemData.map(d => ({"RIGHT_PRED": d["RIGHT.PRED"],
-                                "INDEP_PRED": d["INDEP.PRED"],
-                                "NUM": 1
-                                }));
+    let hoveredData;
+    let clickedGroup;
 
     $: currentStepContent = stepContent[currentStep];
-
-    $: console.log("in the Plot, currStep: ", currentStep);
-    $: console.log("content: ", currentStepContent)
-    
+   
     $: width = 100;
     $: height = 800;
 
-    let data = politicalData.map(d => ({"RIGHT_PRED": d.RIGHT_Pred_Mean,
-                                "INDEP_PRED": d.INDEP_Pred_Mean,
-                                "NUM": d.Num_Users}));
-    console.log("0, data: ", data[0]);
-    console.log("0, politics: ", politicalData[0]);
     $: grdata  = [];
 
     const margin = { top:0, right: 0, bottom: 0, left: 0 };
-    const radius = 0.002;
-  
+ 
     $: innerWidth = width - margin.left - margin.right;
     $: innerHeight = height - margin.top - margin.bottom;
   
@@ -48,12 +41,8 @@
 
     $: radiusScale = scaleLinear()
         .domain(extent(data, d => +d.NUM))
-        .range([0, innerWidth/20])
+        .range([0, innerWidth/15])
   
-    let hoveredData;
-    let clickedGroup;
-    let currentStatus = "politicalViz";
-
     const loadGroupJSON = (groupID) => {
     const url = "./src/data/testData_group"+ groupID + ".json";
     return fetch(url)
@@ -101,8 +90,8 @@
   <div
     class="chart-container"
     bind:clientWidth={width}
-    bind:clientHeight={height}
-  >
+    bind:clientHeight={height}>
+
     <svg {width} {height}
     on:mouseleave={() => hoveredData = null}>
 
@@ -116,10 +105,12 @@
                       : {...getTransitionParams(d)}}
               cx={xScale(d.RIGHT_PRED)}
               cy={yScale(d.INDEP_PRED)}
-              fill="black"
-              stroke="black"
-              r={hoveredData == d ? radiusScale(d.NUM) : radiusScale(d.NUM) * 1.5}
-              opacity={hoveredData ? (hoveredData === d ? 1 : 0.45) : 0.6}
+              fill={d.NUM === 0 ? "red": "black"}
+              r={d.NUM === 0 ? innerWidth/20 : radiusScale(d.NUM)}
+              opacity={hoveredData ?
+                        currentStatus === "politicalViz"?
+                        d.RIGHT_PRED === hoveredData.RIGHT_Pred_Mean ? 1 : 0.45
+                        : 0.6 : 0.6}
               on:mouseover={() => currentStatus === "sociodemViz"? hoveredData = sociodemData.find(sd => sd["INDEP.PRED"] === d.INDEP_PRED)
                             : hoveredData = politicalData.find(pd => pd.INDEP_Pred_Mean === d.INDEP_PRED)}
               on:focus={() => currentStatus === "sociodemViz"? hoveredData = sociodemData[index]
@@ -172,6 +163,10 @@
       /*transition: r 300ms ease, opacity 500ms ease;*/
       cursor: pointer;
       pointer-events: all;
+    }
+    button{
+      z-index: 9999;
+      position: fixed;
     }
   </style>
   

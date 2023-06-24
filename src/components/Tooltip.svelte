@@ -6,10 +6,7 @@
     export let height;
     export let currentStatus;
     import { fly } from "svelte/transition";
-  import App from "../App.svelte";
-  import AxisX from "./AxisX.svelte";
-  import AxisY from "./AxisY.svelte";
-  import {Cursor} from "svelte-bootstrap-icons";
+    import {Cursor} from "svelte-bootstrap-icons";
 
 
     let tooltipWidth;
@@ -58,9 +55,9 @@
     {:else if currentStatus == "politicalViz"}
     <p>
       {data.Num_Users} people belong to this group.<br>
-      <b>age:</b> {Math.round(data.AGE_prop)}% are {data.AGE_cat} years old.<br>
+      <b>age:</b> {Math.round(data.AGE_prop)}% are {data.AGE_cat} years old<br>
       <b>education:</b> {Math.round(data.EDUCATION_prop)}% finished
-      {data.EDUCATION_cat === 0 ? "none or primary" : data.EDUCATION_cat === 1 ? "secondary" : "superior"} studies<br>
+      {data.EDUCATION_cat === "0" ? "none or primary" : data.EDUCATION_cat === "1" ? "secondary" : "superior"} studies<br>
       <b>language:</b>{Math.round(data.LANGUAGE_prop)}% {data.LANGUAGE_cat === 0? "don't " : ""}prefer to speak Catalan<br>
       <br>
     {/if}
