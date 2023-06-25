@@ -135,7 +135,7 @@ write(json_data_imp_pred_political, file = 'data processing/json_political_clust
 variables_mean_values = data_imp %>%
   as_tibble() %>%
   select(CATALAN_ONLY, SPANISH_ONLY, SPAIN_ONLY, BORN_CATALONIA, BORN_ABROAD, SELF_DETERM,
-       BELONGING, ACTITUD_ECONOMIA, ACTITUD_IMPOSTOS, ACTITUD_INGRESSOS, 
+         BELONGING, ACTITUD_ECONOMIA, ACTITUD_IMPOSTOS, ACTITUD_INGRESSOS, 
          ACTITUD_AUTORITAT, ACTITUD_RELIGIO, ACTITUD_OBEIR, ACTITUD_IMMIGRACIO, 
          ACTITUD_MEDIAMBIENT) %>%
   pivot_longer(everything()) %>%
@@ -144,3 +144,24 @@ variables_mean_values = data_imp %>%
 
 json_variables_mean_values = toJSON(variables_mean_values)
 write(json_variables_mean_values, file = 'data processing/json_variables_mean_values.json')
+
+
+# To obtain tables to be used in javascript for calculating the empirical
+# cumulative distribution
+#
+x_pred_indep = predict(m_indep.all)
+dindep = tibble(
+  x = sort(unique(x_pred_indep)),
+  quantile = round(sapply(x, function(x_) mean(x_pred_indep<=x_)), 4))
+
+x_pred_right = predict(m_right.all)
+dright = tibble(
+  x = sort(unique(x_pred_right)),
+  quantile = round(sapply(x, function(x_) mean(x_pred_right<=x_)), 4)) %>%
+  slice(seq(1,21133,20))
+
+json_dindep = toJSON(dindep)
+write(json_dindep, file = "data processing/json_dindep.json")
+
+json_dright = toJSON(dright)
+write(json_dright, file = "data processing/json_dright.json")
