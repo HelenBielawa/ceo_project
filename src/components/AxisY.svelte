@@ -13,7 +13,8 @@
         stroke={tick == 50 ? 'black' : 'transparent'}
         stroke-width={tick === 50 ? "2px" : "1px"}/> 
         <text x={xScale(50)}
-        dy={tick === 100 ? 15 : 0}>{tick === 50 ? "" : tick+"%"}</text>
+        dy={tick === 100 ? 15 : 0}
+        ></text>
       </g>
     {/each}
 
@@ -21,8 +22,8 @@
     y={yScale(100)} 
     x={xScale(50)} 
     text-anchor="end"
-    dy=15>Pro Independence
-  </text>
+    dy=15>Pro Independence 
+  </text><i class="arrow up"></i>
 <text
   y={yScale(0)} 
   x={xScale(50)}
@@ -37,4 +38,31 @@
   font-family: 'Montserrat', sans-serif;
   font-weight: 300;
   }
+
+  .arrow {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+  }
+
+  .right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+  }
+
+  .left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+  }
+
+  .up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+  }
+
+  .down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+  } 
 </style>

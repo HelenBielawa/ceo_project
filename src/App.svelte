@@ -3,17 +3,20 @@ import Scrolly from "./helpers/Scrolly.svelte";
 import GridBackground from "./components/GridBackground.svelte";
 import Scatterplot from "./components/Scatterplot.svelte";
 import Question from "./components/Question.svelte";
+import Questionaire from "./components/Questionaire.svelte";
 import StepContentEnglish from "./data/stepContent.json";
 import StepContentCatalan from "./data/stepContentCatalan.json";
 import socioClusterData from "./data/clusters_socioeconomic.json";
 import politicalClusterData from "./data/politicalClusters.json";
 import projectionRight from "./data/projectionTable_RIGHT.json";
 import projectionIndep from "./data/projectionTable_INDEP.json";
-import thisUserData from "./data/quizUserData.json";
+import QuizUserData from "./data/quizUserData.json";
 import {Compass, FileEarmarkFont} from "svelte-bootstrap-icons";
 
 let isEnglish = true; // Default language is English
 let StepContent = StepContentEnglish;
+
+let thisUserData = QuizUserData;
 
 function toggleLanguage() {
   isEnglish = !isEnglish;
@@ -150,10 +153,11 @@ $: {
                 <Question text = {step.text} id= {step.id} type = {step.question_type}
                 options = {step.options.map(o => o.opt)}
                 {step}
-                {thisUserData}/>
+                bind:thisUserData/>
+              {:else if  step.type === "questionaire"}
+                <Questionaire language = {isEnglish} bind:thisUserData/>
               {/if}
             </div>
-
             <div class="scroll-indicator-container">
               <div class="compass">
               <Compass class="compass"/>
@@ -161,8 +165,6 @@ $: {
         </div>
           </div>
        {/each}  
-
-
  </Scrolly>
 
 </div>

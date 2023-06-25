@@ -84,9 +84,6 @@ $: {
   }
 
   function thisUserPos(thisUserData){
-    console.log("thisUserPos");
-    console.log(thisUserData);
-    console.log(thisUserData.CATALAN_ONLY);
 
     function getValue(arr, code){
       console.log(arr);
@@ -99,7 +96,6 @@ $: {
       return 0;
     }
 
-    console.log(getValue(thisUserData,"CATALAN_ONLY"));
     //predicting the independece-stance
     let INDEP_PRED = 0.156 * 1
                     + 0.075 * getValue(thisUserData,"CATALAN_ONLY")
@@ -119,10 +115,6 @@ $: {
                     + 0.019 * getValue(thisUserData,"ACTITUD_OBEIR")
                     + 0.018 * getValue(thisUserData,"ACTITUD_IMMIGRACIO")
                     + 0.008 * getValue(thisUserData,"ACTITUD_MEDIAMBIENT");
-
-    console.log("Predictions");
-    console.log(INDEP_PRED * 100);
-    console.log(projectionIndep);
 
     //finding out the position in the chart
     let INDEP_POS = findClosest(INDEP_PRED, projectionIndep);

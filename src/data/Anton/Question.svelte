@@ -1,5 +1,4 @@
 <script>
-    import QuizUserData from "../data/quizUserData.json";
 
     export let text;
     export let type;
@@ -8,11 +7,6 @@
     export let step;
 
     export let thisUserData;
-
-    console.log("Question!!!");
-    console.log(thisUserData);
-    console.log(step);
-    console.log(id);
 
     $:currentAnswer = thisUserData.filter(d => d.question_id === id).length > 0? 
             thisUserData.find(d => d.question_id === id).answer : "";

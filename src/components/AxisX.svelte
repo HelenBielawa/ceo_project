@@ -8,8 +8,11 @@
   </script>
   
   <g class="axis" transform="translate(0, {height})">
+    <path d="M 0 -10 L 10 0 L 0 10" class="arrow left" />
+    <path d="M {width} -10 L {width - 10} 0 L {width} 10" class="arrow right" />  
     {#each xTicks as tick, index}
       <g class='tick' transform="translate({xScale(tick)}, 0)">
+
         <line x1={0}
         x2={0}
         y1={-yScale(0)}
@@ -18,17 +21,17 @@
         stroke-width={tick === 50 ? "2px" : "1px"}/>
         <text y={-yScale(50)} dy={9}
         text-anchor={tick === 0 ? "start" : index === 100 ? "end" : "middle"}
-        dominant-baseline="middle">{tick === 50 ? "" : tick+"%"}</text>
+        dominant-baseline="middle"></text>
       </g>
     {/each}
     <text class="axis-title" 
-          y={-yScale(50)} 
+          y={-yScale(50)-3} 
           x={width} 
           text-anchor="end"
-      >Right</text
+      >Right </text
     >
     <text class="axis-title" 
-    y={-yScale(50)} 
+    y={-yScale(50)-3} 
     x=0 
     text-anchor="left">
     Left</text
@@ -41,4 +44,17 @@
   font-family: 'Montserrat', sans-serif;
   font-weight: 300;
   }
+
+  .arrow {
+    fill: black;
+  }
+
+  .arrow.left {
+    transform: rotate(180deg);
+  }
+
+  .arrow.right {
+    transform: rotate(0deg);
+  }
+
 </style>
