@@ -92,3 +92,42 @@ social_clustered_data_reduced = social_clustered_data %>%
 json_social_clustered_data = toJSON(social_clustered_data_reduced)
 write(json_social_clustered_data, file = 'data processing/json_social_clustered_data.json')
 
+ggplot(data=social_clustered_data_reduced) +
+  geom_point(aes(x=RIGHT.QUANT_Pred_Mean, y = INDEP.QUANT_Pred_Mean, size = Perc_Users)) +
+  labs(title = 'Social Clusters') +
+  coord_cartesian(xlim = c(0,100), ylim = c(0,100))
+
+ggplot(data=filter(data_imp_pred_reduced, Social_Cluster == 12)) +
+  geom_point(aes(x=RIGHT, y = INDEP), alpha=0.2) +
+  labs(title = 'Inviduals') +
+  coord_cartesian(xlim = c(0,100), ylim = c(0,100))
+
+
+
+### POLITICAL CLUSTERS
+k = 25  # Number of clusters you want to create
+set.seed(123) 
+clusters = kmeans(data_imp_pred_reduced[,c('INDEP', 'RIGHT')], centers = k, nstart = 20, iter.max = 300, algorithm = "Lloyd")
+
+data_imp_pred_reduced = data_imp_pred_reduced %>%
+  mutate(Political_Cluster = clusters$cluster)
+
+data_imp_pred_political = data_imp_pred_reduced %>%
+  group_by(Political_Cluster) %>%
+  summarise(INDEP.QUANT_Pred_Mean = round(mean(INDEP), 2),
+            RIGHT.QUANT_Pred_Mean = round(mean(RIGHT), 2),
+            Num_Users = n()) %>%
+  ungroup()  %>%
+  mutate(
+    Perc_Users = 100 * Num_Users/sum(Num_Users),
+    Num_Users = NULL
+  ) %>%
+  arrange(Political_Cluster)
+
+ggplot(data=data_imp_pred_political) +
+  geom_point(aes(x=RIGHT.QUANT_Pred_Mean, y = INDEP.QUANT_Pred_Mean, size = Perc_Users)) +
+  labs(title = 'Political Clusters') +
+  coord_cartesian(xlim = c(0,100), ylim = c(0,100))
+
+json_data_imp_pred_political = toJSON(data_imp_pred_political)
+write(json_data_imp_pred_political, file = 'data processing/json_political_clusters.json')
