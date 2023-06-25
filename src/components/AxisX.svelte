@@ -25,13 +25,13 @@
           y={-yScale(50)} 
           x={width} 
           text-anchor="end"
-      >More right</text
+      >Right</text
     >
     <text class="axis-title" 
     y={-yScale(50)} 
     x=0 
     text-anchor="left">
-    More left</text
+    Left</text
     >
   </g>
 

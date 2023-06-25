@@ -28,7 +28,7 @@
   x={xScale(50)}
   text-anchor="end"
   dy=-15>
-  Contra Independence
+  Pro Spain
 </text>
 </g>
 

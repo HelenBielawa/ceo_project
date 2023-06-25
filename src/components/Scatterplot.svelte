@@ -5,7 +5,7 @@
     import stepContent from "../data/stepContent.json";
     import socioClusterData from "../data/clusters_socioeconomic.json";
     import politicalClusterData from "../data/politicalClusters.json";
-    import individualsData from "../data/pred_individuals_socioeconomic.json";
+    import individualsData from "../data/pred_individuals_social.json";
     import {extent} from "d3-array";
     import { fly } from "svelte/transition";
     import { scaleLinear } from "d3-scale";
@@ -17,14 +17,14 @@
     export let currentStatus;
 
     let hoveredData;
-    let clickedGroup;
+    let groupViz = false;
 
     $: currentStepContent = stepContent[currentStep];
    
     $: width = 100;
     $: height = 800;
 
-    $: grdata  = [];
+    $: grData  = [];
 
     const margin = { top:0, right: 0, bottom: 0, left: 0 };
  
@@ -51,19 +51,22 @@
     };
 
     function handleCircleClick(cluster) {
-      if (currentStatus == "generalViz" || currentStatus == "sociodemViz"){
-        currentStatus = "groupViz";
+      groupViz = ! groupViz;
+      if (groupViz){
         console.log("click "+cluster)
-        grdata = individualsData.filter(d => d.Cluster === cluster);
-        console.log(grdata);
+        let grData = individualsData[String(cluster)]
+                    .map(obj => ({
+                        ...obj,
+                        ["Cluster"]: cluster,
+                      }));
+        currentStatus = "groupViz";
+        console.log(currentStatus)
+        console.log(grData)
+
       }
       else{
-        currentStatus = "generalViz";
-        data = individualsData.map(d => ({"RIGHT_PRED": d["RIGHT.PRED"],
-                                "INDEP_PRED": d["INDEP.PRED"],
-                                "NUM": 1,
-                                "Cluster": d.Cluster
-                                      }))
+        currentStatus = "sociodemViz";
+        data = socioClusterData;
       }
 
     }
@@ -71,10 +74,10 @@
     function getTransitionParams(d){
       console.log("d: ", d);
 
-      let destinationX = xScale(d.RIGHT_Pred_Mean);
-      let destinationY = yScale(d.INDEP_Pred_Mean);
+      let destinationX = xScale(d.RIGHT);
+      let destinationY = yScale(d.INDEP);
 
-      let parentEl = socioClusterData.find(s => s.Cluster == d.Cluster)
+      let parentEl = socioClusterData.find(s => s.Cluster === parseInt(d.Cluster))
 
       let originX = xScale(parentEl.RIGHT_Pred_Mean);
       let originY = yScale(parentEl.INDEP_Pred_Mean);
@@ -117,7 +120,7 @@
                         d.RIGHT_PRED === hoveredData.RIGHT_Pred_Mean ? 1 : 0.45
                         : 0.6 : 0.6}
               on:mouseover={() => currentStatus === "sociodemViz"? hoveredData = socioClusterData.find(sd => sd.INDEP_Pred_Mean === d.INDEP_PRED)
-                            : hoveredData = politicalClusterData.find(pd => pd.INDEP_Pred_Mean === d.INDEP_PRED)}
+                            : hoveredData = politicalClusterData.find(pd => pd["INDEP.QUANT_Pred_Mean"] === d.INDEP_PRED)}
               on:focus={() => currentStatus === "sociodemViz"? hoveredData = socioClusterData[index]
                             : hoveredData = politicalClusterData[index]}
               on:click={() => handleCircleClick(d.Cluster)}
@@ -129,16 +132,16 @@
               tabindex="0"
             />
           {/each}
-        {#if currentStatus === "groupViz"}
-          {#each grdata as d, index}
+        {#if groupViz}
+          {#each grData as d, index}
             <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
             <circle 
               in:fly={{...getTransitionParams(d)}}
-              cx={xScale(d.rightness)}
-              cy={yScale(d.independence)}
+              cx={xScale(d.RIGHT)}
+              cy={yScale(d.INDEP)}
               fill="black"
               stroke="none"
-              r = 1
+              r = 4
               opacity = 1
             />
           {/each}

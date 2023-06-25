@@ -12,16 +12,16 @@
     let tooltipWidth;
     let tooltipHeight;
 
-    $: x = xScale(data.RIGHT_Pred_Mean);
-    $: y = yScale(data.INDEP_Pred_Mean);
+    $: x = xScale(data["RIGHT.QUANT_Pred_Mean"]);
+    $: y = yScale(data["INDEP.QUANT_Pred_Mean"]);
   
     const xNudge = 20; // shift it a bit to the right
     const yNudge = 20; // shift it a bit down
 
-    $: xPos = data.RIGHT_Pred_Mean > 50? x - tooltipWidth - xNudge :
+    $: xPos = data["RIGHT.QUANT_Pred_Mean"] > 50? x - tooltipWidth - xNudge :
               x + xNudge
 
-    $: yPos = data.INDEP_Pred_Mean > 50? y + yNudge :
+    $: yPos = data["INDEP.QUANT_Pred_Mean"] > 50? y + yNudge :
               y - tooltipHeight - yNudge
 
     </script>

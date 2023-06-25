@@ -9,6 +9,7 @@ import socioClusterData from "./data/clusters_socioeconomic.json";
 import politicalClusterData from "./data/politicalClusters.json";
 import projectionRight from "./data/projectionTable_RIGHT.json";
 import projectionIndep from "./data/projectionTable_INDEP.json";
+import thisUserData from "./data/quizUserData.json";
 import {Compass, FileEarmarkFont} from "svelte-bootstrap-icons";
 
 let isEnglish = true; // Default language is English
@@ -26,16 +27,18 @@ function toggleLanguage() {
 
 $: currentStep = 0;
 let currentStepContent;
-let thisUserData;
+
 
 $: currentStatus = "politicalViz";
 
-let politicalData = politicalClusterData.map(d => ({"RIGHT_PRED": d.RIGHT_Pred_Mean,
-                                  "INDEP_PRED": d.INDEP_Pred_Mean,
-                                  "NUM": d.Num_Users}));
+let politicalData = politicalClusterData.map(d => ({"RIGHT_PRED": d["RIGHT.QUANT_Pred_Mean"],
+                                  "INDEP_PRED": d["INDEP.QUANT_Pred_Mean"],
+                                  "Cluster": d.Political_Cluster,
+                                  "NUM": d.Perc_Users}));
 
 let sociodemData = socioClusterData.map(d => ({"RIGHT_PRED": d.RIGHT_Pred_Mean,
                                                         "INDEP_PRED": d.INDEP_Pred_Mean,
+                                                        "Cluster": d.Cluster,
                                                         "NUM": d.Num_Users}));
 
 let data = politicalData;
@@ -46,28 +49,23 @@ let currentAnswer;
 
 $: {
       currentStepContent = StepContent[currentStep];
-      console.log("we are checking the Content of step ", currentStep)
         if(currentStepContent){
           if ("tag" in currentStepContent){
             if (currentStepContent.tag === "sociodemData"){
-              console.log("Status: sociodemViz")
               currentStatus = "sociodemViz";
               data = sociodemData;
             }
             else if(currentStepContent.tag === "userPolData"){
-              console.log("Status: politicalViz")
               currentStatus = "politicalViz";
               data = politicalData;
               data.push(thisUserPos(thisUserData));
             }
             else{
-              console.log("Status: politicalViz")
               currentStatus = "politicalViz";
               data = politicalData;
             }
         }
         else{
-          console.log("Status: politicalViz")
           currentStatus = "politicalViz";
           data = politicalData;
         }
@@ -76,38 +74,50 @@ $: {
 
   function findClosest(num, array){
     let closest = array.reduce(function(prev, curr) {
-                              return (Math.abs(curr - num) < Math.abs(prev - num) ? curr : prev);
+                              return (Math.abs(curr.x - num) < Math.abs(prev.x - num) ? curr : prev);
                               });
-    return closest;
+    console.log("closest: ", closest)
+    return closest.quantile;
   }
 
   function thisUserPos(thisUserData){
+
+    let user_results = thisUserData.map(u => u.data).flat();
+    console.log(user_results);
+    console.log("This user data: ", thisUserData)
+
     //predicting the independece-stance
     let INDEP_PRED = 0.156 * 1
-                    + 0.075 * thisUserData.CATALAN_ONLY
-                    -0.048 * thisUserData.SPANISH_ONLY
-                    +0.023 * thisUserData.SPAIN_ONLY
-                    + 0.016 * thisUserData.BORN_CATALONIA
-                    + 0.049 * thisUserData.BORN_ABROAD
-                    + 0.011 * thisUserData.SELF_DETERM
-                    + 0.166 * thisUserData.BELONGING;
+                    + 0.075 * user_results.find(d => d.code === "CATALAN_ONLY").value
+                    -0.048 * user_results.find(d => d.code === "SPANISH_ONLY").value
+                    +0.023 * user_results.find(d => d.code === "SPAIN_ONLY").value
+                    + 0.016 * user_results.find(d => d.code === "BORN_CATALONIA").value
+                    + 0.049 * user_results.find(d => d.code === "BORN_ABROAD").value
+                    + 0.011 * user_results.find(d => d.code === "SELF_DETERM").value
+                    + 0.166 * user_results.find(d => d.code === "BELONGING").value
+   console.log("USER PRED INDEP: ", INDEP_PRED)
     //predicting the independence-stance
     let RIGHT_PRED = 0.457 * 1
-                    + 0.000 * thisUserData.ACTITUD_ECONOMIA
-                    + 0.009 * thisUserData.ACTITUD_IMPOSTOS
-                    -0.023 * thisUserData.ACTITUD_INGRESSOS
-                    + 0.021 * thisUserData.ACTITUD_AUTORITAT
-                    -0.024 * thisUserData.ACTITUD_RELIGIO
-                    + 0.019 * thisUserData.ACTITUD_OBEIR
-                    + 0.018 * thisUserData.ACTITUD_IMMIGRACIO
-                    + 0.008 * thisUserData.ACTITUD_MEDIAMBIENT;
+                    + 0.000 * user_results.find(d => d.code === "ACTITUD_ECONOMIA").value
+                    + 0.009 * user_results.find(d => d.code === "ACTITUD_IMPOSTOS").value
+                    -0.023 * user_results.find(d => d.code === "ACTITUD_INGRESSOS").value
+                    + 0.021 * user_results.find(d => d.code === "ACTITUD_AUTORITAT").value
+                    -0.024 * user_results.find(d => d.code === "ACTITUD_RELIGIO").value
+                    + 0.019 * user_results.find(d => d.code === "ACTITUD_OBEIR").value
+                    + 0.018 * user_results.find(d => d.code === "ACTITUD_IMMIGRACIO").value
+                    + 0.008 * user_results.find(d => d.code === "ACTITUD_MEDIAMBIENT").value;
+   console.log("userPred RIGHT: ", RIGHT_PRED)
 
     //finding out the position in the chart
     let INDEP_POS = findClosest(INDEP_PRED, projectionIndep);
-    let RIGHT_POS = findClosest(RIGHT_PRED, projectionRight)
+    let RIGHT_POS = findClosest(RIGHT_PRED, projectionRight);
+
+    console.log("User right pos: ", RIGHT_POS)
+    console.log("User indep pos: ", INDEP_POS)
 
     return {"INDEP_PRED": INDEP_POS * 100,
             "RIGHT_PRED": RIGHT_POS * 100,
+            "Cluster": 0,
           "NUM": 0}
   }
 </script>
@@ -140,7 +150,7 @@ $: {
                 <Question text = {step.text} id= {step.id} type = {step.question_type}
                 options = {step.options.map(o => o.opt)}
                 {step}
-                bind:thisUserData/>
+                {thisUserData}/>
               {/if}
             </div>
 

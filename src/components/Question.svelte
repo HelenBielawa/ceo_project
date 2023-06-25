@@ -1,5 +1,4 @@
 <script>
-    import QuizUserData from "../data/quizUserData.json";
 
     export let text;
     export let type;
@@ -7,7 +6,7 @@
     export let id;
     export let step;
 
-    export let thisUserData = QuizUserData;
+    export let thisUserData;
 
    $: answer = "";
 
