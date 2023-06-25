@@ -107,15 +107,30 @@ ggplot(data=filter(data_imp_pred_reduced, Social_Cluster == 12)) +
 ### POLITICAL CLUSTERS
 k = 25  # Number of clusters you want to create
 set.seed(123) 
-clusters = kmeans(data_imp_pred_reduced[,c('INDEP', 'RIGHT')], centers = k, nstart = 20, iter.max = 300, algorithm = "Lloyd")
+clusters = kmeans(data_imp_pred[,c('INDEP.PRED.QUANT', 'RIGHT.PRED.QUANT')], centers = k, nstart = 20, iter.max = 300, algorithm = "Lloyd")
 
-data_imp_pred_reduced = data_imp_pred_reduced %>%
+data_imp_pred = data_imp_pred %>%
   mutate(Political_Cluster = clusters$cluster)
 
-data_imp_pred_political = data_imp_pred_reduced %>%
+mode_category = function(x){
+  tab = table(x)
+  names(tab[order(tab, decreasing = TRUE)])[1]
+}
+mode_category_prop = function(x){
+  tab = prop.table(table(x))
+  max(tab)
+}
+data_imp_pred_political = data_imp_pred  %>%
+  mutate(Political_Cluster = clusters$cluster) %>%
   group_by(Political_Cluster) %>%
-  summarise(INDEP.QUANT_Pred_Mean = round(mean(INDEP), 2),
-            RIGHT.QUANT_Pred_Mean = round(mean(RIGHT), 2),
+  summarise(INDEP.QUANT_Pred_Mean = round(mean(INDEP.PRED.QUANT), 2),
+            RIGHT.QUANT_Pred_Mean = round(mean(RIGHT.PRED.QUANT), 2),
+            AGE_cat = mode_category(AGE_RANGE),
+            AGE_prop = mode_category_prop(AGE_RANGE)*100,
+            EDUCATION_cat = mode_category(EDUCATION),
+            EDUCATION_prop = mode_category_prop(EDUCATION)*100,
+            LANGUAGE_cat = mode_category(LANGUAGE),
+            LANGUAGE_prop = mode_category_prop(LANGUAGE)*100,
             Num_Users = n()) %>%
   ungroup()  %>%
   mutate(
@@ -130,7 +145,7 @@ ggplot(data=data_imp_pred_political) +
   coord_cartesian(xlim = c(0,100), ylim = c(0,100))
 
 json_data_imp_pred_political = toJSON(data_imp_pred_political)
-write(json_data_imp_pred_political, file = 'data processing/json_political_clusters.json')
+write(json_data_imp_pred_political, file = 'data processing/json_political_clusters_all_info.json')
 
 variables_mean_values = data_imp %>%
   as_tibble() %>%
