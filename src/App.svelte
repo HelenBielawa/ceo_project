@@ -7,6 +7,8 @@ import StepContentEnglish from "./data/stepContent.json";
 import StepContentCatalan from "./data/stepContentCatalan.json";
 import socioClusterData from "./data/clusters_socioeconomic.json";
 import politicalClusterData from "./data/politicalClusters.json";
+import projectionRight from "./data/projectionTable_RIGHT.json";
+import projectionIndep from "./data/projectionTable_INDEP.json";
 import {Compass, FileEarmarkFont} from "svelte-bootstrap-icons";
 
 let isEnglish = true; // Default language is English
@@ -72,11 +74,40 @@ $: {
         }
       }
 
+  function findClosest(num, array){
+    let closest = array.reduce(function(prev, curr) {
+                              return (Math.abs(curr - num) < Math.abs(prev - num) ? curr : prev);
+                              });
+    return closest;
+  }
+
   function thisUserPos(thisUserData){
-    let INDEP_PRED = 70;
-    let RIGHT_PRED = 70;
-    return {"INDEP_PRED": INDEP_PRED,
-            "RIGHT_PRED": RIGHT_PRED,
+    //predicting the independece-stance
+    let INDEP_PRED = 0.156 * 1
+                    + 0.075 * thisUserData.CATALAN_ONLY
+                    -0.048 * thisUserData.SPANISH_ONLY
+                    +0.023 * thisUserData.SPAIN_ONLY
+                    + 0.016 * thisUserData.BORN_CATALONIA
+                    + 0.049 * thisUserData.BORN_ABROAD
+                    + 0.011 * thisUserData.SELF_DETERM
+                    + 0.166 * thisUserData.BELONGING;
+    //predicting the independence-stance
+    let RIGHT_PRED = 0.457 * 1
+                    + 0.000 * thisUserData.ACTITUD_ECONOMIA
+                    + 0.009 * thisUserData.ACTITUD_IMPOSTOS
+                    -0.023 * thisUserData.ACTITUD_INGRESSOS
+                    + 0.021 * thisUserData.ACTITUD_AUTORITAT
+                    -0.024 * thisUserData.ACTITUD_RELIGIO
+                    + 0.019 * thisUserData.ACTITUD_OBEIR
+                    + 0.018 * thisUserData.ACTITUD_IMMIGRACIO
+                    + 0.008 * thisUserData.ACTITUD_MEDIAMBIENT;
+
+    //finding out the position in the chart
+    let INDEP_POS = findClosest(INDEP_PRED, projectionIndep);
+    let RIGHT_POS = findClosest(RIGHT_PRED, projectionRight)
+
+    return {"INDEP_PRED": INDEP_POS * 100,
+            "RIGHT_PRED": RIGHT_POS * 100,
           "NUM": 0}
   }
 </script>

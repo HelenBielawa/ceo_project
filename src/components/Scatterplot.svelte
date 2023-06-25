@@ -9,6 +9,7 @@
     import {extent} from "d3-array";
     import { fly } from "svelte/transition";
     import { scaleLinear } from "d3-scale";
+    import {Compass} from "svelte-bootstrap-icons";
     import {onMount} from "svelte";
 
     export let currentStep;
@@ -39,8 +40,8 @@
       .range([innerHeight, 0]);
 
     $: radiusScale = scaleLinear()
-        .domain(extent(data, d => +d.NUM))
-        .range([0, innerWidth/15])
+        .domain(extent(data.filter(d => d.NUM > 0), d => +d.NUM))
+        .range([10, innerWidth/15])
   
     const loadGroupJSON = (cluster) => {
     const url = "./src/data/testData_group"+ cluster + ".json";
@@ -94,7 +95,7 @@
     class="chart-container"
     bind:clientWidth={width}
     bind:clientHeight={height}>
-
+  
     <svg {width} {height}
     on:mouseleave={() => hoveredData = null}>
 
@@ -172,5 +173,16 @@
       z-index: 9999;
       position: fixed;
     }
+    .compass {
+    animation: spin 3s linear infinite;
+    fill: #000;
+    width: 24px;
+    height: 24px;
+    transform-style: preserve-3d;
+    left: 50%;
+    bottom: 50%;
+    position: absolute;
+    transform-origin: center center;
+  }
   </style>
   
