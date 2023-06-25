@@ -17,22 +17,32 @@ frm_right = RIGHT/10 ~ ACTITUD_ECONOMIA + ACTITUD_IMPOSTOS + ACTITUD_INGRESSOS +
 m_indep.all = lm(frm_indep, data=data_imp)
 m_right.all = lm(frm_right, data=data_imp)
 
-# To obtain tables to be used in javascript for calculating the empirical 
-# cumulative distribution
-#
-# x_pred_indep = predict(m_indep.all)
-# dindep = tibble(
-#   x = sort(unique(x_pred_indep)),
-#   quantile = round(sapply(x, function(x_) mean(x_pred_indep<=x_)), 4))
-# 
+# # To obtain tables to be used in javascript for calculating the empirical 
+# # cumulative distribution
+# #
+#  x_pred_indep = predict(m_indep.all)
+#  dindep = tibble(
+#  x = sort(unique(x_pred_indep)),
+# quantile = round(sapply(x, function(x_) mean(x_pred_indep<=x_)), 4))
+# # 
 # x_pred_right = predict(m_right.all)
 # dright = tibble(
-#   x = sort(unique(x_pred_right)),
-#   quantile = round(sapply(x, function(x_) mean(x_pred_right<=x_)), 4))
-#
+# x = sort(unique(x_pred_right)),
+# quantile = round(sapply(x, function(x_) mean(x_pred_right<=x_)), 4)) %>% 
+#   slice(seq(1,21133,20))
+# 
+# library(jsonlite)
+# 
+# json_dindep = toJSON(dindep)
+# write(json_dindep, file = "dindep.json")
+# 
+# json_dright = toJSON(dright)
+# write(json_dright, file = "dright.json")
 
 F_indep = ecdf(predict(m_indep.all))
 F_right = ecdf(predict(m_right.all))
+
+#Calculate position for all individuals
 
 predict_indep = function(dat){
   F_indep(predict(m_indep.all, newdata = dat))
@@ -41,20 +51,21 @@ predict_right = function(dat){
   F_right(predict(m_right.all, newdata = dat))
 }
 
-summary(predict_indep(data_imp))
-summary(predict_right(data_imp))
+#Checking distribution
+# summary(predict_indep(data_imp))
+# summary(predict_right(data_imp))
+# 
+# 
+# boxplot(predict_indep(data_imp)~data_imp$SELF_RULE)
+# boxplot(predict_right(data_imp)~data_imp$RIGHT)
 
-
-boxplot(predict_indep(data_imp)~data_imp$SELF_RULE)
-boxplot(predict_right(data_imp)~data_imp$RIGHT)
-
-dplot = tibble(
-  right = predict_right(data_imp),
-  indep = predict_indep(data_imp)
-)
-ggplot(data=dplot, aes(x = right, y = indep)) +
-  geom_point(alpha = 0.1) + 
-  geom_smooth()
+# dplot = tibble(
+#   right = predict_right(data_imp),
+#   indep = predict_indep(data_imp)
+# )
+# ggplot(data=dplot, aes(x = right, y = indep)) +
+#   geom_point(alpha = 0.1) + 
+#   geom_smooth()
 
 #anova(m_indep.all, update(m_indep.all, .~.-SELF_DETERM), test = 'LRT')
 
@@ -81,7 +92,7 @@ data_imp_pred <- data_imp_pred %>%
 
 clustering_data = data_imp_pred %>% select(INDEP.PRED, RIGHT.PRED)
 
-k = 15  # Number of clusters you want to create
+k = 25  # Number of clusters you want to create
 set.seed(123) 
 clusters = kmeans(clustering_data, centers = k, nstart = 20, iter.max = 300, algorithm = "Lloyd")
 
