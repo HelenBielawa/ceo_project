@@ -51,14 +51,14 @@
                  "Catalan and Spanish, or other"}<br>
       <b>age:</b> {data.AGE_RANGE}<br>
       <br>
-      <Cursor/> See all {data.Num_Users} members</p>
+      <Cursor/> {Math.round(data.Perc_Users)}% of all respondents belong to this group. Click to see the individuals</p>
     {:else if currentStatus == "politicalViz"}
     <p>
-      {data.Num_Users} people belong to this group.<br>
       <b>age:</b> {Math.round(data.AGE_prop)}% are {data.AGE_cat} years old<br>
       <b>education:</b> {Math.round(data.EDUCATION_prop)}% finished
       {data.EDUCATION_cat === "0" ? "none or primary" : data.EDUCATION_cat === "1" ? "secondary" : "superior"} studies<br>
       <b>language:</b>{Math.round(data.LANGUAGE_prop)}% {data.LANGUAGE_cat === 0? "don't " : ""}prefer to speak Catalan<br>
+      {Math.round(data.Perc_Users)}% of all respondents belong to this group.<br>
       <br>
     {/if}
   </div>

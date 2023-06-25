@@ -34,12 +34,12 @@ $: currentStatus = "politicalViz";
 let politicalData = politicalClusterData.map(d => ({"RIGHT_PRED": d["RIGHT.QUANT_Pred_Mean"],
                                   "INDEP_PRED": d["INDEP.QUANT_Pred_Mean"],
                                   "Cluster": d.Political_Cluster,
-                                  "NUM": d.Perc_Users}));
+                                  "Perc_Users": d.Perc_Users}));
 
 let sociodemData = socioClusterData.map(d => ({"RIGHT_PRED": d.RIGHT_Pred_Mean,
                                                         "INDEP_PRED": d.INDEP_Pred_Mean,
                                                         "Cluster": d.Cluster,
-                                                        "NUM": d.Num_Users}));
+                                                        "Perc_Users": d.Perc_Users * 100}));
 
 let data = politicalData;
 
@@ -118,7 +118,7 @@ $: {
     return {"INDEP_PRED": INDEP_POS * 100,
             "RIGHT_PRED": RIGHT_POS * 100,
             "Cluster": 0,
-          "NUM": 0}
+          "Perc_Users": 0}
   }
 </script>
 

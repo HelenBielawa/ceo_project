@@ -17,10 +17,8 @@
     export let currentStatus;
 
     let hoveredData;
-    let groupViz = false;
-
-    $: currentStepContent = stepContent[currentStep];
-   
+    $: groupViz = false;
+  
     $: width = 100;
     $: height = 800;
 
@@ -40,7 +38,7 @@
       .range([innerHeight, 0]);
 
     $: radiusScale = scaleLinear()
-        .domain(extent(data.filter(d => d.NUM > 0), d => +d.NUM))
+        .domain(extent(data.filter(d => d.Perc_Users > 0), d => +d.Perc_Users))
         .range([10, innerWidth/15])
   
     const loadGroupJSON = (cluster) => {
@@ -51,17 +49,16 @@
     };
 
     function handleCircleClick(cluster) {
-      groupViz = ! groupViz;
+
+      groupViz = !groupViz;
       if (groupViz){
         console.log("click "+cluster)
-        let grData = individualsData[String(cluster)]
+        grData = individualsData[String(cluster)]
                     .map(obj => ({
                         ...obj,
                         ["Cluster"]: cluster,
                       }));
         currentStatus = "groupViz";
-        console.log(currentStatus)
-        console.log(grData)
 
       }
       else{
@@ -72,7 +69,6 @@
     }
 
     function getTransitionParams(d){
-      console.log("d: ", d);
 
       let destinationX = xScale(d.RIGHT);
       let destinationY = yScale(d.INDEP);
@@ -105,16 +101,16 @@
       <g class="inner-chart" transform="translate({margin.left}, {margin.top})">
           <AxisY width={innerWidth} {yScale} {xScale}/>
           <AxisX height={innerHeight} width={innerWidth} {xScale} {yScale} />
-          {#each data.sort((a, b) => a.RIGHT_PRED - b.RIGHT_PRED) as d, index}
-            <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-                          <!-- transition:fly={currentStatus == "groupViz" ? { x: -100, opacity: 50, duration: 500 }
-                      : {...getTransitionParams(d)}} -->
-            <circle 
 
+          {#if !groupViz}
+          {#each data.sort((a, b) => a.RIGHT_PRED - b.RIGHT_PRED) as d, index}
+
+            <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+            <circle 
               cx={xScale(d.RIGHT_PRED)}
               cy={yScale(d.INDEP_PRED)}
-              fill={d.NUM === 0 ? "red": "black"}
-              r={d.NUM === 0 ? innerWidth/20 : radiusScale(d.NUM)}
+              fill={d.Perc_Users === 0 ? "red": "black"}
+              r={d.Perc_Users === 0 ? innerWidth/20 : radiusScale(d.Perc_Users)}
               opacity={hoveredData ?
                         currentStatus === "politicalViz"?
                         d.RIGHT_PRED === hoveredData.RIGHT_Pred_Mean ? 1 : 0.45
@@ -132,17 +128,19 @@
               tabindex="0"
             />
           {/each}
+        {/if}
         {#if groupViz}
-          {#each grData as d, index}
-            <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+          {#each grData as d, i}
+            <!-- svelte-ignore a11y-no-noninteractive-tabindex
+             -->
             <circle 
-              in:fly={{...getTransitionParams(d)}}
+            in:fly={{...getTransitionParams(d)}}
               cx={xScale(d.RIGHT)}
               cy={yScale(d.INDEP)}
               fill="black"
               stroke="none"
-              r = 4
-              opacity = 1
+              r = "4"
+              opacity = "0.5"
             />
           {/each}
         {/if}
@@ -171,6 +169,7 @@
       /*transition: r 300ms ease, opacity 500ms ease;*/
       cursor: pointer;
       pointer-events: all;
+      z-index: 9999;
     }
     button{
       z-index: 9999;
