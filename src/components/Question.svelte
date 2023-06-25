@@ -31,7 +31,7 @@
   <div
     class="question-{type}"
   >
-    <p><b>Question {id}/15: </b>{text}</p>
+    <p><b>Question {id}/13: </b>{text}</p>
     {#if step.question_type === "Multiple"}
         <fieldset>
             {#each options as option, i}
