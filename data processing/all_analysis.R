@@ -131,3 +131,16 @@ ggplot(data=data_imp_pred_political) +
 
 json_data_imp_pred_political = toJSON(data_imp_pred_political)
 write(json_data_imp_pred_political, file = 'data processing/json_political_clusters.json')
+
+variables_mean_values = data_imp %>%
+  as_tibble() %>%
+  select(CATALAN_ONLY, SPANISH_ONLY, SPAIN_ONLY, BORN_CATALONIA, BORN_ABROAD, SELF_DETERM,
+       BELONGING, ACTITUD_ECONOMIA, ACTITUD_IMPOSTOS, ACTITUD_INGRESSOS, 
+         ACTITUD_AUTORITAT, ACTITUD_RELIGIO, ACTITUD_OBEIR, ACTITUD_IMMIGRACIO, 
+         ACTITUD_MEDIAMBIENT) %>%
+  pivot_longer(everything()) %>%
+  group_by(name) %>%
+  summarise(mean = mean(value))
+
+json_variables_mean_values = toJSON(variables_mean_values)
+write(json_variables_mean_values, file = 'data processing/json_variables_mean_values.json')
