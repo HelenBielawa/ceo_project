@@ -60,11 +60,15 @@ data_imp_pred
 # Group by gender and age range and calculate cluster means
 social_clustered_data <- data_imp_pred %>%
   group_by(AGE_RANGE, LANGUAGE, EDUCATION) %>%
-  summarise(INDEP_Pred_Mean = round(100*F_indep(mean(INDEP.PRED)), 2),
-            RIGHT_Pred_Mean = round(100*F_right(mean(RIGHT.PRED)), 2),
+  summarise(INDEP.QUANT_Pred_Mean = round(100*F_indep(mean(INDEP.PRED)), 2),
+            RIGHT.QUANT_Pred_Mean = round(100*F_right(mean(RIGHT.PRED)), 2),
             Num_Users = n()) %>%
   ungroup()  %>%
-  mutate(Social_Cluster = row_number())
+  mutate(
+    Perc_Users = 100 * Num_Users/sum(Num_Users)
+  ) %>%
+  mutate(Social_Cluster = row_number()) %>%
+  arrange(desc(Perc_Users))
 
 data_imp_pred = data_imp_pred %>%
   left_join(select(social_clustered_data, AGE_RANGE, LANGUAGE, EDUCATION, Social_Cluster), 
@@ -76,6 +80,15 @@ data_imp_pred_reduced = data_imp_pred %>%
 
 l_data_imp_pred = split(data_imp_pred_reduced, data_imp_pred_reduced$Social_Cluster)
 l_data_imp_pred = lapply(l_data_imp_pred, function(x){ x$Social_Cluster = NULL; x})
+
 library(jsonlite)
 json_l_data_imp_pred = toJSON(l_data_imp_pred)
 write(json_l_data_imp_pred, file = 'data processing/json_social_clusters.json')
+
+social_clustered_data_reduced = social_clustered_data %>%
+  arrange(Social_Cluster) %>%
+  select(Social_Cluster, AGE_RANGE, LANGUAGE, EDUCATION, 
+         INDEP.QUANT_Pred_Mean, RIGHT.QUANT_Pred_Mean, Perc_Users)
+json_social_clustered_data = toJSON(social_clustered_data_reduced)
+write(json_social_clustered_data, file = 'data processing/json_social_clustered_data.json')
+
