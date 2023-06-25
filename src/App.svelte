@@ -5,9 +5,8 @@ import Scatterplot from "./components/Scatterplot.svelte";
 import Question from "./components/Question.svelte";
 import StepContentEnglish from "./data/stepContent.json";
 import StepContentCatalan from "./data/stepContentCatalan.json";
-import socioClusterData from "./data/pred_individuals.json";
+import socioClusterData from "./data/clusters_socioeconomic.json";
 import politicalClusterData from "./data/politicalClusters.json";
-import groupData from "./data/testData_group1.json";
 import {Compass, FileEarmarkFont} from "svelte-bootstrap-icons";
 
 let isEnglish = true; // Default language is English
@@ -26,22 +25,16 @@ function toggleLanguage() {
 $: currentStep = 0;
 let currentStepContent;
 let thisUserData;
-$: console.log("main app this userdata: ", thisUserData)
-$: console.log("in the main app, curr Step: ", currentStep);
-$: currentStatus = "politicalViz";
 
-let individualsData = socioClusterData.map(d => ({"RIGHT_PRED": d["RIGHT.PRED"],
-                                "INDEP_PRED": d["INDEP.PRED"],
-                                "NUM": 1
-                                }));
+$: currentStatus = "politicalViz";
 
 let politicalData = politicalClusterData.map(d => ({"RIGHT_PRED": d.RIGHT_Pred_Mean,
                                   "INDEP_PRED": d.INDEP_Pred_Mean,
                                   "NUM": d.Num_Users}));
 
-let sociodemData = socioClusterData.map(d => ({"RIGHT_PRED": d["RIGHT.PRED"],
-                                                        "INDEP_PRED": d["INDEP.PRED"],
-                                                        "NUM": 1}));
+let sociodemData = socioClusterData.map(d => ({"RIGHT_PRED": d.RIGHT_Pred_Mean,
+                                                        "INDEP_PRED": d.INDEP_Pred_Mean,
+                                                        "NUM": d.Num_Users}));
 
 let data = politicalData;
 
@@ -51,24 +44,29 @@ let currentAnswer;
 
 $: {
       currentStepContent = StepContent[currentStep];
-      console.log("we are checking the stepContent!")
+      console.log("we are checking the Content of step ", currentStep)
         if(currentStepContent){
           if ("tag" in currentStepContent){
-          console.log("This step has a tag")
-          if (currentStepContent.tag === "sociodemData"){
-            console.log("Status has changed")
-            data = sociodemData;
-          }
-          if(currentStepContent.tag === "userPolData"){
-            data.push(thisUserPos(thisUserData));
-          }
-          else{
-            console.log("Data stays political")
-            data = politicalData;
-          }
+            if (currentStepContent.tag === "sociodemData"){
+              console.log("Status: sociodemViz")
+              currentStatus = "sociodemViz";
+              data = sociodemData;
+            }
+            else if(currentStepContent.tag === "userPolData"){
+              console.log("Status: politicalViz")
+              currentStatus = "politicalViz";
+              data = politicalData;
+              data.push(thisUserPos(thisUserData));
+            }
+            else{
+              console.log("Status: politicalViz")
+              currentStatus = "politicalViz";
+              data = politicalData;
+            }
         }
         else{
-          console.log("Data stays political")
+          console.log("Status: politicalViz")
+          currentStatus = "politicalViz";
           data = politicalData;
         }
         }
