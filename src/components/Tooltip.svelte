@@ -5,15 +5,19 @@
     export let width;
     export let height;
     export let currentStatus;
+    export let xVar;
+    export let yVar;
     import { fly } from "svelte/transition";
     import {Cursor} from "svelte-bootstrap-icons";
 
+    console.log("in the tooltip, current stat: ", currentStatus)
 
+    console.log("Status: ", currentStatus)
     let tooltipWidth;
     let tooltipHeight;
 
-    $: x = xScale(data["RIGHT.QUANT_Pred_Mean"]);
-    $: y = yScale(data["INDEP.QUANT_Pred_Mean"]);
+    let x = xScale(data[xVar]);
+    let y = yScale(data[yVar]);
   
     const xNudge = 20; // shift it a bit to the right
     const yNudge = 20; // shift it a bit down
@@ -33,9 +37,8 @@
     bind:clientWidth={tooltipWidth}
     bind:clientHeight={tooltipHeight}
   >
-    {#if currentStatus == "groupViz"}
-      Click on the circle to get back to the main chart.
-    {:else if currentStatus == "sociodemViz"}
+
+    {#if currentStatus == "sociodemViz"}
       <p>
       <b>province:</b> {data.PROVINCE === 0 ? "Barcelona":
                   data.PROVINCE === 1 ? "Girona" :
@@ -46,20 +49,25 @@
                       data.MUNICIPALITY === 2 ? "50 - 150.000":
                       data.MUNICIPALITY === 3 ? "150 - 1.000.000":
                       ">1.000.000"}<br>
-      <b>language:</b> {data.LANGUAGE === 1? "Catalan":
+      <b>language:</b>{data.LANGUAGE === 1? "Catalan":
                   data.LANGUAGE === 2? "Spanish":
                  "Catalan and Spanish, or other"}<br>
       <b>age:</b> {data.AGE_RANGE}<br>
       <br>
       <Cursor/> {Math.round(data.Perc_Users)}% of all respondents belong to this group. Click to see the individuals</p>
-    {:else if currentStatus == "politicalViz"}
+    {:else if currentStatus === "politicalViz"}
     <p>
       <b>age:</b> {Math.round(data.AGE_prop)}% are {data.AGE_cat} years old<br>
       <b>education:</b> {Math.round(data.EDUCATION_prop)}% finished
       {data.EDUCATION_cat === "0" ? "none or primary" : data.EDUCATION_cat === "1" ? "secondary" : "superior"} studies<br>
-      <b>language:</b>{Math.round(data.LANGUAGE_prop)}% {data.LANGUAGE_cat === 0? "don't " : ""}prefer to speak Catalan<br>
+      <b>language:</b> {Math.round(data.LANGUAGE_prop)}% {data.LANGUAGE_cat === 0? "don't " : ""}prefer to speak Catalan<br>
       {Math.round(data.Perc_Users)}% of all respondents belong to this group.<br>
       <br>
+    </p>
+    {:else if currentStatus === "groupViz"}
+      <p>
+        click to get back to the visualization of the social clusters
+      </p>
     {/if}
   </div>
   
@@ -70,12 +78,11 @@
       box-shadow: rgba(0, 0, 0, 0.15) 2px 3px 8px;
       border-radius: 3px;
       pointer-events: none;
-      transition: top 300ms ease, left 300ms ease;
       max-width: 60%;
       max-height: 30%;
-      overflow: auto;
+      overflow: none;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-      transition: transform 0.3s ease;
+      transition: transform 0.1s ease;
       background-image: linear-gradient(to bottom right, #ffffff, #eaeaea);
       border-radius: 8px;
     }
@@ -89,6 +96,8 @@
   
     p{
       text-align: left;
+      display: block;
+      white-space: normal;
     }
   </style>
   

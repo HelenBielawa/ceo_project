@@ -138,7 +138,7 @@ $: {
 <div class="flex">
   <div class="chart">
   <GridBackground/>
-  <Scatterplot {currentStep} {data} {currentStatus}/>
+  <Scatterplot {currentStep} {data} {currentStatus} socioClusterData={sociodemData}/>
   </div>
 
   <div class="aside">

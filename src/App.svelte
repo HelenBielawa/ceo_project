@@ -6,7 +6,7 @@ import Question from "./components/Question.svelte";
 import Questionaire from "./components/Questionaire.svelte";
 import StepContentEnglish from "./data/stepContent.json";
 import StepContentCatalan from "./data/stepContentCatalan.json";
-import socioClusterData from "./data/clusters_socioeconomic.json";
+import socioDemData from "./data/clusters_socioeconomic.json";
 import politicalClusterData from "./data/politicalClusters.json";
 import projectionRight from "./data/projectionTable_RIGHT.json";
 import projectionIndep from "./data/projectionTable_INDEP.json";
@@ -39,7 +39,7 @@ let politicalData = politicalClusterData.map(d => ({"RIGHT_PRED": d["RIGHT.QUANT
                                   "Cluster": d.Political_Cluster,
                                   "Perc_Users": d.Perc_Users}));
 
-let sociodemData = socioClusterData.map(d => ({"RIGHT_PRED": d.RIGHT_Pred_Mean,
+let socioClusterData = socioDemData.map(d => ({"RIGHT_PRED": d.RIGHT_Pred_Mean,
                                                         "INDEP_PRED": d.INDEP_Pred_Mean,
                                                         "Cluster": d.Cluster,
                                                         "Perc_Users": d.Perc_Users * 100}));
@@ -52,11 +52,12 @@ let currentAnswer;
 
 $: {
       currentStepContent = StepContent[currentStep];
+     
         if(currentStepContent){
           if ("tag" in currentStepContent){
             if (currentStepContent.tag === "sociodemData"){
               currentStatus = "sociodemViz";
-              data = sociodemData;
+              data = socioClusterData;
             }
             else if(currentStepContent.tag === "userPolData"){
               currentStatus = "politicalViz";
@@ -73,6 +74,7 @@ $: {
           data = politicalData;
         }
         }
+        console.log("Main app, in the constant check, status: ", currentStatus)
       }
 
   function findClosest(num, array){
@@ -135,7 +137,7 @@ $: {
 <div class="flex">
   <div class="chart">
   <GridBackground/>
-  <Scatterplot {currentStep} {data} {currentStatus}/>
+  <Scatterplot {currentStep} {data} {currentStatus} {socioClusterData}/>
   </div>
 
   <div class="aside">

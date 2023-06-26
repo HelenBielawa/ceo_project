@@ -3,9 +3,9 @@
     import AxisY from "./AxisY.svelte";
     import Tooltip from "./Tooltip.svelte";
     import stepContent from "../data/stepContent.json";
-    import socioClusterData from "../data/clusters_socioeconomic.json";
     import politicalClusterData from "../data/politicalClusters.json";
     import individualsData from "../data/pred_individuals_social.json";
+    import socioTooltipData from "../data/clusters_socioeconomic.json";
     import {extent} from "d3-array";
     import { fly } from "svelte/transition";
     import { scaleLinear } from "d3-scale";
@@ -15,6 +15,9 @@
     export let currentStep;
     export let data;
     export let currentStatus;
+    export let socioClusterData;
+
+    console.log("in the scatter, currentStatus: ", currentStatus)
 
     let hoveredData;
     $: groupViz = false;
@@ -39,8 +42,8 @@
 
     $: radiusScale = scaleLinear()
         .domain(extent(data.filter(d => d.Perc_Users > 0), d => +d.Perc_Users))
-        .range([10, innerWidth/15])
-  
+        .range([10, innerWidth/15]);
+ 
     const loadGroupJSON = (cluster) => {
     const url = "./src/data/testData_group"+ cluster + ".json";
     return fetch(url)
@@ -54,15 +57,18 @@
       if (groupViz){
         console.log("click "+cluster)
         grData = individualsData[String(cluster)]
+                    .filter( d => 0.25 >= Math.random())
                     .map(obj => ({
                         ...obj,
                         ["Cluster"]: cluster,
-                      }));
+                      }))
         currentStatus = "groupViz";
+        //console.table(grData)
 
       }
       else{
         currentStatus = "sociodemViz";
+        console.log("in click function, went back to sociodem viz")
         data = socioClusterData;
       }
 
@@ -115,10 +121,10 @@
                         currentStatus === "politicalViz"?
                         d.RIGHT_PRED === hoveredData.RIGHT_Pred_Mean ? 1 : 0.45
                         : 0.6 : 0.6}
-              on:mouseover={() => currentStatus === "sociodemViz"? hoveredData = socioClusterData.find(sd => sd.INDEP_Pred_Mean === d.INDEP_PRED)
+              on:mouseover={() => currentStatus === "sociodemViz"? hoveredData = socioTooltipData.find(sd => sd.Cluster === d.Cluster)
                             : hoveredData = politicalClusterData.find(pd => pd["INDEP.QUANT_Pred_Mean"] === d.INDEP_PRED)}
-              on:focus={() => currentStatus === "sociodemViz"? hoveredData = socioClusterData[index]
-                            : hoveredData = politicalClusterData[index]}
+              on:focus={() => currentStatus === "sociodemViz"? hoveredData = socioTooltipData.find(sd => sd.Cluster === d.Cluster)
+                            : hoveredData = politicalClusterData.find(pd => pd["INDEP.QUANT_Pred_Mean"] === d.INDEP_PRED)}
               on:click={() => handleCircleClick(d.Cluster)}
               on:keydown={(event) => {
                 if (event.key === 'Enter') {
@@ -141,13 +147,23 @@
               stroke="none"
               r = "4"
               opacity = "0.5"
+              on:mouseover={() => hoveredData = d}
+              on:focus={() => hoveredData = d}
+              on:click={() => handleCircleClick(1)}
+              on:keydown={(event) => {
+                if (event.key === 'Enter') {
+                  handleCircleClick(1);
+                }
+              }}
             />
           {/each}
         {/if}
       </g>
     </svg>
     {#if hoveredData}
-      <Tooltip {xScale} {yScale} {width} {height} data={hoveredData} {currentStatus} />
+      <Tooltip {xScale} {yScale} {width} {height} data={hoveredData} {currentStatus}
+        xVar = {currentStatus === "politicalViz" ? "RIGHT.QUANT_Pred_Mean" : "RIGHT_Pred_Mean"}
+        yVar = {currentStatus === "politicalViz" ? "INDEP.QUANT_Pred_Mean" : "INDEP_Pred_Mean"} />
     {/if}
   </div>
   
