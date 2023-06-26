@@ -5,7 +5,6 @@
     export let options;
     export let id;
     export let step;
-
     export let thisUserData;
 
    $: answer = "";

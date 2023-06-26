@@ -2,7 +2,7 @@
 import Scrolly from "./helpers/Scrolly.svelte";
 import GridBackground from "./components/GridBackground.svelte";
 import Scatterplot from "./components/Scatterplot.svelte";
-import Question from "./components/Question.svelte";
+import Question from "./components/Question_Anton.svelte";
 import Questionaire from "./components/Questionaire.svelte";
 import StepContentEnglish from "./data/stepContent.json";
 import StepContentCatalan from "./data/stepContentCatalan.json";
@@ -15,8 +15,6 @@ import {Compass, FileEarmarkFont} from "svelte-bootstrap-icons";
 
 let isEnglish = true; // Default language is English
 let StepContent = StepContentEnglish;
-
-let thisUserData = QuizUserData;
 
 function toggleLanguage() {
   isEnglish = !isEnglish;
@@ -31,6 +29,7 @@ function toggleLanguage() {
 $: currentStep = 0;
 let currentStepContent;
 
+let thisUserData = QuizUserData;
 
 $: currentStatus = "politicalViz";
 
@@ -52,79 +51,85 @@ let currentAnswer;
 
 $: {
       currentStepContent = StepContent[currentStep];
-     
+      console.log("we are checking the Content of step ", currentStep)
         if(currentStepContent){
           if ("tag" in currentStepContent){
             if (currentStepContent.tag === "sociodemData"){
+              console.log("Status: sociodemViz")
               currentStatus = "sociodemViz";
               data = socioClusterData;
             }
             else if(currentStepContent.tag === "userPolData"){
+              console.log("Status: politicalViz")
               currentStatus = "politicalViz";
               data = politicalData;
+              console.log("I want to push data, this is userdata: ", thisUserData)
               data.push(thisUserPos(thisUserData));
             }
             else{
+              console.log("Status: politicalViz")
               currentStatus = "politicalViz";
               data = politicalData;
             }
         }
         else{
+          console.log("Status: politicalViz")
           currentStatus = "politicalViz";
           data = politicalData;
         }
         }
-        console.log("Main app, in the constant check, status: ", currentStatus)
       }
 
-  function findClosest(num, array){
-    let closest = array.reduce(function(prev, curr) {
-                              return (Math.abs(curr.x - num) < Math.abs(prev.x - num) ? curr : prev);
-                              });
-    console.log("closest: ", closest)
-    return closest.quantile;
-  }
+    function findClosest(num, array){
+      let closest = array.reduce(function(prev, curr) {
+                                return (Math.abs(curr.x - num) < Math.abs(prev.x - num) ? curr : prev);
+                                }, ({x:0,quantile:0}));
+      return closest.quantile;
+    }
 
-  function thisUserPos(thisUserData){
+    function thisUserPos(thisUserData){
 
-    let user_results = thisUserData.map(u => u.data).flat();
-    console.log(user_results);
-    console.log("This user data: ", thisUserData)
+      let values = thisUserData.map(d => d.data).flat()
+      console.log("values: ", values)
 
-    //predicting the independece-stance
-    let INDEP_PRED = 0.156 * 1
-                    + 0.075 * user_results.find(d => d.code === "CATALAN_ONLY").value
-                    -0.048 * user_results.find(d => d.code === "SPANISH_ONLY").value
-                    +0.023 * user_results.find(d => d.code === "SPAIN_ONLY").value
-                    + 0.016 * user_results.find(d => d.code === "BORN_CATALONIA").value
-                    + 0.049 * user_results.find(d => d.code === "BORN_ABROAD").value
-                    + 0.011 * user_results.find(d => d.code === "SELF_DETERM").value
-                    + 0.166 * user_results.find(d => d.code === "BELONGING").value
-   console.log("USER PRED INDEP: ", INDEP_PRED)
-    //predicting the independence-stance
-    let RIGHT_PRED = 0.457 * 1
-                    + 0.000 * user_results.find(d => d.code === "ACTITUD_ECONOMIA").value
-                    + 0.009 * user_results.find(d => d.code === "ACTITUD_IMPOSTOS").value
-                    -0.023 * user_results.find(d => d.code === "ACTITUD_INGRESSOS").value
-                    + 0.021 * user_results.find(d => d.code === "ACTITUD_AUTORITAT").value
-                    -0.024 * user_results.find(d => d.code === "ACTITUD_RELIGIO").value
-                    + 0.019 * user_results.find(d => d.code === "ACTITUD_OBEIR").value
-                    + 0.018 * user_results.find(d => d.code === "ACTITUD_IMMIGRACIO").value
-                    + 0.008 * user_results.find(d => d.code === "ACTITUD_MEDIAMBIENT").value;
-   console.log("userPred RIGHT: ", RIGHT_PRED)
+      function getValue(arr, code){
+        console.log("arr", arr)
+        console.log("code", code)
+          let value = arr.find(d => d.code === code).value
+          return value
+        }
 
-    //finding out the position in the chart
-    let INDEP_POS = findClosest(INDEP_PRED, projectionIndep);
-    let RIGHT_POS = findClosest(RIGHT_PRED, projectionRight);
+      //predicting the independece-stance
+      let INDEP_PRED = 0.156 * 1
+                      + 0.075 * getValue(values,"CATALAN_ONLY")
+                      -0.048 * getValue(values,"SPANISH_ONLY")
+                      +0.023 * getValue(values,"SPAIN_ONLY")
+                      + 0.016 * getValue(values,"BORN_CATALONIA")
+                      + 0.049 * getValue(values,"BORN_ABROAD")
+                      + 0.011 * getValue(values,"SELF_DETERM")
+                      + 0.166 * getValue(values,"BELONGING");
+      //predicting the independence-stance
+      let RIGHT_PRED = 0.457 * 1
+                      + 0.000 * getValue(values,"ACTITUD_ECONOMIA")
+                      + 0.009 * getValue(values,"ACTITUD_IMPOSTOS")
+                      -0.023 * getValue(values,"ACTITUD_INGRESSOS")
+                      + 0.021 * getValue(values,"ACTITUD_AUTORITAT")
+                      -0.024 * getValue(values,"ACTITUD_RELIGIO")
+                      + 0.019 * getValue(values,"ACTITUD_OBEIR")
+                      + 0.018 * getValue(values,"ACTITUD_IMMIGRACIO")
+                      + 0.008 * getValue(values,"ACTITUD_MEDIAMBIENT");
 
-    console.log("User right pos: ", RIGHT_POS)
-    console.log("User indep pos: ", INDEP_POS)
+      //finding out the position in the chart
+      let INDEP_POS = findClosest(INDEP_PRED, projectionIndep);
+      let RIGHT_POS = findClosest(RIGHT_PRED, projectionRight)
 
-    return {"INDEP_PRED": INDEP_POS * 100,
-            "RIGHT_PRED": RIGHT_POS * 100,
-            "Cluster": 0,
-          "Perc_Users": 0}
-  }
+      console.log("indeppos: ", INDEP_POS * 100);
+      console.log("rightpos: ", RIGHT_POS * 100);
+      return {"RIGHT_PRED": RIGHT_POS * 100,
+              "INDEP_PRED": INDEP_POS * 100,
+              "Cluster": 0,
+            "Perc_Users": 0}
+    }
 </script>
 
 <body>
@@ -144,28 +149,29 @@ $: {
 
     <Scrolly bind:value={currentStep}> <!-- This is what updates value -->
       {#each StepContent as step, i}
-          <div class="step" class:active={currentStep === i}> <!-- 4. Dynamically applies the active class -->
-            <div class="step-content">
-              {#if step.type === "text"}
-                <p>{step.text}</p>
-              {:else if step.type == "header"}
-                <h1>{step.h1}</h1>
-                <h3>{step.h3}</h3>
-              {:else if  step.type === "question"}
-                <Question text = {step.text} id= {step.id} type = {step.question_type}
-                options = {step.options.map(o => o.opt)}
-                {step}
-                bind:thisUserData/>
-              {:else if  step.type === "questionaire"}
-                <Questionaire language = {isEnglish} bind:thisUserData/>
-              {/if}
-            </div>
-            <div class="scroll-indicator-container">
-              <div class="compass">
-              <Compass class="compass"/>
-              </div>
+      <div class="step" class:active={currentStep === i}> <!-- 4. Dynamically applies the active class -->
+        <div class="step-content">
+          {#if step.type === "text"}
+            <p>{step.text}</p>
+          {:else if step.type == "header"}
+            <h1>{step.h1}</h1>
+            <h3>{step.h3}</h3>
+          {:else if  step.type === "question"}
+            <Question text = {step.text} id= {step.id} type = {step.question_type}
+            options = {step.options.map(o => o.opt)}
+            {step}
+            bind:thisUserData/>
+          {:else if  step.type === "questionaire"}
+            <Questionaire language = {isEnglish} bind:thisUserData/>
+          {/if}
         </div>
+
+        <div class="scroll-indicator-container">
+          <div class="compass">
+          <Compass class="compass"/>
           </div>
+       </div>
+      </div>
        {/each}  
  </Scrolly>
 

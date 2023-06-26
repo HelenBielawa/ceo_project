@@ -1,23 +1,18 @@
 <script>
-    import Question from "./Question.svelte";
+    import Question from "./Question_Anton.svelte";
     import StepContentEnglish from "../data/stepContent.json";
     import StepContentCatalan from "../data/stepContentCatalan.json";
 
     export let language;
     export let thisUserData;
 
-    const maxQuestions = 15;
+    const maxQuestions = 13;
 
     let step = language? StepContentEnglish : StepContentCatalan;
 
     $: id = 1;
 
     $: currentQuestion = step.find(d => d.id === id);
-
-    $:{
-        console.log("currentQuestion.options");
-        console.log(currentQuestion.options);
-    }
 
     function previous(){
         if(id > 1){
