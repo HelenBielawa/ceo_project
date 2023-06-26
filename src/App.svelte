@@ -137,8 +137,8 @@ $: {
 <div class="flex">
   <div class="chart">
   <GridBackground/>
-  <Scatterplot {currentStep} {data} {currentStatus} {socioClusterData}/>
-  </div>
+<!--   <Scatterplot {currentStep} {data} {currentStatus} {socioClusterData}/>
+ -->  </div>
 
   <div class="aside">
 
@@ -157,7 +157,7 @@ $: {
                 {step}
                 bind:thisUserData/>
               {:else if  step.type === "questionaire"}
-                <Questionaire language = {isEnglish} bind:thisUserData/>
+                <Questionaire language = {isEnglish} minId = {step.minId} maxId = {step.maxId} questions={step.questions} bind:thisUserData/>
               {/if}
             </div>
             <div class="scroll-indicator-container">
