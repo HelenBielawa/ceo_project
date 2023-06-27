@@ -4,27 +4,24 @@
     import StepContentCatalan from "../data/stepContentCatalan.json";
 
     export let language;
-    export let questions;
-    export let minId;
-    export let maxId;
     export let thisUserData;
 
     const maxQuestions = 13;
 
-    let step = questions;//language? StepContentEnglish : StepContentCatalan;
+    let step = language? StepContentEnglish : StepContentCatalan;
 
-    $: id = minId;
+    $: id = 1;
 
     $: currentQuestion = step.find(d => d.id === id);
 
     function previous(){
-        if(id > minId){
+        if(id > 1){
             id--;
         }
         console.log(thisUserData);
     }
     function next(){
-        if(id < maxId){
+        if(id < maxQuestions){
             id++;
         }
         console.log(thisUserData);
@@ -35,14 +32,14 @@
     class="questionaire"
   >
   
-    <p><b>{language?"Questionaire":"Qüestionari"}</b></p>
+    <p><b>Questionaire</b></p>
     <Question text = {currentQuestion.text} id= {id} type = {currentQuestion.question_type}
     options = {currentQuestion.options.map(o => o.opt)}
     step = {currentQuestion}
     bind:thisUserData/>
     <div class="pagination">
-        <button disabled='{id ===  minId}' on:click={previous}>Previous</button>
-        <button disabled='{id ===  maxId}' on:click={next}>Next</button>
+        <button disabled='{id ===  1}' on:click={previous}>Previous</button>
+        <button disabled='{id ===  maxQuestions}' on:click={next}>Next</button>
     </div>
   </div>
   
