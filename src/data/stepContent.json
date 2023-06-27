@@ -1,17 +1,18 @@
 [ {"type":"header", "tag": "header",
-"h1": "The Catalan Political Compass",
-"h3": "Understanding Left-Right and Independence Stances through Data and Self-Assessment" },
+"h1": "The Catalan Political Compass"},
+{"type":"header", "tag": "header",
+"h3": "Finding your position in the independence and the left-right debates with just a short questionnaire"},
   {"type":"text","tag": "introduction",
-  "text":"<p> Since xy, Catalans discuss about their independence. Here you get a closer look on who is pro or contra independence.</p>"}, 
-  {"type":"text", "tag": "explanation", "text":"Highlighting interesting results, e.g. specific group...Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."}, 
-  
+  "text":"We have divided ideologies in two of the main axes for Catalan politics: the desired relationship with Spain, and the traditional left-right spectrum from social and economic point of views. With this app, we pinpoint where you are compared with the rest of the Catalan population."}, 
+  {"type":"text", "tag": "explanation", "text":"We have used all the political barometer surveys the Catalan Opinion Studies Center (CEO) has conducted in the past decade and taken into account the 41,838 polls they have made since 2014. We have grouped the individuals in clusters of political affinity guessing their ideology in both axes by analysing their answers to key questions about social and economic affairs."}, 
+  {"type":"text", "tag": "explanation", "text":"This is the most typical political group. They are the individuals within the top 20% most pro-independence feeling among all residents and the top 20% more left-leaning. What do we know about them? All of them have Catalan as their usual language, most of them have superior studies (59%) and over a third are aged 35 to 49 (35%)."}, 
+  {"type":"text", "tag": "explanation", "text":"Now, what political cluster are you the closest to? Take this short quiz to find out!"}, 
   {"type":"questionaire","tag": "userPolData", "text":"Lorem ipsum dolor sit amet."},
-  {"type": "text", "tag": "userPolData", "text": "This is where you are"},
   {"type": "question", "question_type": "Multiple", "id": 1,
   "text":"What's the language you feel most comfortable with?",
   "options":[{"opt": "Catalan", "code": "CATALAN_ONLY", "value": 1},
             {"opt": "Spanish", "code": "SPANISH_ONLY", "value": 1},
-            {"opt": "both/other", "code": "SPANISH_ONLY", "value": 0}]},
+            {"opt": "Both/other", "code": "SPANISH_ONLY", "value": 0}]},
   {"type": "question", "question_type": "Multiple", "id": 2,
   "text":"Are you a Spanish national?",
   "options":[{"opt": "Yes", "code": "SPAIN_ONLY", "value": 1},
@@ -94,9 +95,10 @@
             {"opt": "Disagree", "code": "ACTITUD_MEDIAMBIENT","value": -1},
             {"opt": "Fully disagree", "code": "ACTITUD_MEDIAMBIENT","value": -2}]},
 
+            {"type":"text", "text": "Thanks for taking the quiz. This is where you are!"},
 
-{"type":"text", "text": "Result: You are part of the xy of the population. We can also view this differently..."},
-{"type": "text", "tag": "sociodemData","text": "Now you see how different sociodemographic groups think about independence and right/left positions. Do you want to compare yourself to your statistical peers? Then answer some more questions!"},
+{"type":"text", "text": "Result: You are in the most pro-independence group, and above average left-wing. But there is more to find out about you. Keep scrolling!"},
+{"type": "text", "tag": "sociodemData","text": "Let's now compare your position with your sociologic (and not political!) group, that is, with the people with similar age, education and usual language."},
 
 
 {"type": "question", "question_type": "Multiple", "id": 16,
@@ -129,7 +131,6 @@
             {"opt": "Man", "code": "FEMALE", "value": 0},
             {"opt": "Other", "code": "FEMALE", "value": 0}]},
 
-{"type":"text", "tag": "sociodemographicPos", "text": "We found your statistical peer group! You are pretty different to them!"},
-  {"type": "question"," text": "How old are you?", "options":["10-30","31-50", "51-70", "71-90"]},
-  {"type":"text", "text": "Ok, you are pretty different to your statistical peers. Press here to download and share your result!"}
+{"type":"text", "tag": "sociodemographicPos", "text": "We found your statistical peer group! You are pretty different to its average. Feel free to download and share the result!"},
+  {"type":"text", "text": "METHODOLOGY"}
  ]
