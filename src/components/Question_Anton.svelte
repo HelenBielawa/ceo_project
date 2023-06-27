@@ -8,26 +8,13 @@
     export let thisUserData;
     console.log("Question");
     console.log(thisUserData);
+    console.log("options: ", options)
     console.log(step);
     console.log(id);
- $: answer = ""
-
-   $: {
-    if (thisUserData.find(d => d.question_id === id) !== 'undefined'){
-        let test = thisUserData.find(d => d.question_id === id)
-    }
-    else{
-        let test = "";
-    }
     
-   }
+ $: answer = "";
 
-    
-   $:{
- /*    console.log("Question answer")
-    console.log(answer)
-    console.log(thisUserData.find(d => d.question_id === id));
- */   }
+
     function handleAnswer(answer){
         //adding the corresponding code to the user data table
         console.log("Question handleanswer")
@@ -53,23 +40,21 @@
   <div
     class="question-{type}"
   >
-    <p><b>Question {id}/15: </b>{text}</p>
+    <p><b>Question {id}: </b>{text}</p>
     {#if step.question_type === "Multiple"}
         <fieldset>
             {#each options as option, i}
                 <div>
                     <label for={option}>{option}</label>
                     {#if answer === option} 
-                        <input type="radio" bind:group={answer} name="answer" value={option} checked>
+                        <input type="radio" bind:group={answer} name="answer" value={option} checked/>
                     {:else}
                         <input type="radio" bind:group={answer} name="answer" value={option}
-                        on:input={() => {handleAnswer(option)}}>
+                        on:input={() => {handleAnswer(option)}}/>
                     {/if}
                 </div>
             {/each}
         </fieldset>
-    {:else if step.question_type === "Range"}
-        <input type="range" id="rangeInput" min="0" max="10" value="5">        
     {/if}
 <!--     <p><b>Answer: </b>{answer}</p> -->
   </div>

@@ -2,26 +2,27 @@
     import Question from "./Question_Anton.svelte";
     import StepContentEnglish from "../data/stepContent.json";
     import StepContentCatalan from "../data/stepContentCatalan.json";
-
+console.log("in the questionaire")
     export let language;
+    export let questions;
+    export let minID;
+    export let maxID;
     export let thisUserData;
 
-    const maxQuestions = 13;
-
-    let step = language? StepContentEnglish : StepContentCatalan;
+    let step = questions;
 
     $: id = 1;
 
     $: currentQuestion = step.find(d => d.id === id);
 
     function previous(){
-        if(id > 1){
+        if(id > minID){
             id--;
         }
         console.log(thisUserData);
     }
     function next(){
-        if(id < maxQuestions){
+        if(id < maxID){
             id++;
         }
         console.log(thisUserData);
@@ -32,14 +33,14 @@
     class="questionaire"
   >
   
-    <p><b>Questionaire</b></p>
+  <p><b>{language?"Questionaire":"Qüestionari"}</b></p>
     <Question text = {currentQuestion.text} id= {id} type = {currentQuestion.question_type}
     options = {currentQuestion.options.map(o => o.opt)}
     step = {currentQuestion}
     bind:thisUserData/>
     <div class="pagination">
-        <button disabled='{id ===  1}' on:click={previous}>Previous</button>
-        <button disabled='{id ===  maxQuestions}' on:click={next}>Next</button>
+        <button disabled='{id ===  minID}' on:click={previous}>Previous</button>
+        <button disabled='{id ===  maxID}' on:click={next}>Next</button>
     </div>
   </div>
   

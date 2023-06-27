@@ -43,7 +43,7 @@ let socioClusterData = socioDemData.map(d => ({"RIGHT_PRED": d.RIGHT_Pred_Mean,
                                                         "Cluster": d.Cluster,
                                                         "Perc_Users": d.Perc_Users * 100}));
 
-let data = politicalData;
+let data;
 
 $: answer = [];
 let currentAnswer;
@@ -54,7 +54,14 @@ $: {
       console.log("we are checking the Content of step ", currentStep)
         if(currentStepContent){
           if ("tag" in currentStepContent){
-            if (currentStepContent.tag === "sociodemData"){
+            if (currentStepContent.tag === "start-header" || currentStepContent.tag === "start-intro"){
+              data = [];
+              currentStatus = "start";
+            }
+            else if (currentStepContent.tag === "top-left"){
+              currentStatus = "top-left"
+            }
+            else if (currentStepContent.tag === "sociodemData"){
               console.log("Status: sociodemViz")
               currentStatus = "sociodemViz";
               data = socioClusterData;
@@ -63,7 +70,8 @@ $: {
               console.log("Status: politicalViz")
               currentStatus = "politicalViz";
               data = politicalData;
-              console.log("I want to push data, this is userdata: ", thisUserData)
+              console.log("I want to push data, this is userdata: ", thisUserData);
+              data = data.filter(d => d.Cluster != 100)
               data.push(thisUserPos(thisUserData));
             }
             else{
@@ -127,7 +135,7 @@ $: {
       console.log("rightpos: ", RIGHT_POS * 100);
       return {"RIGHT_PRED": RIGHT_POS * 100,
               "INDEP_PRED": INDEP_POS * 100,
-              "Cluster": 0,
+              "Cluster": 100,
             "Perc_Users": 0}
     }
 </script>
@@ -156,13 +164,9 @@ $: {
           {:else if step.type == "header"}
             <h1>{step.h1}</h1>
             <h3>{step.h3}</h3>
-          {:else if  step.type === "question"}
-            <Question text = {step.text} id= {step.id} type = {step.question_type}
-            options = {step.options.map(o => o.opt)}
-            {step}
-            bind:thisUserData/>
           {:else if  step.type === "questionaire"}
-            <Questionaire language = {isEnglish} bind:thisUserData/>
+            <Questionaire language = {isEnglish} minID = {step.minId} maxID = {step.maxId} 
+            questions={step.questions} bind:thisUserData/>
           {/if}
         </div>
 

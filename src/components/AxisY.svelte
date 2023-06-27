@@ -23,20 +23,20 @@
     x={xScale(50)} 
     text-anchor="end"
     dy=15>Pro Independence 
-  </text><i class="arrow up"></i>
+  </text>
 <text
   y={yScale(0)} 
   x={xScale(50)}
   text-anchor="end"
   dy=-15>
   Pro Spain
-</text>
+  </text>
 </g>
 
 <style>
   .axis text{
   font-family: 'Montserrat', sans-serif;
-  font-weight: 300;
+  font-weight: 400;
   }
 
   .arrow {

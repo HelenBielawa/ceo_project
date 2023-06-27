@@ -8,8 +8,7 @@
   </script>
   
   <g class="axis" transform="translate(0, {height})">
-    <path d="M 0 -10 L 10 0 L 0 10" class="arrow left" />
-    <path d="M {width} -10 L {width - 10} 0 L {width} 10" class="arrow right" />  
+
     {#each xTicks as tick, index}
       <g class='tick' transform="translate({xScale(tick)}, 0)">
 
@@ -42,7 +41,7 @@
 <style>
   .axis text{
   font-family: 'Montserrat', sans-serif;
-  font-weight: 300;
+  font-weight: 400;
   }
 
   .arrow {

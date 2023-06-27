@@ -1,6 +1,7 @@
 <script>
     import AxisX from "./AxisX.svelte";
     import AxisY from "./AxisY.svelte";
+    import AxisCompass from "./AxisXCompass.svelte";
     import Tooltip from "./Tooltip.svelte";
     import stepContent from "../data/stepContent.json";
     import politicalClusterData from "../data/politicalClusters.json";
@@ -19,7 +20,14 @@
 
     console.log("in the scatter, currentStatus: ", currentStatus)
 
-    let hoveredData;
+let hoveredData;
+
+$: {
+  if(currentStatus === "top-left"){
+    hoveredData = politicalClusterData.find(pd => pd.Political_Cluster === 10)
+  }
+}
+
     $: groupViz = false;
   
     $: width = 100;
@@ -105,8 +113,13 @@
     on:mouseleave={() => hoveredData = null}>
 
       <g class="inner-chart" transform="translate({margin.left}, {margin.top})">
-          <AxisY width={innerWidth} {yScale} {xScale}/>
-          <AxisX height={innerHeight} width={innerWidth} {xScale} {yScale} />
+        {#if currentStatus === "start"}
+        <AxisCompass height={innerHeight} width={innerWidth} {xScale} {yScale} />
+        {/if}
+        <AxisY width={innerWidth} {yScale} {xScale}/>
+        <AxisX height={innerHeight} width={innerWidth} {xScale} {yScale} />
+        
+
 
           {#if !groupViz}
           {#each data.sort((a, b) => a.RIGHT_PRED - b.RIGHT_PRED) as d, index}
@@ -117,7 +130,8 @@
               cy={yScale(d.INDEP_PRED)}
               fill={d.Perc_Users === 0 ? "red": "black"}
               r={d.Perc_Users === 0 ? innerWidth/20 : radiusScale(d.Perc_Users)}
-              opacity={hoveredData ?
+              opacity={ currentStatus === "top-left" && d.Cluster === 10? 1
+                        : hoveredData ?
                         currentStatus === "politicalViz"?
                         d.RIGHT_PRED === hoveredData.RIGHT_Pred_Mean ? 1 : 0.45
                         : 0.6 : 0.6}
@@ -162,8 +176,8 @@
     </svg>
     {#if hoveredData}
       <Tooltip {xScale} {yScale} {width} {height} data={hoveredData} {currentStatus}
-        xVar = {currentStatus === "politicalViz" ? "RIGHT.QUANT_Pred_Mean" : "RIGHT_Pred_Mean"}
-        yVar = {currentStatus === "politicalViz" ? "INDEP.QUANT_Pred_Mean" : "INDEP_Pred_Mean"} />
+        xVar = {currentStatus === "politicalViz" || currentStatus === "top-left" ? "RIGHT.QUANT_Pred_Mean" : "RIGHT_Pred_Mean"}
+        yVar = {currentStatus === "politicalViz" || currentStatus === "top-left" ? "INDEP.QUANT_Pred_Mean" : "INDEP_Pred_Mean"} />
     {/if}
   </div>
   

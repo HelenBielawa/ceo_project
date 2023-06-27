@@ -12,7 +12,7 @@
 
     console.log("in the tooltip, current stat: ", currentStatus)
 
-    console.log("Status: ", currentStatus)
+    console.log("tatus: ", currentStatus)
     let tooltipWidth;
     let tooltipHeight;
 
@@ -55,7 +55,7 @@
       <b>age:</b> {data.AGE_RANGE}<br>
       <br>
       <Cursor/> {Math.round(data.Perc_Users)}% of all respondents belong to this group. Click to see the individuals</p>
-    {:else if currentStatus === "politicalViz"}
+    {:else if currentStatus === "politicalViz" || currentStatus === "top-left"}
     <p>
       <b>age:</b> {Math.round(data.AGE_prop)}% are {data.AGE_cat} years old<br>
       <b>education:</b> {Math.round(data.EDUCATION_prop)}% finished
