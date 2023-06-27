@@ -9,11 +9,7 @@
     export let maxId;
     export let thisUserData;
 
-<<<<<<< HEAD
-    const maxQuestions = 13;
-=======
     console.log(questions);
->>>>>>> 09aff3de11bf8e31da22dcf5ef9c2159ab571dd4
 
     let step = questions;//language? StepContentEnglish : StepContentCatalan;
 
