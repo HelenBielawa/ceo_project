@@ -149,7 +149,6 @@ $: {
 
     <Scrolly bind:value={currentStep}> <!-- This is what updates value -->
       {#each StepContent as step, i}
-<<<<<<< HEAD
       <div class="step" class:active={currentStep === i}> <!-- 4. Dynamically applies the active class -->
         <div class="step-content">
           {#if step.type === "text"}
@@ -165,28 +164,6 @@ $: {
           {:else if  step.type === "questionaire"}
             <Questionaire language = {isEnglish} bind:thisUserData/>
           {/if}
-=======
-          <div class="step" class:active={currentStep === i}> <!-- 4. Dynamically applies the active class -->
-            <div class="step-content">
-              {#if step.type === "text"}
-                <p>{step.text}</p>
-              {:else if step.type == "header"}
-                <h1>{step.h1}</h1>
-                <h3>{step.h3}</h3>
-              {:else if  step.type === "question"}
-                <Question text = {step.text} id= {step.id} type = {step.question_type}
-                options = {step.options.map(o => o.opt)}
-                {step}
-                bind:thisUserData/>
-              {:else if  step.type === "questionaire"}
-                <Questionaire language = {isEnglish} minId = {step.minId} maxId = {step.maxId} questions={step.questions} bind:thisUserData/>
-              {/if}
-            </div>
-            <div class="scroll-indicator-container">
-              <div class="compass">
-              <Compass class="compass"/>
-              </div>
->>>>>>> 09aff3de11bf8e31da22dcf5ef9c2159ab571dd4
         </div>
 
         <div class="scroll-indicator-container">
