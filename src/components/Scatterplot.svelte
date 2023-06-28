@@ -113,9 +113,6 @@ $: {
     on:mouseleave={() => hoveredData = null}>
 
       <g class="inner-chart" transform="translate({margin.left}, {margin.top})">
-        {#if currentStatus === "start"}
-        <AxisCompass height={innerHeight} width={innerWidth} {xScale} {yScale} />
-        {/if}
         <AxisY width={innerWidth} {yScale} {xScale}/>
         <AxisX height={innerHeight} width={innerWidth} {xScale} {yScale} />
         
