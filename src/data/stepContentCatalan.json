@@ -1,134 +1,578 @@
-[ {"type":"header", "tag": "start-header", "h1": "The Catalan Political Compass", "h3": "Understanding Left-Right and Independence Stances through Data and Self-Assessment" },
-  {"type":"text","tag": "start-intro", "text":"Introduction...Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."}, 
-  {"type":"text", "tag": "explanation", "text":"Highlighting interesting results, e.g. specific group...Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."}, 
-  
-  
-  {"type":"questionaire", "minId":1, "maxId":16,"questions":
-  [{"question_type": "Multiple", "id": 1,
-  "text":"Quina és la llengua que vostè considera com a pròpia?",
-  "options":[{"opt": "Català", "code": "CATALAN_ONLY", "value": 1},
-            {"opt": "Castellà", "code": "SPANISH_ONLY", "value": 1},
-            {"opt": "Totes dues / Altres", "code": "SPANISH_ONLY", "value": 0}]},
-  {"question_type": "Multiple", "id": 2,
-  "text":"Té vostè la ciutadania espanyola?",
-  "options":[{"opt": "Sí, tinc la ciutadania espanyola", "code": "SPAIN_ONLY", "value": 1},
-            {"opt": "Sí, tinc la ciutadania espanyola i una altra", "code": "SPAIN_ONLY", "value": 0},
-            {"opt": "No", "code": "SPAIN_ONLY", "value": 0}]},
-{"question_type": "Multiple", "id": 3,
-"text":"Em podria dir on va néixer?",
-"options":[{"opt": "Catalunya", "code": "BORN_CATALONIA", "value": 1},
-            {"opt": "Altres comunitats autònomes", "code": "BORN_CATALONIA","value": 0},
-            {"opt": "Unió Europea", "code": "BORN_ABROAD", "value": 1},
-            {"opt": "Resta del món ", "code": "BORN_ABROAD", "value": 1}]},
-{"question_type": "Multiple", "id": 4,
-"text":"Fins a quin punt està d'acord o en desacord amb l'afirmació: 'Els catalans tenen dret a decidir el seu futur com a país votant en un referèndum'?",
-"options":[{"opt": "Molt d'acord", "code": "SELF_DETERM", "value": 2},
-          {"opt": "D'acord", "code": "SELF_DETERM", "value": 1},
-            {"opt": "Ni d'acord ni en desacord", "code": "SELF_DETERM", "value": 0},
-            {"opt": "En desacord", "code": "SELF_DETERM", "value": -1},
-            {"opt": "Molt en desacord", "code": "SELF_DETERM", "value": -2}]},
-{"question_type": "Multiple", "id": 5,
-"text": "Amb quina de les següents frases se sent més identificat? Em sento...",
-"options": [{"opt": "Només espanyol", "code": "BELONGING", "value": 0},
-            {"opt": "Més espanyol que català", "code": "BELONGING", "value": 1},
-            {"opt": "Tant espanyol com català", "code": "BELONGING", "value": 2},
-            {"opt": "Més català que espanyol", "code": "BELONGING", "value": 3},
-            {"opt": "Només català", "code": "BELONGING", "value": 4}]},
-{"question_type": "Multiple", "id": 6,
-"text": "Fins a quin punt està d'acord o en desacord amb l'afirmació: 'Com menys intervingui el Govern en l'economia, millor serà pel país'?",
-"options": [{"opt": "Molt d'acord", "code": "ACTITUD_ECONOMIA","value": 2},
-            {"opt": "D'acord", "code": "ACTITUD_ECONOMIA","value": 1},
-            {"opt": "Ni d'acord ni en desacord", "code": "ACTITUD_ECONOMIA","value": 0},
-            {"opt": "En desacord", "code": "ACTITUD_ECONOMIA","value": -1},
-            {"opt": "Molt en desacord", "code": "ACTITUD_ECONOMIA","value": -2}]},
-{"question_type": "Multiple", "id": 7,
-"text": "Fins a quin punt està d'acord o en desacord amb l'afirmació: 'Cal baixar impostos, encara que això impliqui reduir serveis i prestacions públiques'?",
-"options": [{"opt": "Molt d'acord", "code": "ACTITUD_IMPOSTOS","value": 2},
-            {"opt": "D'acord", "code": "ACTITUD_IMPOSTOS","value": 1},
-            {"opt": "Ni d'acord ni en desacord", "code": "ACTITUD_IMPOSTOS","value": 0},
-            {"opt": "En desacord", "code": "ACTITUD_IMPOSTOS","value": -1},
-            {"opt": "Molt en desacord", "code": "ACTITUD_IMPOSTOS","value": -2}]},
-{"question_type": "Multiple", "id": 8,
-"text": "Fins a quin punt està d'acord o en desacord amb l'afirmació: 'El Govern hauria de prendre mesures per reduir les diferències en els nivells d'ingressos'?",
-"options": [{"opt": "Molt d'acord", "code": "ACTITUD_INGRESSOS","value": 2},
-            {"opt": "D'acord", "code": "ACTITUD_INGRESSOS","value": 1},
-            {"opt": "Ni d'acord ni en desacord", "code": "ACTITUD_INGRESSOS","value": 0},
-            {"opt": "En desacord", "code": "ACTITUD_INGRESSOS","value": -1},
-            {"opt": "Molt en desacord", "code": "ACTITUD_INGRESSOS","value": -2}]},
-{"question_type": "Multiple", "id": 9,
-"text": "Fins a quin punt està d'acord o en desacord amb l'afirmació: 'L'escola ha d'ensenyar els nens a obeir l'autoritat'?",
-"options": [{"opt": "Molt d'acord", "code": "ACTITUD_AUTORITAT","value": 2},
-            {"opt": "D'acord", "code": "ACTITUD_AUTORITAT","value": 1},
-            {"opt": "Ni d'acord ni en desacord", "code": "ACTITUD_AUTORITAT","value": 0},
-            {"opt": "En desacord", "code": "ACTITUD_AUTORITAT","value": -1},
-            {"opt": "Molt en desacord", "code": "ACTITUD_AUTORITAT","value": -2}]},
-{"question_type": "Multiple", "id": 10,
-"text": "Fins a quin punt està d'acord o en desacord amb l'afirmació: 'La religió no hauria de tenir cap influència en la política'?",
-"options": [{"opt": "Molt d'acord", "code": "ACTITUD_RELIGIO","value": 2},
-            {"opt": "D'acord", "code": "ACTITUD_RELIGIO","value": 1},
-            {"opt": "Ni d'acord ni en desacord", "code": "ACTITUD_RELIGIO","value": 0},
-            {"opt": "En desacord", "code": "ACTITUD_RELIGIO","value": -1},
-            {"opt": "Molt en desacord", "code": "ACTITUD_RELIGIO","value": -2}]},
-{"question_type": "Multiple", "id": 11,
-"text": "Fins a quin punt està d'acord o en desacord amb l'afirmació: 'En qualsevol circumstància, la llei ha de ser sempre obeïda'?",
-"options": [{"opt": "Molt d'acord", "code": "ACTITUD_OBEIR","value": 2},
-            {"opt": "D'acord", "code": "ACTITUD_OBEIR","value": 1},
-            {"opt": "Ni d'acord ni en desacord", "code": "ACTITUD_OBEIR","value": 0},
-            {"opt": "En desacord", "code": "ACTITUD_OBEIR","value": -1},
-            {"opt": "Molt en desacord", "code": "ACTITUD_OBEIR","value": -2}]},
-{"question_type": "Multiple", "id": 12,
-"text": "Fins a quin punt està d'acord o en desacord amb l'afirmació: 'Amb tanta immigració, un ja no se sent com a casa'?",
-"options": [{"opt": "Molt d'acord", "code": "ACTITUD_IMMIGRACIO","value": 2},
-            {"opt": "D'acord", "code": "ACTITUD_IMMIGRACIO","value": 1},
-            {"opt": "Ni d'acord ni en desacord", "code": "ACTITUD_IMMIGRACIO","value": 0},
-            {"opt": "En desacord", "code": "ACTITUD_IMMIGRACIO","value": -1},
-            {"opt": "Molt en desacord", "code": "ACTITUD_IMMIGRACIO","value": -2}]},
-{"question_type": "Multiple", "id": 13,
-"text": "Fins a quin punt està d'acord o en desacord amb l'afirmació: 'El creixement econòmic ha de tenir prioritat sobre la protecció del medi ambient'?",
-"options": [{"opt": "Molt d'acord", "code": "ACTITUD_MEDIAMBIENT","value": 2},
-            {"opt": "D'acord", "code": "ACTITUD_MEDIAMBIENT","value": 1},
-            {"opt": "Ni d'acord ni en desacord", "code": "ACTITUD_MEDIAMBIENT","value": 0},
-            {"opt": "En desacord", "code": "ACTITUD_MEDIAMBIENT","value": -1},
-            {"opt": "Molt en desacord", "code": "ACTITUD_MEDIAMBIENT","value": -2}]}
-]},
-
-{"type": "text", "tag": "userPolData", "text": "This is where you are"},
-{"type":"text", "text": "Result: You are part of the xy of the population. We can also view this differently..."},
-{"type": "text", "tag": "sociodemData","text": "Now you see how different sociodemographic groups think about independence and right/left positions. Do you want to compare yourself to your statistical peers? Then answer some more questions!"},
-
-
-{"type": "questionaireX",  "minId":16, "maxId":20,"questions":
-      [{"question_type": "Multiple", "id": 16,
-      "text": "A quina província resideixes?",
-      "options": [{"opt": "Barcelona", "code": "PROVINCE", "value": 0},
-                  {"opt": "Girona", "code": "PROVINCE", "value": 1},
-                  {"opt": "Lleida", "code": "PROVINCE", "value": 2},
-                  {"opt": "Tarragona", "code": "PROVINCE", "value": 3}]},
-      {"question_type": "Multiple", "id": 17,
-      "text": "Quina grandària té el seu municipi?",
-      "options": [{"opt": "< 10.000", "code": "MUNICIPALITY", "value": 0},
-                  {"opt": "10.000 - 50.000", "code": "MUNICIPALITY", "value": 1},
-                  {"opt": "50.000 - 150.000", "code": "MUNICIPALITY", "value": 2},
-                  {"opt": "150.000 - 1.000.000", "code": "MUNICIPALITY", "value": 3},
-                  {"opt": "> 1.000.000", "code": "MUNICIPALITY", "value": 4}]},
-      {"question_type": "Multiple", "id": 18,
-      "text": "Quin és el nivell màxim de formació que ha assolit?",
-      "options": [{"opt": "Cap o bé estudis primaris(Educació primària)", "code": "EDUCATION", "value": 0},
-                  {"opt": "Estudis secundaris (ESO, Batxillerat, EGB, BUP, COU, CFGM) ", "code": "EDUCATION", "value": 1},
-                  {"opt": "Estudis superiors (CFGS, diplomatura, llicenciatura, grau, màster, doctorat)", "code": "EDUCATION", "value": 2}]},
-      {"question_type": "Multiple", "id": 19,
-      "text": "Quina és la seva franja d'edat?",
-      "options": [{"opt": "18-34", "code": "AGE_RANGE", "value": "18-34"},
-                  {"opt": "35-49", "code": "AGE_RANGE", "value": "35-49"},
-                  {"opt": "50-64", "code": "AGE_RANGE", "value": "50-64"},
-                  {"opt": "65+", "code": "AGE_RANGE", "value": "65+"}]},
-      {"question_type": "Multiple", "id": 20,
-      "text": "Quin és el teu gènere?",
-      "options": [{"opt": "Dona", "code": "FEMALE", "value": 1},
-                  {"opt": "Hombre", "code": "FEMALE", "value": 0},
-                  {"opt": "Altres", "code": "FEMALE", "value": 0}]}
-      ]},
-
-{"type":"text", "tag": "sociodemographicPos", "text": "We found your statistical peer group! You are pretty different to them!"},
-  {"type":"text", "text": "Ok, you are pretty different to your statistical peers. Press here to download and share your result!"}
- ]
+[
+    {
+      "type": "header",
+      "tag": "start-header",
+      "h1": "La brúixola política catalana",
+      "h3": "Respon a una breu enquesta i descobreix la comparació entre la teva ideologia i la de la resta de catalans, en els eixos nacional i socioeconòmic"},
+    {
+      "type": "text",
+      "tag": "start-intro",
+      "text": "Hem dividit les ideologies en dos dels eixos més importants de la política catalana: la relació amb Espanya i el tradicional eix esquerra-dreta des d'un punt de vista social i econòmic. Amb aquesta aplicació, et situem en comparació amb la resta de la població. Clica als quadres de colors per descobrir els 25 perfils ideològics en què hem dividit la bruíxola."},
+    {
+      "type": "text",
+      "tag": "explanation",
+      "text": "Hem fet servir tots els baròmetres d'opinió política que el Centre d'Estudis d'Opinió (CEO) ha publicat durant l'última dècada i hem tingut en compte les 41.838 enquestes que han fet des del 2014. Hem agrupat els enquestats en clústers d'afinitat política esbrinant on se situen en els dos eixos a través de l'anàlisi de les respostes en algunes de les seves respostes en matèries socials i econòmiques."},
+    {
+      "type": "text",
+      "tag": "top-left",
+      "text": "Aquest és el grup ideològic amb més individus. Són persones que se situen entre el 20% més independentista de la societat i en el 20% més d'esquerres. Què en sabem, d'ells? Tots tenen el català com la seva llengua habitual, la majoria tenen estudis superiors (59%) i més d'un terç té entre 35 i 49 anys (35%)."},
+    {
+      "type": "text",
+      "tag": "explanation",
+      "text": "A quin grup ideològic t'apropes més? Fes aquesta breu enquesta per a descobrir-ho!"},
+    {
+      "type": "questionaire",
+      "minId": 1,
+      "maxId": 13,
+      "tag": "userPolData",
+      "questions": [
+        {
+          "question_type": "Multiple",
+          "id": 1,
+          "text": "Quina és la llengua que vostè considera com a pròpia?",
+          "options": [
+            {
+              "opt": "Català",
+              "code": "CATALAN_ONLY",
+              "value": 1
+            },
+            {
+              "opt": "Castellà",
+              "code": "SPANISH_ONLY",
+              "value": 1
+            },
+            {
+              "opt": "Totes dues / Altres",
+              "code": "SPANISH_ONLY",
+              "value": 0
+            }
+          ]
+        },
+        {
+          "question_type": "Multiple",
+          "id": 2,
+          "text": "Té vostè la ciutadania espanyola?",
+          "options": [
+            {
+              "opt": "Sí, tinc la ciutadania espanyola ",
+              "code": "SPAIN_ONLY",
+              "value": 1
+            },
+            {
+              "opt": "Sí, tinc la ciutadania espanyola i una altra",
+              "code": "SPAIN_ONLY",
+              "value": 0
+            },
+            {
+              "opt": "No",
+              "code": "SPAIN_ONLY",
+              "value": 0
+            }
+          ]
+        },
+        {
+          "question_type": "Multiple",
+          "id": 3,
+          "text": "Em podria dir on va néixer?",
+          "options": [
+            {
+              "opt": "Catalunya",
+              "code": "BORN_CATALONIA",
+              "value": 1
+            },
+            {
+              "opt": "Altres comunitats autònomes",
+              "code": "BORN_CATALONIA",
+              "value": 0
+            },
+            {
+              "opt": "Unió Europea",
+              "code": "BORN_ABROAD",
+              "value": 1
+            },
+            {
+              "opt": "Resta del món",
+              "code": "BORN_ABROAD",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "question_type": "Multiple",
+          "id": 4,
+          "text": "Fins a quin punt està d'acord o en desacord amb l'afirmació: 'Els catalans tenen dret a decidir el seu futur com a país votant en un referèndum'?",
+          "options": [
+            {
+              "opt": "Molt d'acord",
+              "code": "SELF_DETERM",
+              "value": 2
+            },
+            {
+              "opt": "D'acord",
+              "code": "SELF_DETERM",
+              "value": 1
+            },
+            {
+              "opt": "Ni d'acord ni en desacord",
+              "code": "SELF_DETERM",
+              "value": 0
+            },
+            {
+              "opt": "En desacord",
+              "code": "SELF_DETERM",
+              "value": -1
+            },
+            {
+              "opt": "Molt en desacord",
+              "code": "SELF_DETERM",
+              "value": -2
+            }
+          ]
+        },
+        {
+          "question_type": "Multiple",
+          "id": 5,
+          "text": "Amb quina de les següents frases se sent més identificat? Em sento...",
+          "options": [
+            {
+              "opt": "Només espanyol",
+              "code": "BELONGING",
+              "value": 0
+            },
+            {
+              "opt": "Més espanyol que català",
+              "code": "BELONGING",
+              "value": 1
+            },
+            {
+              "opt": "Tant espanyol com català",
+              "code": "BELONGING",
+              "value": 2
+            },
+            {
+              "opt": "Més català que espanyol",
+              "code": "BELONGING",
+              "value": 3
+            },
+            {
+              "opt": "Només català",
+              "code": "BELONGING",
+              "value": 4
+            }
+          ]
+        },
+        {
+          "question_type": "Multiple",
+          "id": 6,
+          "text": "Fins a quin punt està d'acord o en desacord amb l'afirmació: 'Com menys intervingui el Govern en l'economia, millor serà pel país'?",
+          "options": [
+            {
+              "opt": "Molt d'acord",
+              "code": "ACTITUD_ECONOMIA",
+              "value": 2
+            },
+            {
+              "opt": "D'acord",
+              "code": "ACTITUD_ECONOMIA",
+              "value": 1
+            },
+            {
+              "opt": "Ni d'acord ni en desacord",
+              "code": "ACTITUD_ECONOMIA",
+              "value": 0
+            },
+            {
+              "opt": "En desacord",
+              "code": "ACTITUD_ECONOMIA",
+              "value": -1
+            },
+            {
+              "opt": "Molt en desacord",
+              "code": "ACTITUD_ECONOMIA",
+              "value": -2
+            }
+          ]
+        },
+        {
+          "question_type": "Multiple",
+          "id": 7,
+          "text": "Fins a quin punt està d'acord o en desacord amb l'afirmació: 'Cal baixar impostos, encara que això impliqui reduir serveis i prestacions públiques'?",
+          "options": [
+            {
+              "opt": "Molt d'acord",
+              "code": "ACTITUD_IMPOSTOS",
+              "value": 2
+            },
+            {
+              "opt": "D'acord",
+              "code": "ACTITUD_IMPOSTOS",
+              "value": 1
+            },
+            {
+              "opt": "Ni d'acord ni en desacord",
+              "code": "ACTITUD_IMPOSTOS",
+              "value": 0
+            },
+            {
+              "opt": "En desacord",
+              "code": "ACTITUD_IMPOSTOS",
+              "value": -1
+            },
+            {
+              "opt": "Molt en desacord",
+              "code": "ACTITUD_IMPOSTOS",
+              "value": -2
+            }
+          ]
+        },
+        {
+          "question_type": "Multiple",
+          "id": 8,
+          "text": "Fins a quin punt està d'acord o en desacord amb l'afirmació: 'El Govern hauria de prendre mesures per reduir les diferències en els nivells d'ingressos'?",
+          "options": [
+            {
+              "opt": "Molt d'acord",
+              "code": "ACTITUD_INGRESSOS",
+              "value": 2
+            },
+            {
+              "opt": "D'acord",
+              "code": "ACTITUD_INGRESSOS",
+              "value": 1
+            },
+            {
+              "opt": "Ni d'acord ni en desacord",
+              "code": "ACTITUD_INGRESSOS",
+              "value": 0
+            },
+            {
+              "opt": "En desacord",
+              "code": "ACTITUD_INGRESSOS",
+              "value": -1
+            },
+            {
+              "opt": "Molt en desacord",
+              "code": "ACTITUD_INGRESSOS",
+              "value": -2
+            }
+          ]
+        },
+        {
+          "question_type": "Multiple",
+          "id": 9,
+          "text": "Fins a quin punt està d'acord o en desacord amb l'afirmació: 'L'escola ha d'ensenyar els nens a obeir l'autoritat'?",
+          "options": [
+            {
+              "opt": "Molt d'acord",
+              "code": "ACTITUD_AUTORITAT",
+              "value": 2
+            },
+            {
+              "opt": "D'acord",
+              "code": "ACTITUD_AUTORITAT",
+              "value": 1
+            },
+            {
+              "opt": "Ni d'acord ni en desacord",
+              "code": "ACTITUD_AUTORITAT",
+              "value": 0
+            },
+            {
+              "opt": "En desacord",
+              "code": "ACTITUD_AUTORITAT",
+              "value": -1
+            },
+            {
+              "opt": "Molt en desacord",
+              "code": "ACTITUD_AUTORITAT",
+              "value": -2
+            }
+          ]
+        },
+        {
+          "question_type": "Multiple",
+          "id": 10,
+          "text": "Fins a quin punt està d'acord o en desacord amb l'afirmació: 'La religió no hauria de tenir cap influència en la política'?",
+          "options": [
+            {
+              "opt": "Molt d'acord",
+              "code": "ACTITUD_RELIGIO",
+              "value": 2
+            },
+            {
+              "opt": "D'acord",
+              "code": "ACTITUD_RELIGIO",
+              "value": 1
+            },
+            {
+              "opt": "Ni d'acord ni en desacord",
+              "code": "ACTITUD_RELIGIO",
+              "value": 0
+            },
+            {
+              "opt": "En desacord",
+              "code": "ACTITUD_RELIGIO",
+              "value": -1
+            },
+            {
+              "opt": "Molt en desacord",
+              "code": "ACTITUD_RELIGIO",
+              "value": -2
+            }
+          ]
+        },
+        {
+          "question_type": "Multiple",
+          "id": 11,
+          "text": "Fins a quin punt està d'acord o en desacord amb l'afirmació: 'En qualsevol circumstància, la llei ha de ser sempre obeïda'?",
+          "options": [
+            {
+              "opt": "Molt d'acord",
+              "code": "ACTITUD_OBEIR",
+              "value": 2
+            },
+            {
+              "opt": "D'acord",
+              "code": "ACTITUD_OBEIR",
+              "value": 1
+            },
+            {
+              "opt": "Ni d'acord ni en desacord",
+              "code": "ACTITUD_OBEIR",
+              "value": 0
+            },
+            {
+              "opt": "En desacord",
+              "code": "ACTITUD_OBEIR",
+              "value": -1
+            },
+            {
+              "opt": "Molt en desacord",
+              "code": "ACTITUD_OBEIR",
+              "value": -2
+            }
+          ]
+        },
+        {
+          "question_type": "Multiple",
+          "id": 12,
+          "text": "Fins a quin punt està d'acord o en desacord amb l'afirmació: 'Amb tanta immigració, un ja no se sent com a casa'?",
+          "options": [
+            {
+              "opt": "Molt d'acord",
+              "code": "ACTITUD_IMMIGRACIO",
+              "value": 2
+            },
+            {
+              "opt": "D'acord",
+              "code": "ACTITUD_IMMIGRACIO",
+              "value": 1
+            },
+            {
+              "opt": "Ni d'acord ni en desacord",
+              "code": "ACTITUD_IMMIGRACIO",
+              "value": 0
+            },
+            {
+              "opt": "En desacord",
+              "code": "ACTITUD_IMMIGRACIO",
+              "value": -1
+            },
+            {
+              "opt": "Molt en desacord",
+              "code": "ACTITUD_IMMIGRACIO",
+              "value": -2
+            }
+          ]
+        },
+        {
+          "question_type": "Multiple",
+          "id": 13,
+          "text": "Fins a quin punt està d'acord o en desacord amb l'afirmació: 'El creixement econòmic ha de tenir prioritat sobre la protecció del medi ambient'?",
+          "options": [
+            {
+              "opt": "Molt d'acord",
+              "code": "ACTITUD_MEDIAMBIENT",
+              "value": 2
+            },
+            {
+              "opt": "D'acord",
+              "code": "ACTITUD_MEDIAMBIENT",
+              "value": 1
+            },
+            {
+              "opt": "Ni d'acord ni en desacord",
+              "code": "ACTITUD_MEDIAMBIENT",
+              "value": 0
+            },
+            {
+              "opt": "En desacord",
+              "code": "ACTITUD_MEDIAMBIENT",
+              "value": -1
+            },
+            {
+              "opt": "Molt en desacord",
+              "code": "ACTITUD_MEDIAMBIENT",
+              "value": -2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "text": "Resultat: Et trobes en el grup ideològic més independentista i per sobre de la mitjana d'esquerres. Però encara podem dir-te més sobre tu, continua navegant!"
+    },
+    {
+      "type": "text",
+      "tag": "sociodemData",
+      "text": "Ara compararem la teva posició amb el teu grup sociològic (no ideològic), és a dir, amb la gent d'edat, educació i llengua habitual similar a la teva."
+    },
+    {
+      "type": "questionaireX",
+      "minId": 16,
+      "maxId": 20,
+      "tag": "sociodemData",
+      "questions": [
+        {
+          "question_type": "Multiple",
+          "id": 16,
+          "text": "A quina província resideix?",
+          "options": [
+            {
+              "opt": "Barcelona",
+              "code": "PROVINCE",
+              "value": 0
+            },
+            {
+              "opt": "Girona",
+              "code": "PROVINCE",
+              "value": 1
+            },
+            {
+              "opt": "Lleida",
+              "code": "PROVINCE",
+              "value": 2
+            },
+            {
+              "opt": "Tarragona",
+              "code": "PROVINCE",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "question_type": "Multiple",
+          "id": 17,
+          "text": "Quina mida té el seu municipi?",
+          "options": [
+            {
+              "opt": "Menys de 10.000 habitants",
+              "code": "MUNICIPALITY",
+              "value": 0
+            },
+            {
+              "opt": "De 10.000 a 50.000 habitants",
+              "code": "MUNICIPALITY",
+              "value": 1
+            },
+            {
+              "opt": "De 50.000 a 150.000 habitants",
+              "code": "MUNICIPALITY",
+              "value": 2
+            },
+            {
+              "opt": "De 150.000 a 1.000.000 d'habitants",
+              "code": "MUNICIPALITY",
+              "value": 3
+            },
+            {
+              "opt": "Més d'1.000.000 d'habitants",
+              "code": "MUNICIPALITY",
+              "value": 4
+            }
+          ]
+        },
+        {
+          "question_type": "Multiple",
+          "id": 18,
+          "text": "Quin és el nivell màxim de formació que ha assolit?",
+          "options": [
+            {
+              "opt": "Cap o bé estudis primaris (Educació primària)",
+              "code": "EDUCATION",
+              "value": 0
+            },
+            {
+              "opt": "Estudis secundaris (ESO, Batxillerat, EGB, BUP, COU, CFGM)",
+              "code": "EDUCATION",
+              "value": 1
+            },
+            {
+              "opt": "Estudis superiors (CFGS, diplomatura, llicenciatura, grau, màster, doctorat)",
+              "code": "EDUCATION",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "question_type": "Multiple",
+          "id": 19,
+          "text": "Quina és la seva franja d'edat?",
+          "options": [
+            {
+              "opt": "18-34",
+              "code": "AGE_RANGE",
+              "value": "18-34"
+            },
+            {
+              "opt": "35-49",
+              "code": "AGE_RANGE",
+              "value": "35-49"
+            },
+            {
+              "opt": "50-64",
+              "code": "AGE_RANGE",
+              "value": "50-64"
+            },
+            {
+              "opt": "Més de 65",
+              "code": "AGE_RANGE",
+              "value": "65+"
+            }
+          ]
+        },
+        {
+          "question_type": "Multiple",
+          "id": 20,
+          "text": "Quin és el teu gènere?",
+          "options": [
+            {
+              "opt": "Dona",
+              "code": "FEMALE",
+              "value": 1
+            },
+            {
+              "opt": "Home",
+              "code": "FEMALE",
+              "value": 0
+            },
+            {
+              "opt": "Altres",
+              "code": "FEMALE",
+              "value": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "tag": "sociodemographicPos",
+      "text": "Hem trobat el teu grup sociològic! Ets força diferent a la seva mitjana. No dubtis a descarregar-te els resultats i compartir-los!"
+    },
+    {
+      "type": "text",
+      "text": "Metodologia: Aquest projecte ha estat elaborat fent servir les dades de totes les respostes recopilades pel Centre d'Estudis d'Opinió (CEO) en tots els seus baròmetres d'opinió política des del 2014, en els quals han participat 41.838 individus. A fi de predir on se situa cadascú a la brúixola creada, s'han tingut en compte les seves respostes en dues de les preguntes al baròmetre: una on són preguntats sobre quina és l'organització política preferida per a Catalunya (estat independent, estat federal dins d'Espanya, comunitat autònoma o regió d'Espanya) i una altra en la qual se situen en l'eix esquerra-dreta del 0 al 10. Després es van observar què ha respost cada individu en altres preguntes fetes en els successius baròmetres, les que formula el qüestionari d'aquesta aplicació. Amb un model estadístic, hem calculat fins a quin punt cadascuna de les respostes influeix en les dues principals preguntes. Saber el pes concret de cada resposta ens ha permès crear una equació per predir la seva resposta pel que fa a la forma d'estat o l'eix esquerra-dreta. I per què no els ho preguntem directament? Bé, la gent pot ser que no sigui prou honesta quan se'ls demana explícitament, sobretot en la qüestió de l'eix esquerra-dreta. El CEO no ha fet servir totes les preguntes d'aquesta enquesta en tots els seus baròmetres, així que a fi de construir el model estadístic tot i no tenir valors dels 41.838 individus en totes les preguntes, hem imputat alguns resultats. És a dir, hem substituït les dades no existents amb valors estimats basant-nos en les respostes que sí que teníem. Els resultats que podeu veure a la brúixola són projectats, és a dir, que l'eix esquerra-dreta no va del 0 al 10 tenint en compte tot l'espectre polític, sinó la teva posició comparant-la amb la mitjana dels enquestats pel CEO. Hem dividit els dos eixos en quintils. Així, si estàs a la banda més alta del suport a l'independentisme i en el quadre més a l'esquerra, això no vol dir necessàriament que siguis un independentista radical i algú d'extrema esquerra, sinó que estàs en el 20% més independentista respecte de la població catalana, i entre el 20% de gent més d'esquerres."
+    }
+  ]

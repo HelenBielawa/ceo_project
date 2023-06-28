@@ -3,12 +3,12 @@
     "type": "header",
     "tag": "start-header",
     "h1": "The Catalan Political Compass",
-    "h3": "Finding your position in the independence and the left-right debates answering to just a short questionnaire"
+    "h3": "Answer just a short questionnaire and find out how your ideology compares with that of the rest of Catalan residents in the independence and the left-right debates"
   },
   {
     "type": "text",
     "tag": "start-intro",
-    "text": "We have divided ideologies in two of the main axes for Catalan politics: the desired relationship with Spain, and the traditional left-right spectrum from social and economic point of views. With this app, we pinpoint where you are compared with the rest of the Catalan population. Click on the colored squares to find out how the 25 clusters are different."
+    "text": "We have divided ideologies in two of the main axes for Catalan politics: the desired relationship with Spain, and the traditional left-right spectrum from social and economic point of views. With this app, we pinpoint where you are compared with the rest of the Catalan population. Click on the colored squares to find out about the 25 ideological profiles that we have created in this compass."
   },
   {
     "type": "text",
@@ -578,6 +578,6 @@
   },
   {
     "type": "text",
-    "text": "METHODOLOGY"
+    "text": "Methodology: This project has been created using the data of all the responses collected by Centre d'Estudis d'Opinió (CEO) in all their political barometer surveys since 2014, in which they have gathered information of 41,838 individuals. In order to predict their location in the compass, we have taken into account their responses in two questions of the barometers: their preferred form of state in Catalonia (independent country, federal state within Spain, devolved region, or region with no devolved powers), and where they locate themselves in the left-right axis (0 to 10). Then we observed what each individual responded in other questions raised in the barometers, the ones you found in this quiz. With a statistical model we calculated how much each of their answers influenced the two main questions. Learning the average weight of each of them enabled us to create an equation to predict their answer in the form of state and left-right topics. And why not directly asking them about that? Well, people may not be that honest when explicitly asked, especially in the left-right political spectrum issue! CEO did not ask the questions in this quiz in all their surveys, so in order to build this statistical model despite not having values for all variables in all the respondents, we have imputed some results. That is, we replaced some missing data with estimated values based on the answers we did have. The results you see in the compass are projected, which means that for instance the left-right axis is not going from 0 to 10 taking into account the whole political spectrum, but it is your position compared to the average respondent of the poll. We have divided the two axes in quintiles. Therefore, if you are in the top pro-independence section and in the most left-wing square, this does not necessarily mean that you are a very hardline supporter of a split with Spain and a far-left person, but rather that you are in the top 20% of pro-independence people among Catalans, and among the most 20% left-wing people."
   }
 ]
