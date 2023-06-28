@@ -8,7 +8,11 @@
   {
     "type": "text",
     "tag": "start-intro",
+<<<<<<< HEAD
     "text": "We have divided ideologies in two of the main axes for Catalan politics: the desired relationship with Spain, and the traditional left-right spectrum from social and economic point of views. With this app, we pinpoint where you are compared with the rest of the Catalan population. Click on the colored squares to find out about the 25 ideological profiles that we have created in this compass."
+=======
+    "text": "We have divided ideologies in two of the main axes for Catalan politics: the desired relationship with Spain, and the traditional left-right spectrum from social and economic point of views. With this app, we pinpoint where you are compared with the rest of the Catalan population. Click on the colored squares to find out how the 25 clusters are different. What do you think, where do most people stand? And where would you be positioned in this raster?"
+>>>>>>> a4a45d23194d37a3b5b344bd1b86cfc1be6e7d3a
   },
   {
     "type": "text",

@@ -240,10 +240,11 @@ html, body {
 
 .step-content {
   background: #ccc; /* Adjust background color as needed */
-  padding: 0.75rem 1rem;
+  padding: 3rem 3rem;
   border-radius: 3px;
-  width: 60vw;
+  width: 40vw;
   color: black;
+  line-height: 150%;
 }
 .step.active{
   opacity: 0.6;
