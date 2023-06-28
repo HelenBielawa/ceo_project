@@ -11,7 +11,7 @@ console.log("in the questionaire")
 
     let step = questions;
 
-    $: id = 1;
+    $: id = minID;
 
     $: currentQuestion = step.find(d => d.id === id);
 
