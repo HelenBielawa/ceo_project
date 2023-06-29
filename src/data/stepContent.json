@@ -426,7 +426,17 @@
   },
   {
     "type": "text",
-    "text": "Result: You are in the most pro-independence group, and above average left-wing. But there is more to find out about you. Keep scrolling!"
+    "text": "Did you expect this result? Feel free to spend some time exploring your position and the groups that are positioned around you. But there is more to find out about you. Keep scrolling!"
+  },
+  {
+    "type": "text",
+    "tag": "sociodemData",
+    "text": "Until now, we have grouped people that share political beliefs. Now, you see groups that share some statistical features, like age or education. That shows us that your sociodemographic profile might impact your political beliefs. If you hover over the circles, you will see that older people tend to be more right. Do you find more trends?"
+  },
+  {
+    "type": "text",
+    "tag": "sociodemData",
+    "text": "Grouping people in such clusters is debatable. To some degree, this reproduces stereotypes. You can click on each circle in order so see a random sample of how each individual group-member stands in the Catalan political Compass. Try to find out which cluster is most homogeneous and heterogeneous!"
   },
   {
     "type": "text",
@@ -434,7 +444,7 @@
     "text": "Let's now compare your position with your sociologic (and not political!) group, that is, with the people with similar age, education and usual language."
   },
   {
-    "type": "questionaireX",
+    "type": "questionaire",
     "minId": 16,
     "maxId": 20,
     "tag": "sociodemData",
@@ -573,7 +583,7 @@
   },
   {
     "type": "text",
-    "tag": "sociodemographicPos",
+    "tag": "statisticalTwin",
     "text": "We found your statistical peer group! You are pretty different to its average. Feel free to download and share the result!"
   },
   {

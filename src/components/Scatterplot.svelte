@@ -125,13 +125,15 @@ $: {
             <circle 
               cx={xScale(d.RIGHT_PRED)}
               cy={yScale(d.INDEP_PRED)}
-              fill={d.Perc_Users === 0 ? "red": "black"}
+              fill={d.Perc_Users === 0 ? "transparent": "black"}
               r={d.Perc_Users === 0 ? innerWidth/20 : radiusScale(d.Perc_Users)}
               opacity={ currentStatus === "top-left" && d.Cluster === 10? 1
                         : hoveredData ?
                         currentStatus === "politicalViz"?
                         d.RIGHT_PRED === hoveredData.RIGHT_Pred_Mean ? 1 : 0.45
                         : 0.6 : 0.6}
+              stroke={d.Perc_Users === 0 || d.Twin ? "black": "transparent"}
+              stroke-width={5}
               on:mouseover={() => currentStatus === "sociodemViz"? hoveredData = socioTooltipData.find(sd => sd.Cluster === d.Cluster)
                             : hoveredData = politicalClusterData.find(pd => pd["INDEP.QUANT_Pred_Mean"] === d.INDEP_PRED)}
               on:focus={() => currentStatus === "sociodemViz"? hoveredData = socioTooltipData.find(sd => sd.Cluster === d.Cluster)

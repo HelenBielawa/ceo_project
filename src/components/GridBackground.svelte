@@ -4,8 +4,9 @@
   
     const numRows = 5;
     const numColumns = 5;
-    let clickedCluster;
+    $: clickedCluster = null;
     let hoveredCluster;
+    $: console.log("hovered cluster: ", hoveredCluster)
     const gridColors = gridData.map(c => c.color);
 
 </script>
@@ -15,7 +16,7 @@
     {#each Array(numRows * numColumns) as _, index}
       <div class="cell"
       style="background-color: {gridColors[index]};
-             opacity: {hoveredCluster == index? 0.5 : 1}"
+             opacity: {hoveredCluster === index? 0.5 : 1}"
       on:mouseover={() => hoveredCluster = index}
       on:focus={() => hoveredCluster = index}
       on:click={() => (clickedCluster = index, hoveredCluster = null)}
@@ -25,8 +26,8 @@
         }}}
         on:mouseout={() => (clickedCluster = null, hoveredCluster = null)}
         on:blur={() => (clickedCluster = null, hoveredCluster = null)}>
-    {#if clickedCluster == index} 
-      <span class="cluster-text">{gridData.find(g => g.groupID == index).cluster}</span> 
+    {#if clickedCluster === index} 
+      <span class="cluster-text">{gridData.find(g => g.groupID === index+1).cluster}</span> 
     {/if}
     </div>
     {/each}

@@ -11,7 +11,7 @@ import politicalClusterData from "./data/politicalClusters.json";
 import projectionRight from "./data/projectionTable_RIGHT.json";
 import projectionIndep from "./data/projectionTable_INDEP.json";
 import QuizUserData from "./data/quizUserData.json";
-import {Compass, FileEarmarkFont} from "svelte-bootstrap-icons";
+import {Compass, FileEarmarkFont, Pass} from "svelte-bootstrap-icons";
 
 let isEnglish = true; // Default language is English
 let StepContent = StepContentEnglish;
@@ -36,12 +36,14 @@ $: currentStatus = "politicalViz";
 let politicalData = politicalClusterData.map(d => ({"RIGHT_PRED": d["RIGHT.QUANT_Pred_Mean"],
                                   "INDEP_PRED": d["INDEP.QUANT_Pred_Mean"],
                                   "Cluster": d.Political_Cluster,
-                                  "Perc_Users": d.Perc_Users}));
+                                  "Perc_Users": d.Perc_Users,
+                                "Twin": false}));
 
 let socioClusterData = socioDemData.map(d => ({"RIGHT_PRED": d.RIGHT_Pred_Mean,
                                                         "INDEP_PRED": d.INDEP_Pred_Mean,
                                                         "Cluster": d.Cluster,
-                                                        "Perc_Users": d.Perc_Users * 100}));
+                                                        "Perc_Users": d.Perc_Users * 100,
+                                                        "Twin": d.Twin}));
 
 let data;
 
@@ -74,6 +76,10 @@ $: {
               data = data.filter(d => d.Cluster != 100)
               data.push(thisUserPos(thisUserData));
             }
+            else if (currentStepContent.tag === "statisticalTwin"){
+              currentStatus = "sociodemViz";
+              matchTwin(thisUserData)
+            }
             else{
               console.log("Status: politicalViz")
               currentStatus = "politicalViz";
@@ -98,7 +104,6 @@ $: {
     function thisUserPos(thisUserData){
 
       let values = thisUserData.map(d => d.data).flat()
-      console.log("values: ", values)
 
       function getValue(arr, code){
         console.log("arr", arr)
@@ -136,8 +141,45 @@ $: {
       return {"RIGHT_PRED": RIGHT_POS * 100,
               "INDEP_PRED": INDEP_POS * 100,
               "Cluster": 100,
-            "Perc_Users": 0}
+            "Perc_Users": 0,
+          "Twin": false}
     }
+
+    function matchTwin(thisUserData){
+      //all values from user data
+      let values = thisUserData.map(d => d.data).flat()
+      //id of the cluster that the user belongs to
+      let twinClusterID = 0;
+      try{
+        twinClusterID = socioDemData.find(sc => sc.AGE_RANGE === String(values.find(v => v.code === "AGE_RANGE").value)
+                          && sc.LANGUAGE === values.find(v => v.code === "LANGUAGE").value
+                          && sc.EDUCATION === values.find(v => v.code === "EDUCATION").value)
+                    .Cluster
+      }
+      catch{
+        twinClusterID = 0;
+      }
+      console.log("twinID:", twinClusterID)
+
+      //twin = true for the cluster that the user belongs to
+      socioClusterData = socioClusterData.map(sc => {
+                                  if (sc.Cluster === twinClusterID){
+                                    console.log("id match", twinClusterID)
+                                    return({"RIGHT_PRED": sc.RIGHT_PRED,
+                                            "INDEP_PRED": sc.INDEP_PRED,
+                                              "Cluster": sc.Cluster,
+                                              "Perc_Users": sc.Perc_Users * 100,
+                                              "Twin": true});
+                
+                                    }
+                                  else{
+                                    return sc;
+                                  }
+                          }
+                        )
+      console.log("socioCluster data with twin: ", socioClusterData)
+    }
+
 </script>
 
 <body>

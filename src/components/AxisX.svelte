@@ -17,7 +17,8 @@
         y1={-yScale(0)}
         y2={6}
         stroke={tick == 50 ? "black" : "transparent"}
-        stroke-width={tick === 50 ? "2px" : "1px"}/>
+        stroke-width={tick === 50 ? "2px" : "1px"}
+        />
         <text y={-yScale(50)} dy={9}
         text-anchor={tick === 0 ? "start" : index === 100 ? "end" : "middle"}
         dominant-baseline="middle"></text>
@@ -39,6 +40,9 @@
 
 
 <style>
+  .axis{
+    z-index: 0;
+  }
   .axis text{
   font-family: 'Montserrat', sans-serif;
   font-weight: 400;

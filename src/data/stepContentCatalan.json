@@ -429,7 +429,7 @@
       "text": "Ara compararem la teva posició amb el teu grup sociològic (no ideològic), és a dir, amb la gent d'edat, educació i llengua habitual similar a la teva."
     },
     {
-      "type": "questionaireX",
+      "type": "questionaire",
       "minId": 16,
       "maxId": 20,
       "tag": "sociodemData",
