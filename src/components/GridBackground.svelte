@@ -1,18 +1,18 @@
 <script>
   import gridData from "../data/colorPalette.json";
   import Tooltip from "./Tooltip.svelte";
-  
+
     const numRows = 5;
     const numColumns = 5;
     $: clickedCluster = null;
     let hoveredCluster;
-    $: console.log("hovered cluster: ", hoveredCluster)
     const gridColors = gridData.map(c => c.color);
 
 </script>
   
 
   <div class="cellwrapper">
+
     {#each Array(numRows * numColumns) as _, index}
       <div class="cell"
       style="background-color: {gridColors[index]};
@@ -37,7 +37,6 @@
     .cell {
         display: inline-block;
         width: 20%;
-        height: 20vh;
         z-index: 10;
     }
   
@@ -46,7 +45,11 @@
     display: flex;
     flex-wrap: wrap;
     width: 100%;
+    height: 100%;
     z-index: 90;
+  }
+  .cluster-text{
+    pointer-events: none;
   }
 
   </style>

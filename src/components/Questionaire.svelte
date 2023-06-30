@@ -1,8 +1,5 @@
 <script>
     import Question from "./Question_Anton.svelte";
-    import StepContentEnglish from "../data/stepContent.json";
-    import StepContentCatalan from "../data/stepContentCatalan.json";
-console.log("in the questionaire")
     export let language;
     export let questions;
     export let minID;
@@ -19,13 +16,11 @@ console.log("in the questionaire")
         if(id > minID){
             id--;
         }
-        console.log(thisUserData);
     }
     function next(){
         if(id < maxID){
             id++;
         }
-        console.log(thisUserData);
     }
 </script>
   

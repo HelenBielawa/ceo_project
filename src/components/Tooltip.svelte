@@ -59,8 +59,8 @@
     <p>
       <b>age:</b> {Math.round(data.AGE_prop)}% are {data.AGE_cat} years old<br>
       <b>education:</b> {Math.round(data.EDUCATION_prop)}% finished
-      {data.EDUCATION_cat === "0" ? "none or primary" : data.EDUCATION_cat === "1" ? "secondary" : "superior"} studies<br>
-      <b>language:</b> {Math.round(data.LANGUAGE_prop)}% {data.LANGUAGE_cat === 0? "don't " : ""}prefer to speak Catalan<br>
+      {data.EDUCATION_cat === "1" ? "secondary" : "superior"} studies<br>
+      <b>language:</b> {Math.round(data.LANGUAGE_prop)}% prefer to speak {data.LANGUAGE_cat === "1"? "Catalan" : "Spanish"}<br>
       {Math.round(data.Perc_Users)}% of all respondents belong to this group.<br>
       <br>
     </p>
