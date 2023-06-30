@@ -22,8 +22,8 @@
   },
   {
     "type": "text",
-    "tag": "explanation",
-    "text": "Now, what political cluster are you the closest to? Take this short quiz to find out!"
+    "tag": "userPolData",
+    "text": "Now, what political cluster are you the closest to? Take this short quiz to find out! We put an additional circle (ring) in the plot. You start at the position in the area towards right and against independence because that would be the result if you reply to all questions almost in the middle."
   },
   {
     "type": "questionaire",
@@ -426,6 +426,7 @@
   },
   {
     "type": "text",
+    "tag": "userPolData",
     "text": "Did you expect this result? Feel free to spend some time exploring your position and the groups that are positioned around you. But there is more to find out about you. Keep scrolling!"
   },
   {
@@ -445,13 +446,13 @@
   },
   {
     "type": "questionaire",
-    "minId": 16,
-    "maxId": 20,
+    "minId": 14,
+    "maxId": 18,
     "tag": "sociodemData",
     "questions": [
       {
         "question_type": "Multiple",
-        "id": 16,
+        "id": 14,
         "text": "What province do you live in?",
         "options": [
           {
@@ -478,7 +479,7 @@
       },
       {
         "question_type": "Multiple",
-        "id": 17,
+        "id": 15,
         "text": "What's the size of your municipality?",
         "options": [
           {
@@ -510,7 +511,7 @@
       },
       {
         "question_type": "Multiple",
-        "id": 18,
+        "id": 16,
         "text": "What is the maximum level of studies that you have finished?",
         "options": [
           {
@@ -532,7 +533,7 @@
       },
       {
         "question_type": "Multiple",
-        "id": 19,
+        "id": 17,
         "text": "How old are you?",
         "options": [
           {
@@ -559,7 +560,7 @@
       },
       {
         "question_type": "Multiple",
-        "id": 20,
+        "id": 18,
         "text": "What's your gender?",
         "options": [
           {
@@ -588,6 +589,12 @@
   },
   {
     "type": "text",
+    "tag": "statisticalTwin",
     "text": "Methodology: This project has been created using the data of all the responses collected by Centre d'Estudis d'Opinió (CEO) in all their political barometer surveys since 2014, in which they have gathered information of 41,838 individuals. In order to predict their location in the compass, we have taken into account their responses in two questions of the barometers: their preferred form of state in Catalonia (independent country, federal state within Spain, devolved region, or region with no devolved powers), and where they locate themselves in the left-right axis (0 to 10). Then we observed what each individual responded in other questions raised in the barometers, the ones you found in this quiz. With a statistical model we calculated how much each of their answers influenced the two main questions. Learning the average weight of each of them enabled us to create an equation to predict their answer in the form of state and left-right topics. And why not directly asking them about that? Well, people may not be that honest when explicitly asked, especially in the left-right political spectrum issue! CEO did not ask the questions in this quiz in all their surveys, so in order to build this statistical model despite not having values for all variables in all the respondents, we have imputed some results. That is, we replaced some missing data with estimated values based on the answers we did have. The results you see in the compass are projected, which means that for instance the left-right axis is not going from 0 to 10 taking into account the whole political spectrum, but it is your position compared to the average respondent of the poll. We have divided the two axes in quintiles. Therefore, if you are in the top pro-independence section and in the most left-wing square, this does not necessarily mean that you are a very hardline supporter of a split with Spain and a far-left person, but rather that you are in the top 20% of pro-independence people among Catalans, and among the most 20% left-wing people."
+  },
+  {
+    "type": "text",
+    "tag": "statisticalTwin",
+    "text": "This project was part of the Master in Visual Tools to Empower Citizens (MVTEC) from the Visualization for Transparency Foundation and the University of Girona. It was done with support of the Centre d'Estudis d'Opinió (CEO). Student Contributors: Guifré Jordan, Makhan Sacko, Helen Bielawa | Mentors: Anton Bardera, Marc Comas, Laura Aragó"
   }
 ]

@@ -2,7 +2,6 @@
 import Scrolly from "./helpers/Scrolly.svelte";
 import GridBackground from "./components/GridBackground.svelte";
 import Scatterplot from "./components/Scatterplot.svelte";
-import Question from "./components/Question_Anton.svelte";
 import Questionaire from "./components/Questionaire.svelte";
 import StepContentEnglish from "./data/stepContent.json";
 import StepContentCatalan from "./data/stepContentCatalan.json";
@@ -11,7 +10,8 @@ import politicalClusterData from "./data/politicalClusters.json";
 import projectionRight from "./data/projectionTable_RIGHT.json";
 import projectionIndep from "./data/projectionTable_INDEP.json";
 import QuizUserData from "./data/quizUserData.json";
-import {Compass, FileEarmarkFont, Pass} from "svelte-bootstrap-icons";
+import html2canvas from "html2canvas";
+import {Compass, FileEarmarkFont, FileImage, ArrowDownCircle} from "svelte-bootstrap-icons";
 
 let isEnglish = true; // Default language is English
 let StepContent = StepContentEnglish;
@@ -30,6 +30,7 @@ $: currentStep = 0;
 let currentStepContent;
 
 let thisUserData = QuizUserData;
+$: console.log("thisuserdata: ", thisUserData)
 
 $: currentStatus = "politicalViz";
 
@@ -53,7 +54,6 @@ let currentAnswer;
 
 $: {
       currentStepContent = StepContent[currentStep];
-      console.log("we are checking the Content of step ", currentStep)
         if(currentStepContent){
           if ("tag" in currentStepContent){
             if (currentStepContent.tag === "start-header" || currentStepContent.tag === "start-intro"){
@@ -64,30 +64,27 @@ $: {
               currentStatus = "top-left"
             }
             else if (currentStepContent.tag === "sociodemData"){
-              console.log("Status: sociodemViz")
               currentStatus = "sociodemViz";
               data = socioClusterData;
             }
             else if(currentStepContent.tag === "userPolData"){
-              console.log("Status: politicalViz")
               currentStatus = "politicalViz";
               data = politicalData;
-              console.log("I want to push data, this is userdata: ", thisUserData);
               data = data.filter(d => d.Cluster != 100)
               data.push(thisUserPos(thisUserData));
             }
             else if (currentStepContent.tag === "statisticalTwin"){
+              socioClusterData = matchTwin(thisUserData, socioClusterData);
+              data = socioClusterData;
               currentStatus = "sociodemViz";
-              matchTwin(thisUserData)
             }
             else{
-              console.log("Status: politicalViz")
               currentStatus = "politicalViz";
               data = politicalData;
             }
         }
         else{
-          console.log("Status: politicalViz")
+
           currentStatus = "politicalViz";
           data = politicalData;
         }
@@ -106,8 +103,6 @@ $: {
       let values = thisUserData.map(d => d.data).flat()
 
       function getValue(arr, code){
-        console.log("arr", arr)
-        console.log("code", code)
           let value = arr.find(d => d.code === code).value
           return value
         }
@@ -136,8 +131,6 @@ $: {
       let INDEP_POS = findClosest(INDEP_PRED, projectionIndep);
       let RIGHT_POS = findClosest(RIGHT_PRED, projectionRight)
 
-      console.log("indeppos: ", INDEP_POS * 100);
-      console.log("rightpos: ", RIGHT_POS * 100);
       return {"RIGHT_PRED": RIGHT_POS * 100,
               "INDEP_PRED": INDEP_POS * 100,
               "Cluster": 100,
@@ -145,14 +138,27 @@ $: {
           "Twin": false}
     }
 
-    function matchTwin(thisUserData){
+    function matchTwin(thisUserData, socioClusterData){
+    ///This function updates the socioDemData and writes "true" in the twin value of the matching Cluster
+
       //all values from user data
       let values = thisUserData.map(d => d.data).flat()
       //id of the cluster that the user belongs to
       let twinClusterID = 0;
+      let languageCode;
+      if (values.find(v => v.code === "CATALAN_ONLY").value === 1){
+        languageCode = 1;
+      }
+      else if (values.find(v => v.code === "SPANISH_ONLY").value === 1){
+        languageCode = 2;
+      }
+      else{
+        languageCode = 0;
+      }
+
       try{
         twinClusterID = socioDemData.find(sc => sc.AGE_RANGE === String(values.find(v => v.code === "AGE_RANGE").value)
-                          && sc.LANGUAGE === values.find(v => v.code === "LANGUAGE").value
+                          && sc.LANGUAGE === languageCode
                           && sc.EDUCATION === values.find(v => v.code === "EDUCATION").value)
                     .Cluster
       }
@@ -168,18 +174,31 @@ $: {
                                     return({"RIGHT_PRED": sc.RIGHT_PRED,
                                             "INDEP_PRED": sc.INDEP_PRED,
                                               "Cluster": sc.Cluster,
-                                              "Perc_Users": sc.Perc_Users * 100,
+                                              "Perc_Users": sc.Perc_Users,
                                               "Twin": true});
                 
                                     }
                                   else{
-                                    return sc;
+                                    return({"RIGHT_PRED": sc.RIGHT_PRED,
+                                            "INDEP_PRED": sc.INDEP_PRED,
+                                              "Cluster": sc.Cluster,
+                                              "Perc_Users": sc.Perc_Users,
+                                              "Twin": false});
                                   }
                           }
                         )
-      console.log("socioCluster data with twin: ", socioClusterData)
+      return socioClusterData;
     }
-
+    function downloadImage() {
+    const chartElement = document.querySelector('.chart');
+    html2canvas(chartElement).then(canvas => {
+      const imgData = canvas.toDataURL("image/png");
+      let a = document.createElement('a');
+      a.href = imgData;
+      a.download = 'scatterplot.png';
+      a.click();
+    });
+    }
 </script>
 
 <body>
@@ -213,12 +232,16 @@ $: {
         </div>
 
         <div class="scroll-indicator-container">
-          <div class="compass">
-          <Compass class="compass"/>
+          <div class="arrow">
+          <ArrowDownCircle class="compass"/>
           </div>
        </div>
       </div>
-       {/each}  
+       {/each} 
+       <button class="download-button hidden" on:click={downloadImage} class:hidden={currentStep !== StepContent.length - 1}>
+        <FileImage/>
+        Download Chart
+      </button>
  </Scrolly>
 
 </div>
@@ -272,7 +295,7 @@ html, body {
   position: relative;
   height: 90vh;
   margin: 5%;
-  opacity: 0.3;
+  opacity: 1;
   transition: opacity 300ms ease;
   display: flex;
   justify-content: center;
@@ -286,6 +309,7 @@ html, body {
   border-radius: 3px;
   width: 40vw;
   color: black;
+  opacity: 1;
   line-height: 150%;
 }
 .step.active{
@@ -313,7 +337,12 @@ body {
     transform: translateX(-50%);
     z-index: 100;
   }
-  
+    
+  .arrow {
+    font-size: 2em; /* Adjust size as needed */
+  animation: bounce 2s infinite;
+  color: #000; /* Adjust color as needed */
+  }
   .compass {
     animation: spin 3s linear infinite;
     fill: #000;
@@ -335,6 +364,16 @@ body {
     border-radius: 3px;
     color: black;
   }
+  .download-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  background: #ccc;
+  padding: 0.5rem;
+  border-radius: 3px;
+  color: black;
+  }
   
   @keyframes spin {
     0% {
@@ -344,4 +383,75 @@ body {
       transform: translateX(-50%) rotateX(360deg);
     }
   }
+
+  @keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-15px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
+}
+
+@media (max-width: 800px){
+      .chart {
+      width: 100vw; /* Adjust width as needed */
+      height: 100vw;
+      overflow: visible;
+      flex: 0 0 auto;
+    }
+      .aside {
+      flex: 1 1 auto;
+      bottom: 0; /* Adjust positioning based on the width of the left element */
+      left: 0;
+      top: 100vw;
+      width: 100vw;
+      height: auto;
+      background-color: white; /* Adjust background color as needed */
+      overflow-y: scroll;
+      overflow: auto;
+    }
+    .flex {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: flex-end;
+      align-content: flex-end;
+      overflow: hidden;
+      height: 100vh;
+      margin: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      position: fixed;
+    }
+    .step {
+    position: relative;
+    width: 100vw;
+    margin: 0%;
+    opacity: 0.3;
+    transition: opacity 300ms ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+  }
+  .step-content {
+  background: #ccc; /* Adjust background color as needed */
+  padding: 1rem 1rem;
+  border-radius: 3px;
+  width: 100vw;
+  color: black;
+  line-height: 120%;
+}
+.step.active{
+  opacity: 0.6;
+}
+}
+
 </style>

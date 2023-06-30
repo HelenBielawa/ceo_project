@@ -421,7 +421,18 @@
     },
     {
       "type": "text",
-      "text": "Resultat: Et trobes en el grup ideològic més independentista i per sobre de la mitjana d'esquerres. Però encara podem dir-te més sobre tu, continua navegant!"
+      "tag": "userPolData",
+      "text": "T'esperaves aquest resultat? Et convidem a explorar on et situem i quins grups ideològics tens més a prop. Encara, però, podem dir més coses de tu. Continua navegant!"
+    },
+    {
+      "type": "text",
+      "tag": "sociodemData",
+      "text": "Fins ara, hem agrupat la gent per ideologies polítiques similars. Ara estàs veient grups que tenen característiques sociològiques similars, com l'edat o l'educació. Això ens mostra que el perfil sociodemogràfic pot també influir en la ideologia política. Si passes amb el ratolí per sobre dels cercles, veuràs que la gent d'edat avançada tendeix a ser més de dretes. Pots trobar més correlacions?"
+    },
+    {
+      "type": "text",
+      "tag": "sociodemData",
+      "text": "Agrupar la gent en aquest tipus de clústers és argumentable, ja que pot arribar a reproduir estereotips. Clica qualsevol dels cercles per visualitzar on se situa una mostra d'individus aleatòria. Observa quins són els grups sociològics més homogenis i quins els més heterogenis!"
     },
     {
       "type": "text",
@@ -430,13 +441,13 @@
     },
     {
       "type": "questionaire",
-      "minId": 16,
-      "maxId": 20,
+      "minId": 14,
+      "maxId": 18,
       "tag": "sociodemData",
       "questions": [
         {
           "question_type": "Multiple",
-          "id": 16,
+          "id": 14,
           "text": "A quina província resideix?",
           "options": [
             {
@@ -463,7 +474,7 @@
         },
         {
           "question_type": "Multiple",
-          "id": 17,
+          "id": 15,
           "text": "Quina mida té el seu municipi?",
           "options": [
             {
@@ -495,7 +506,7 @@
         },
         {
           "question_type": "Multiple",
-          "id": 18,
+          "id": 16,
           "text": "Quin és el nivell màxim de formació que ha assolit?",
           "options": [
             {
@@ -517,7 +528,7 @@
         },
         {
           "question_type": "Multiple",
-          "id": 19,
+          "id": 17,
           "text": "Quina és la seva franja d'edat?",
           "options": [
             {
@@ -544,7 +555,7 @@
         },
         {
           "question_type": "Multiple",
-          "id": 20,
+          "id": 18,
           "text": "Quin és el teu gènere?",
           "options": [
             {
@@ -568,11 +579,17 @@
     },
     {
       "type": "text",
-      "tag": "sociodemographicPos",
+      "tag": "statisticalTwin",
       "text": "Hem trobat el teu grup sociològic! Ets força diferent a la seva mitjana. No dubtis a descarregar-te els resultats i compartir-los!"
     },
     {
       "type": "text",
+      "tag": "statisticalTwin",
       "text": "Metodologia: Aquest projecte ha estat elaborat fent servir les dades de totes les respostes recopilades pel Centre d'Estudis d'Opinió (CEO) en tots els seus baròmetres d'opinió política des del 2014, en els quals han participat 41.838 individus. A fi de predir on se situa cadascú a la brúixola creada, s'han tingut en compte les seves respostes en dues de les preguntes al baròmetre: una on són preguntats sobre quina és l'organització política preferida per a Catalunya (estat independent, estat federal dins d'Espanya, comunitat autònoma o regió d'Espanya) i una altra en la qual se situen en l'eix esquerra-dreta del 0 al 10. Després es van observar què ha respost cada individu en altres preguntes fetes en els successius baròmetres, les que formula el qüestionari d'aquesta aplicació. Amb un model estadístic, hem calculat fins a quin punt cadascuna de les respostes influeix en les dues principals preguntes. Saber el pes concret de cada resposta ens ha permès crear una equació per predir la seva resposta pel que fa a la forma d'estat o l'eix esquerra-dreta. I per què no els ho preguntem directament? Bé, la gent pot ser que no sigui prou honesta quan se'ls demana explícitament, sobretot en la qüestió de l'eix esquerra-dreta. El CEO no ha fet servir totes les preguntes d'aquesta enquesta en tots els seus baròmetres, així que a fi de construir el model estadístic tot i no tenir valors dels 41.838 individus en totes les preguntes, hem imputat alguns resultats. És a dir, hem substituït les dades no existents amb valors estimats basant-nos en les respostes que sí que teníem. Els resultats que podeu veure a la brúixola són projectats, és a dir, que l'eix esquerra-dreta no va del 0 al 10 tenint en compte tot l'espectre polític, sinó la teva posició comparant-la amb la mitjana dels enquestats pel CEO. Hem dividit els dos eixos en quintils. Així, si estàs a la banda més alta del suport a l'independentisme i en el quadre més a l'esquerra, això no vol dir necessàriament que siguis un independentista radical i algú d'extrema esquerra, sinó que estàs en el 20% més independentista respecte de la població catalana, i entre el 20% de gent més d'esquerres."
+    },
+    {
+      "type": "text",
+      "tag": "statisticalTwin",
+      "text": "This project was part of the Master in Visual Tools to Empower Citizens (MVTEC) from the Visualization for Transparency Foundation and the University of Girona. It was done with support of the Centre d'Estudis d'Opinió (CEO). Student Contributors: Guifré Jordan, Makhan Sacko, Helen Bielawa | Mentors: Anton Bardera, Marc Comas, Laura Aragó"
     }
   ]

@@ -1,33 +1,43 @@
 <script>
-    import QuizUserData from "../data/quizUserData.json";
     export let text;
     export let type;
     export let options;
     export let id;
     export let step;
     export let thisUserData;
-    console.log("Question");
-    console.log(thisUserData);
-    console.log("options: ", options)
-    console.log(step);
-    console.log(id);
     
  $: answer = "";
 
 
     function handleAnswer(answer){
         //adding the corresponding code to the user data table
-        console.log("Question handleanswer")
-                console.log(answer);
         thisUserData = thisUserData.map((slot) => {
             if (slot.question_id === step.id) { //find the correct slot
                 let option = step.options.filter(o => o.opt === answer)[0];
                 slot.answer = answer;
-                console.log(option);
-                console.log(slot);
                 slot.data = slot.data.map((data) => { //change the slot data
                 if (data.code === option.code) {
                     data.value = option.value;
+                }
+                if (answer === "Catalonia"){
+                    if (data.code === "BORN_ABROAD"){
+                        data.value = 0;
+                    }
+                }
+                else if (answer === "Rest of Spain" || answer === "Somewhere else in the EU" || answer === "Other"){
+                    if (data.code === "BORN_CATALONIA"){
+                        data.value = 0;
+                    }
+                }
+                else if (answer === "Catalan"){
+                    if (data.code === "SPANISH_ONLY"){
+                        data.value = 0;
+                    }
+                }
+                else if (answer === "Spanish"){
+                    if (data.code === "CATALAN_ONLY"){
+                        data.value = 0;
+                    }
                 }
                 return data;
                 });
@@ -56,7 +66,6 @@
             {/each}
         </fieldset>
     {/if}
-<!--     <p><b>Answer: </b>{answer}</p> -->
   </div>
   
   <style>
