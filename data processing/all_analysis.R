@@ -102,6 +102,21 @@ ggplot(data=filter(data_imp_pred_reduced, Social_Cluster == 12)) +
   labs(title = 'Inviduals') +
   coord_cartesian(xlim = c(0,100), ylim = c(0,100))
 
+library(ggplot2)
+
+ggplot(data = sample_n(data_imp_pred, 1000)) +
+  labs(title = 'Independence axis: actual responses vs predictions') +
+  geom_violin(aes(x = factor(SELF_RULE), y = INDEP.PRED)) +
+  annotate("text", x = 0.5, y = max(data_imp_pred$INDEP.PRED), 
+           label = "Independence", vjust = 0)
+
+
+ggplot(data = sample_n(data_imp_pred, 1000)) +
+  geom_point(aes(x = RIGHT, y = RIGHT.PRED)) +
+  labs(title = 'Left-right axis: actual responses vs predictions') +
+  scale_y_continuous(breaks = seq(0, 1, 0.1), limits = c(0.25, 0.6)) +
+  scale_x_continuous(breaks = 0:10, limits = c(0, 10)) +
+  geom_smooth(aes(x = RIGHT, y = RIGHT.PRED))
 
 
 ### POLITICAL CLUSTERS
