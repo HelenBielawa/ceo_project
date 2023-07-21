@@ -40,9 +40,6 @@
 
 
 <style>
-  .axis{
-    z-index: 0;
-  }
   .axis text{
   font-family: 'Montserrat', sans-serif;
   font-weight: 400;

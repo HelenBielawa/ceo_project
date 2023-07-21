@@ -14,7 +14,7 @@ import html2canvas from "html2canvas";
 import {Compass, FileEarmarkFont, FileImage, ArrowDownCircle} from "svelte-bootstrap-icons";
 
 let isEnglish = true; // Default language is English
-let StepContent = StepContentEnglish;
+$: StepContent = StepContentEnglish;
 
 function toggleLanguage() {
   isEnglish = !isEnglish;

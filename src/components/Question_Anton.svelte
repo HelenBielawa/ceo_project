@@ -6,7 +6,7 @@
     export let step;
     export let thisUserData;
     
- $: answer = "";
+    $: answer = "";
 
 
     function handleAnswer(answer){
