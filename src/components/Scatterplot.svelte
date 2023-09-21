@@ -61,7 +61,6 @@ $: {
 
       groupViz = !groupViz;
       if (groupViz){
-        console.log("click "+cluster)
         grData = individualsData[String(cluster)]
                     .filter( d => 0.25 >= Math.random())
                     .map(obj => ({
@@ -176,7 +175,7 @@ $: {
       </g>
     </svg>
     {#if hoveredData}
-      <Tooltip {xScale} {yScale} {width} {height} data={hoveredData} {currentStatus}
+      <Tooltip {isEnglish} {xScale} {yScale} {width} {height} data={hoveredData} {currentStatus}
         xVar = {currentStatus === "politicalViz" || currentStatus === "top-left" ? "RIGHT.QUANT_Pred_Mean" : "RIGHT_Pred_Mean"}
         yVar = {currentStatus === "politicalViz" || currentStatus === "top-left" ? "INDEP.QUANT_Pred_Mean" : "INDEP_Pred_Mean"} />
     {/if}

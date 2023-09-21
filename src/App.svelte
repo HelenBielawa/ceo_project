@@ -29,28 +29,24 @@ function toggleLanguage() {
 $: currentStep = 0;
 let currentStepContent;
 
-let thisUserData = QuizUserData;
-$: console.log("thisuserdata: ", thisUserData)
+$: thisUserData = QuizUserData;
 
 $: currentStatus = "politicalViz";
 
-let politicalData = politicalClusterData.map(d => ({"RIGHT_PRED": d["RIGHT.QUANT_Pred_Mean"],
+$: politicalData = politicalClusterData.map(d => ({"RIGHT_PRED": d["RIGHT.QUANT_Pred_Mean"],
                                   "INDEP_PRED": d["INDEP.QUANT_Pred_Mean"],
                                   "Cluster": d.Political_Cluster,
                                   "Perc_Users": d.Perc_Users,
                                 "Twin": false}));
 
-let socioClusterData = socioDemData.map(d => ({"RIGHT_PRED": d.RIGHT_Pred_Mean,
+$: socioClusterData = socioDemData.map(d => ({"RIGHT_PRED": d.RIGHT_Pred_Mean,
                                                         "INDEP_PRED": d.INDEP_Pred_Mean,
                                                         "Cluster": d.Cluster,
                                                         "Perc_Users": d.Perc_Users * 100,
                                                         "Twin": d.Twin}));
 
-let data;
-
-$: answer = [];
-let currentAnswer;
-
+$: data = socioClusterData;
+$: quizStatus = "passive"
 
 $: {
       currentStepContent = StepContent[currentStep];
@@ -67,11 +63,9 @@ $: {
               currentStatus = "sociodemViz";
               data = socioClusterData;
             }
-            else if(currentStepContent.tag === "userPolData"){
+            else if (currentStepContent.tag === "userPolData"){
               currentStatus = "politicalViz";
-              data = politicalData;
-              data = data.filter(d => d.Cluster != 100)
-              data.push(thisUserPos(thisUserData));
+              data = politicalData;              
             }
             else if (currentStepContent.tag === "statisticalTwin"){
               socioClusterData = matchTwin(thisUserData, socioClusterData);
@@ -88,7 +82,17 @@ $: {
           currentStatus = "politicalViz";
           data = politicalData;
         }
+        if (currentStepContent.type === "questionaire"){
+          quizStatus = "active";
         }
+  
+        }
+
+        if (quizStatus === "active"){
+          data = data.filter(d => d.Cluster != 100)
+          data.push(thisUserPos(thisUserData)); 
+        }
+
       }
 
     function findClosest(num, array){
@@ -129,7 +133,7 @@ $: {
 
       //finding out the position in the chart
       let INDEP_POS = findClosest(INDEP_PRED, projectionIndep);
-      let RIGHT_POS = findClosest(RIGHT_PRED, projectionRight)
+      let RIGHT_POS = findClosest(RIGHT_PRED, projectionRight);
 
       return {"RIGHT_PRED": RIGHT_POS * 100,
               "INDEP_PRED": INDEP_POS * 100,
@@ -165,13 +169,11 @@ $: {
       catch{
         twinClusterID = 0;
       }
-      console.log("twinID:", twinClusterID)
 
       //twin = true for the cluster that the user belongs to
       socioClusterData = socioClusterData.map(sc => {
                                   if (sc.Cluster === twinClusterID){
-                                    console.log("id match", twinClusterID)
-                                    return({"RIGHT_PRED": sc.RIGHT_PRED,
+                                           return({"RIGHT_PRED": sc.RIGHT_PRED,
                                             "INDEP_PRED": sc.INDEP_PRED,
                                               "Cluster": sc.Cluster,
                                               "Perc_Users": sc.Perc_Users,
@@ -189,6 +191,7 @@ $: {
                         )
       return socioClusterData;
     }
+
     function downloadImage() {
     const chartElement = document.querySelector('.chart');
     html2canvas(chartElement).then(canvas => {
@@ -199,6 +202,7 @@ $: {
       a.click();
     });
     }
+
 </script>
 
 <body>

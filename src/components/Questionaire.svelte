@@ -1,11 +1,11 @@
 <script>
-    import Question from "./Question_Anton.svelte";
+    import Question from "./Question.svelte";
     export let language;
     export let questions;
     export let minID;
     export let maxID;
     export let thisUserData;
-
+ 
     let step = questions;
 
     $: id = minID;
