@@ -3,6 +3,7 @@
     export let width;
     export let xScale;
     export let yScale;
+    export let isEnglish;
    
     let xTicks = [0, 20, 40, 50, 60, 80, 100];
   </script>
@@ -28,13 +29,22 @@
           y={-yScale(50)-3} 
           x={width} 
           text-anchor="end"
-      >Right </text
+      >
+      {#if isEnglish}
+      Right
+      {:else}
+      Dreta
+      {/if}</text
     >
     <text class="axis-title" 
     y={-yScale(50)-3} 
     x=0 
     text-anchor="left">
-    Left</text
+    {#if isEnglish}
+      Left
+      {:else}
+      Esquerra
+      {/if}</text
     >
   </g>
 

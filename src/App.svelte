@@ -211,7 +211,7 @@ $: {
 <div class="flex">
   <div class="chart">
   <GridBackground {isEnglish}/>
-  <Scatterplot {currentStep} {data} {currentStatus} {socioClusterData}/>
+  <Scatterplot {isEnglish} {currentStep} {data} {currentStatus} {socioClusterData}/>
   </div>
 
   <div class="aside">
@@ -240,7 +240,11 @@ $: {
        {/each} 
        <button class="download-button hidden" on:click={downloadImage} class:hidden={currentStep !== StepContent.length - 1}>
         <FileImage/>
+        {#if isEnglish}
         Download Chart
+        {:else}
+        Descarregar Gràfic
+        {/if}
       </button>
  </Scrolly>
 

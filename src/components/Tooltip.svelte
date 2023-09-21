@@ -1,4 +1,7 @@
 <script>
+    import { fly } from "svelte/transition";
+    import {Cursor} from "svelte-bootstrap-icons";
+
     export let data;
     export let xScale;
     export let yScale;
@@ -7,8 +10,7 @@
     export let currentStatus;
     export let xVar;
     export let yVar;
-    import { fly } from "svelte/transition";
-    import {Cursor} from "svelte-bootstrap-icons";
+    export let isEnglish;
 
     let tooltipWidth;
     let tooltipHeight;
@@ -34,6 +36,8 @@
     bind:clientWidth={tooltipWidth}
     bind:clientHeight={tooltipHeight}
   >
+
+  {#if isEnglish}
 
     {#if currentStatus == "sociodemViz"}
       <p>
@@ -61,6 +65,40 @@
       <p>
         click to get back to the visualization of the social clusters
       </p>
+    {/if}
+
+
+    {:else}
+
+
+    {#if currentStatus == "sociodemViz"}
+      <p>
+      <b>mida del municipi:</b> {data.MUNICIPALITY === 0? "< 10.000":
+                      data.MUNICIPALITY === 1 ? "10 - 50.000":
+                      data.MUNICIPALITY === 2 ? "50 - 150.000":
+                      data.MUNICIPALITY === 3 ? "150 - 1.000.000":
+                      ">1.000.000"}<br>
+      <b>idioma:</b>{data.LANGUAGE === 1? "Catalan":
+                  data.LANGUAGE === 2? "Spanish":
+                 "Catalan and Spanish, or other"}<br>
+      <b>edat:</b> {data.AGE_RANGE}<br>
+      <br>
+      <Cursor/> {Math.round(data.Perc_Users)}% of all respondents belong to this group. Click to see the individuals</p>
+    {:else if currentStatus === "politicalViz" || currentStatus === "top-left"}
+    <p>
+      <b>edat:</b> un {Math.round(data.AGE_prop)}% tenen {data.AGE_cat} anys<br>
+      <b>formació:</b> un {Math.round(data.EDUCATION_prop)}% té estudis
+      {data.EDUCATION_cat === "1" ? "secundaris" : "superiors"}<br>
+      <b>idioma:</b> un {Math.round(data.LANGUAGE_prop)}% prefereix parlar {data.LANGUAGE_cat === "1"? "catalá" : "castellà"}<br>
+      un {Math.round(data.Perc_Users)}% dels enquestats pertanyen a aquest grup<br>
+      <br>
+    </p>
+    {:else if currentStatus === "groupViz"}
+      <p>
+        feu clic per tornar a la visualització dels clústers socials
+      </p>
+    {/if}
+
     {/if}
   </div>
   

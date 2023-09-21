@@ -13,6 +13,7 @@
     export let data;
     export let currentStatus;
     export let socioClusterData;
+    export let isEnglish;
 
 let hoveredData;
 
@@ -110,8 +111,8 @@ $: {
     on:mouseleave={() => hoveredData = null}>
 
       <g class="inner-chart" transform="translate({margin.left}, {margin.top})">
-        <AxisY width={innerWidth} {yScale} {xScale}/>
-        <AxisX height={innerHeight} width={innerWidth} {xScale} {yScale} />
+        <AxisY {isEnglish} width={innerWidth} {yScale} {xScale}/>
+        <AxisX {isEnglish} height={innerHeight} width={innerWidth} {xScale} {yScale} />
         
 
 
