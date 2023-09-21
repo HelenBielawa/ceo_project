@@ -32,6 +32,7 @@
     <Question text = {currentQuestion.text} id= {id} type = {currentQuestion.question_type}
     options = {currentQuestion.options.map(o => o.opt)}
     step = {currentQuestion}
+    maxID = {maxID}
     bind:thisUserData/>
     <div class="pagination">
         <button disabled='{id ===  minID}' on:click={previous}>Previous</button>

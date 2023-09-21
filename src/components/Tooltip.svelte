@@ -10,9 +10,6 @@
     import { fly } from "svelte/transition";
     import {Cursor} from "svelte-bootstrap-icons";
 
-    console.log("in the tooltip, current stat: ", currentStatus)
-
-    console.log("tatus: ", currentStatus)
     let tooltipWidth;
     let tooltipHeight;
 
@@ -40,10 +37,6 @@
 
     {#if currentStatus == "sociodemViz"}
       <p>
-      <b>province:</b> {data.PROVINCE === 0 ? "Barcelona":
-                  data.PROVINCE === 1 ? "Girona" :
-                  data.PROVINCE === 2 ? "Lleida":
-                  "Tarragona"}<br>
       <b>municipality size:</b> {data.MUNICIPALITY === 0? "< 10.000":
                       data.MUNICIPALITY === 1 ? "10 - 50.000":
                       data.MUNICIPALITY === 2 ? "50 - 150.000":

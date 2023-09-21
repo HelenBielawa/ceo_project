@@ -446,13 +446,13 @@
   },
   {
     "type": "questionaire",
-    "minId": 14,
-    "maxId": 18,
+    "minId": 1,
+    "maxId": 5,
     "tag": "sociodemData",
     "questions": [
       {
         "question_type": "Multiple",
-        "id": 14,
+        "id": 1,
         "text": "What province do you live in?",
         "options": [
           {
@@ -479,7 +479,7 @@
       },
       {
         "question_type": "Multiple",
-        "id": 15,
+        "id": 2,
         "text": "What's the size of your municipality?",
         "options": [
           {
@@ -511,7 +511,7 @@
       },
       {
         "question_type": "Multiple",
-        "id": 16,
+        "id": 3,
         "text": "What is the maximum level of studies that you have finished?",
         "options": [
           {
@@ -533,7 +533,7 @@
       },
       {
         "question_type": "Multiple",
-        "id": 17,
+        "id": 4,
         "text": "How old are you?",
         "options": [
           {
@@ -560,7 +560,7 @@
       },
       {
         "question_type": "Multiple",
-        "id": 18,
+        "id": 5,
         "text": "What's your gender?",
         "options": [
           {
@@ -585,7 +585,7 @@
   {
     "type": "text",
     "tag": "statisticalTwin",
-    "text": "We found your statistical peer group! You are pretty different to its average. Feel free to download and share the result!"
+    "text": "We found your statistical peer group! Feel free to download and share the result!"
   },
   {
     "type": "text",

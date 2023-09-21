@@ -1,6 +1,9 @@
 <script>
   import gridData from "../data/colorPalette.json";
-  import Tooltip from "./Tooltip.svelte";
+  
+  export let isEnglish;
+
+  $: console.log(isEnglish)
 
     const numRows = 5;
     const numColumns = 5;
@@ -27,7 +30,7 @@
         on:mouseout={() => (clickedCluster = null, hoveredCluster = null)}
         on:blur={() => (clickedCluster = null, hoveredCluster = null)}>
     {#if clickedCluster === index} 
-      <span class="cluster-text">{gridData.find(g => g.groupID === index+1).cluster}</span> 
+      <span class="cluster-text">{isEnglish? gridData.find(g => g.groupID === index+1).cluster : gridData.find(g => g.groupID === index+1).cluster_cat }</span> 
     {/if}
     </div>
     {/each}

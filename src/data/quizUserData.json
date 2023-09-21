@@ -27,7 +27,7 @@
 {"question_id": 13,
     "data": [{"code":"ACTITUD_MEDIAMBIENT", "value": 0}]},
 {"question_id": 14,
-    "data": [{"code":"PROVINCE", "value": ""}]},
+    "data": [{"code":"PROVINCE", "value": 0}]},
 {"question_id": 15,
     "data": [{"code":"ACTITUD_MUNICIPALITY", "value": ""}]},
 {"question_id": 16,

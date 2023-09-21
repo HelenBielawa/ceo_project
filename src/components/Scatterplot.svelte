@@ -1,24 +1,18 @@
 <script>
     import AxisX from "./AxisX.svelte";
     import AxisY from "./AxisY.svelte";
-    import AxisCompass from "./AxisXCompass.svelte";
     import Tooltip from "./Tooltip.svelte";
-    import stepContent from "../data/stepContent.json";
     import politicalClusterData from "../data/politicalClusters.json";
     import individualsData from "../data/pred_individuals_social.json";
     import socioTooltipData from "../data/clusters_socioeconomic.json";
     import {extent} from "d3-array";
     import { fly } from "svelte/transition";
     import { scaleLinear } from "d3-scale";
-    import {Compass} from "svelte-bootstrap-icons";
-    import {onMount} from "svelte";
 
     export let currentStep;
     export let data;
     export let currentStatus;
     export let socioClusterData;
-
-    $: console.log("in the scatter, data: ", data)
 
 let hoveredData;
 

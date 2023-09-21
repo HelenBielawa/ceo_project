@@ -11,9 +11,9 @@ import projectionRight from "./data/projectionTable_RIGHT.json";
 import projectionIndep from "./data/projectionTable_INDEP.json";
 import QuizUserData from "./data/quizUserData.json";
 import html2canvas from "html2canvas";
-import {Compass, FileEarmarkFont, FileImage, ArrowDownCircle} from "svelte-bootstrap-icons";
+import {FileEarmarkFont, FileImage, ArrowDownCircle} from "svelte-bootstrap-icons";
 
-let isEnglish = true; // Default language is English
+$: isEnglish = true; // Default language is English
 $: StepContent = StepContentEnglish;
 
 function toggleLanguage() {
@@ -210,7 +210,7 @@ $: {
 
 <div class="flex">
   <div class="chart">
-  <GridBackground/>
+  <GridBackground {isEnglish}/>
   <Scatterplot {currentStep} {data} {currentStatus} {socioClusterData}/>
   </div>
 

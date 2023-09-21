@@ -1,14 +1,15 @@
 <script>
+    import { onMount } from 'svelte';
     export let text;
     export let type;
     export let options;
     export let id;
     export let step;
     export let thisUserData;
+    export let maxID;
+   
+   $: answer = "";
     
-    $: answer = "";
-
-
     function handleAnswer(answer){
         //adding the corresponding code to the user data table
         thisUserData = thisUserData.map((slot) => {
@@ -50,7 +51,7 @@
   <div
     class="question-{type}"
   >
-    <p><b>Question {id}: </b>{text}</p>
+    <p><b>Question {id}/{maxID}: </b>{text}</p>
     {#if step.question_type === "Multiple"}
         <fieldset>
             {#each options as option, i}

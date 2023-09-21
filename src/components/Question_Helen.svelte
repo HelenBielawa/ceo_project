@@ -47,7 +47,6 @@
     {:else if step.question_type === "Range"}
         <input type="range" id="rangeInput" min="0" max="10" value="5">        
     {/if}
-<!--     <p><b>Answer: </b>{answer}</p> -->
   </div>
   
   <style>

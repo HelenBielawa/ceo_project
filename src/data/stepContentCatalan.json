@@ -441,13 +441,13 @@
     },
     {
       "type": "questionaire",
-      "minId": 14,
-      "maxId": 18,
+      "minId": 1,
+      "maxId": 5,
       "tag": "sociodemData",
       "questions": [
         {
           "question_type": "Multiple",
-          "id": 14,
+          "id": 1,
           "text": "A quina província resideix?",
           "options": [
             {
@@ -474,7 +474,7 @@
         },
         {
           "question_type": "Multiple",
-          "id": 15,
+          "id": 2,
           "text": "Quina mida té el seu municipi?",
           "options": [
             {
@@ -506,7 +506,7 @@
         },
         {
           "question_type": "Multiple",
-          "id": 16,
+          "id": 3,
           "text": "Quin és el nivell màxim de formació que ha assolit?",
           "options": [
             {
@@ -528,7 +528,7 @@
         },
         {
           "question_type": "Multiple",
-          "id": 17,
+          "id": 4,
           "text": "Quina és la seva franja d'edat?",
           "options": [
             {
@@ -555,7 +555,7 @@
         },
         {
           "question_type": "Multiple",
-          "id": 18,
+          "id": 5,
           "text": "Quin és el teu gènere?",
           "options": [
             {
@@ -580,7 +580,7 @@
     {
       "type": "text",
       "tag": "statisticalTwin",
-      "text": "Hem trobat el teu grup sociològic! Ets força diferent a la seva mitjana. No dubtis a descarregar-te els resultats i compartir-los!"
+      "text": "Hem trobat el teu grup sociològic! No dubtis a descarregar-te els resultats i compartir-los!"
     },
     {
       "type": "text",
