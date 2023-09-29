@@ -3,8 +3,6 @@
   
   export let isEnglish;
 
-  $: console.log(isEnglish)
-
     const numRows = 5;
     const numColumns = 5;
     $: clickedCluster = null;

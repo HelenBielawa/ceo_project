@@ -73,7 +73,6 @@ $: {
       }
       else{
         currentStatus = "sociodemViz";
-        console.log("in click function, went back to sociodem viz")
         data = socioClusterData;
       }
 

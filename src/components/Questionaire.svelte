@@ -6,7 +6,7 @@
     export let maxID;
     export let thisUserData;
  
-    let step = questions;
+    $: step = questions;
 
     $: id = minID;
 

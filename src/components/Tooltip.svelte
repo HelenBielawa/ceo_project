@@ -78,9 +78,9 @@
                       data.MUNICIPALITY === 2 ? "50 - 150.000":
                       data.MUNICIPALITY === 3 ? "150 - 1.000.000":
                       ">1.000.000"}<br>
-      <b>idioma:</b>{data.LANGUAGE === 1? "Catalan":
-                  data.LANGUAGE === 2? "Spanish":
-                 "Catalan and Spanish, or other"}<br>
+      <b>idioma:</b>{data.LANGUAGE === 1? "català":
+                  data.LANGUAGE === 2? "castellà":
+                 "català i castellà, o altres"}<br>
       <b>edat:</b> {data.AGE_RANGE}<br>
       <br>
       <Cursor/> {Math.round(data.Perc_Users)}% of all respondents belong to this group. Click to see the individuals</p>
@@ -89,7 +89,7 @@
       <b>edat:</b> un {Math.round(data.AGE_prop)}% tenen {data.AGE_cat} anys<br>
       <b>formació:</b> un {Math.round(data.EDUCATION_prop)}% té estudis
       {data.EDUCATION_cat === "1" ? "secundaris" : "superiors"}<br>
-      <b>idioma:</b> un {Math.round(data.LANGUAGE_prop)}% prefereix parlar {data.LANGUAGE_cat === "1"? "catalá" : "castellà"}<br>
+      <b>idioma:</b> un {Math.round(data.LANGUAGE_prop)}% prefereix parlar {data.LANGUAGE_cat === "1"? "català" : "castellà"}<br>
       un {Math.round(data.Perc_Users)}% dels enquestats pertanyen a aquest grup<br>
       <br>
     </p>
